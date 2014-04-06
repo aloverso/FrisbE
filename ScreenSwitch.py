@@ -53,6 +53,7 @@ Builder.load_string("""
     
 <GamesScreen>:
     FloatLayout:
+        button1:MainButton
         Button:
             text: 'Menu'
             on_press: root.manager.current = 'menu'
@@ -63,6 +64,8 @@ Builder.load_string("""
             size_hint:.2, .2
             pos: root.center_x, root.center_y
             on_press: root.manager.current = 'rectangles'
+        Button:
+            id:'MainButton
 
 <RectangleScreen>:
     FloatLayout:
@@ -97,7 +100,7 @@ class SettingsScreen(Screen):
     pass
 
 class GamesScreen(Screen):
-    pass
+    button1 = ObjectProperty(None)
 
 class RectangleScreen(Screen):
     pass
@@ -139,7 +142,6 @@ class ButtonWidget(Widget):
             if colors[self.touches] ==3:
                 self.green()
         self.touches += 1
-
 
 #Create the screen manager
 sm = ScreenManager(transition=NoTransition())
