@@ -133,7 +133,7 @@ class MixingScreen():
     print ("made some zones")    
     
     #Just to test if materials work
-    for i in range(0,3):    
+    for i in range(0,4):    
         model.makeMaterials("mat"+`i`)    
 
     print("made some materials")
