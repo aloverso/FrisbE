@@ -22,15 +22,17 @@ import planes
 from planes import Plane
 import planes.gui
 
+
 WINDOWWIDTH = 600
 WINDOWHEIGHT = 600
+
+MOVEBUTTON_HEIGHT = 100
+MOVEBUTTON_WIDTH = 75
 
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
-
-
 
 class Actor(planes.Plane):
     def __init__(self, x, y, width, height, name, draggable=False, grab=False):
@@ -49,21 +51,25 @@ class Actor(planes.Plane):
         self.x += self.vx
         self.y += self.vy
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
+class Robot(Actor):
+    def __init__(self,x,y,width,height):
+	Actor.__init__(self,x,y,width,height,"robot")
+
     
-class MainModel:
+class Model:
     def __init__(self):
-        self.startbutton = StartButton("start",pygame.Rect(WINDOWWIDTH/8,4*WINDOWWIDTH/8 + 10,3*WINDOWWIDTH/4,WINDOWWIDTH/8),StartButton.clicked)
-	self.tutorialbutton = TutorialButton("tutorial",pygame.Rect(WINDOWWIDTH/8,5*WINDOWWIDTH/8 + 20,3*WINDOWWIDTH/4,WINDOWWIDTH/8),TutorialButton.clicked)
-	self.settingsbutton = SettingsButton("settings",pygame.Rect(WINDOWWIDTH/8,6*WINDOWWIDTH/8 + 30,3*WINDOWWIDTH/4,WINDOWWIDTH/8),SettingsButton.clicked)
-	self.title = pygame.Rect(WINDOWWIDTH/8, WINDOWHEIGHT/8, 3*WINDOWWIDTH/4, 3*WINDOWHEIGHT/8)
-	self.actors = [self.startbutton, self.tutorialbutton, self.settingsbutton]
+        self.left = LeftButton("left",pygame.Rect(0,MOVEBUTTON_HEIGHT+5,MOVEBUTTON_WIDTH,MOVEBUTTON_HEIGHT),LeftButton.clicked)
+        self.right = RightButton("right",pygame.Rect(MOVEBUTTON_WIDTH+5,MOVEBUTTON_HEIGHT+5,MOVEBUTTON_WIDTH,MOVEBUTTON_HEIGHT),RightButton.clicked)
+        self.up = UpButton("up",pygame.Rect(0,0,MOVEBUTTON_WIDTH,MOVEBUTTON_HEIGHT),UpButton.clicked)
+        self.down = DownButton("down",pygame.Rect(MOVEBUTTON_WIDTH+5,0,MOVEBUTTON_WIDTH,MOVEBUTTON_HEIGHT),DownButton.clicked)
+	self.actors = [self.left,self.right,self.up,self.down]
 
     def update(self):
         for actor in self.actors:
             actor.update()
-
     
-class MainView:
+class View:
     def __init__(self, model, screen):
         self.model = model
         self.screen = screen
@@ -72,54 +78,51 @@ class MainView:
         self.screen.fill(BLACK)
         for actor in self.model.actors:
              pygame.draw.rect(self.screen, WHITE, actor.rect)
-	pygame.draw.rect(self.screen, BLUE, self.model.title)
         pygame.display.update()
 
 class Button(planes.gui.Button):
-
 	def __init__(self, label, rect, callback):
-
 		planes.gui.Button.__init__(self, label, rect, callback)
-
 		self.image.fill((150, 150, 150))
-
-	
-
+	def clicked(self, button_name):
+		print "clicked it woot"
 	def update(self):
 		pass
 
-class StartButton(Button):
+class UpButton(Button):
 	def __init__(self, label, rect, callback):
-
 		Button.__init__(self, label, rect, callback)
-
 	def clicked(self, button_name):
 		print "go to start screen"
-class SettingsButton(Button):
+
+class DownButton(Button):
 	def __init__(self, label, rect, callback):
-
 		Button.__init__(self, label, rect, callback)
-
 	def clicked(self, button_name):
-		print "settings"
-class TutorialButton(Button):
+		print "go to settings screen"
+
+class LeftButton(Button):
 	def __init__(self, label, rect, callback):
-
 		Button.__init__(self, label, rect, callback)
+	def clicked(self, button_name):
+		print "go to tutorial screen"
 
+class RightButton(Button):
+	def __init__(self, label, rect, callback):
+		Button.__init__(self, label, rect, callback)
 	def clicked(self, button_name):
 		print "go to tutorial screen"
 
 
-class MainScreen:
+class MoveScreen:
     pygame.init()
     size = (WINDOWWIDTH,WINDOWHEIGHT)
     screen = pygame.display.set_mode(size)
-    model = MainModel()
-    view = MainView(model,screen)
+    model = Model()
+    view = View(model,screen)
     running = True
 
-    screen = planes.Display((600, 600))
+    screen = planes.Display((900, 700))
     screen.grab = True
     screen.image.fill((0, 128, 0))
 
@@ -145,6 +148,6 @@ class MainScreen:
 
     pygame.quit()
         
-#if __name__ == '__main__': 
-#    MainScreen()
+if __name__ == '__main__': 
+    moveScreen()
     
