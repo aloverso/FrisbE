@@ -112,6 +112,7 @@ class TutorialButton(Button):
 
 
 class MainScreen:
+    print "main screen muthafuckerzzzzzzzz"
     pygame.init()
     size = (WINDOWWIDTH,WINDOWHEIGHT)
     screen = pygame.display.set_mode(size)

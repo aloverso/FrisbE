@@ -63,6 +63,7 @@ class Model:
         self.right = RightButton("right",pygame.Rect(MOVEBUTTON_WIDTH+5,MOVEBUTTON_HEIGHT+5,MOVEBUTTON_WIDTH,MOVEBUTTON_HEIGHT),RightButton.clicked)
         self.up = UpButton("up",pygame.Rect(0,0,MOVEBUTTON_WIDTH,MOVEBUTTON_HEIGHT),UpButton.clicked)
         self.down = DownButton("down",pygame.Rect(MOVEBUTTON_WIDTH+5,0,MOVEBUTTON_WIDTH,MOVEBUTTON_HEIGHT),DownButton.clicked)
+	self.commands = planes.gui.Label("commands", "testing", pygame.Rect(2*MOVEBUTTON_WIDTH + 10, 10, WINDOWWIDTH-2*MOVEBUTTON_WIDTH + 10, 2*MOVEBUTTON_HEIGHT))
 	self.actors = [self.left,self.right,self.up,self.down]
 
     def update(self):
@@ -93,25 +94,25 @@ class UpButton(Button):
 	def __init__(self, label, rect, callback):
 		Button.__init__(self, label, rect, callback)
 	def clicked(self, button_name):
-		print "go to start screen"
+		print "will go up"
 
 class DownButton(Button):
 	def __init__(self, label, rect, callback):
 		Button.__init__(self, label, rect, callback)
 	def clicked(self, button_name):
-		print "go to settings screen"
+		print "will go down"
 
 class LeftButton(Button):
 	def __init__(self, label, rect, callback):
 		Button.__init__(self, label, rect, callback)
 	def clicked(self, button_name):
-		print "go to tutorial screen"
+		print "will go left"
 
 class RightButton(Button):
 	def __init__(self, label, rect, callback):
 		Button.__init__(self, label, rect, callback)
 	def clicked(self, button_name):
-		print "go to tutorial screen"
+		print "will go right"
 
 
 class MoveScreen:
