@@ -63,8 +63,8 @@ class Model:
         self.right = RightButton("right",pygame.Rect(MOVEBUTTON_WIDTH+5,MOVEBUTTON_HEIGHT+5,MOVEBUTTON_WIDTH,MOVEBUTTON_HEIGHT),RightButton.clicked)
         self.up = UpButton("up",pygame.Rect(0,0,MOVEBUTTON_WIDTH,MOVEBUTTON_HEIGHT),UpButton.clicked)
         self.down = DownButton("down",pygame.Rect(MOVEBUTTON_WIDTH+5,0,MOVEBUTTON_WIDTH,MOVEBUTTON_HEIGHT),DownButton.clicked)
-	self.commands = planes.gui.Label("commands", "testing", pygame.Rect(2*MOVEBUTTON_WIDTH + 10, 10, WINDOWWIDTH-2*MOVEBUTTON_WIDTH + 10, 2*MOVEBUTTON_HEIGHT))
-	self.actors = [self.left,self.right,self.up,self.down]
+        self.commands = planes.gui.Label("commands", "testing", pygame.Rect(2*MOVEBUTTON_WIDTH + 10, 10, WINDOWWIDTH-2*MOVEBUTTON_WIDTH + 10, 2*MOVEBUTTON_HEIGHT))
+        self.actors = [self.left,self.right,self.up,self.down]
 
     def update(self):
         for actor in self.actors:
@@ -123,7 +123,7 @@ class MoveScreen:
     view = View(model,screen)
     running = True
 
-    screen = planes.Display((900, 700))
+    screen = planes.Display((600, 600))
     screen.grab = True
     screen.image.fill((0, 128, 0))
 

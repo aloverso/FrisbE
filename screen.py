@@ -9,10 +9,10 @@ from planes import Plane
 import planes.gui
 
 class Screen:
-	def __init__(self, title, buttons, actors):
+	def __init__(self, buttons, actors, background):
 		self.buttons = buttons
 		self.actors = actors
-		self.title = title
+		self.background = background
 
 	def update(self):
 		for actor in self.actors:

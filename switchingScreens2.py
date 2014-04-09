@@ -9,6 +9,8 @@ from planes import Plane
 import planes.gui
 from screen import Screen
 
+import MatSciScreen
+
 WINDOWWIDTH = 600
 WINDOWHEIGHT = 600
 
@@ -73,18 +75,13 @@ class Model:
 		self.backhome = HomeButton("home", "mainmenu.png",pygame.Rect(0,0,100,100),HomeButton.clicked, self)
 		tr = pygame.Rect(WINDOWWIDTH/8, WINDOWHEIGHT/8, 3*WINDOWWIDTH/4, 3*WINDOWHEIGHT/8)
 		gamerect = pygame.Rect(100,100,450,450)
-		self.homescreen = Screen(titleRect("home.png",tr,BLUE),[self.start,self.settings,self.tutorial],[])
-		self.settingsscreen = Screen(titleRect("settings.png",tr,GREEN),[self.home,self.settings,self.tutorial],[])
-		self.tutorialscreen = Screen(titleRect("tut.png",tr,WHITE), [self.home,self.settings, self.tutorial],[])
-		self.gamescreen = Screen(titleRect("game.png", tr, WHITE), [self.backhome], [])
+		self.homescreen = Screen([self.start,self.settings,self.tutorial],[titleRect("home.png",tr,WHITE)],BLACK)
+		self.settingsscreen = Screen([self.home,self.settings,self.tutorial],[titleRect("settings.png",tr,WHITE)],BLACK)
+		self.tutorialscreen = Screen([self.home,self.settings, self.tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
+		self.gamescreen = MatSciScreen.MixingScreen()
 		self.screens = [self.homescreen, self.settingsscreen, self.tutorialscreen, self.gamescreen]
 		self.currentScreen = self.homescreen
 
-	def switchToHome(self):
-		self.currentScreen = self.homescreen
-
-	def switchToSettings(self):
-		self.currentScreen = self.settingsscreen
 
 	def update(self):
 		pass
@@ -95,30 +92,18 @@ class View:
 		self.screen = screen
 
 	def draw(self):
-		"""
-		self.screen.image.fill(GREEN)
-		for button in self.model.currentScreen.buttons:
-			pygame.draw.rect(self.screen, WHITE, button.rect)
-		pygame.draw.rect(self.screen, self.model.currentScreen.title.color, self.model.currentScreen.title.rect)
-
-		for actor in self.model.currentScreen.actors:
-			pygame.draw.rect(self.screen, WHITE, actor.rect)
-		"""
 		screen.remove_all()
-		self.screen.image.fill(BLACK)
+		self.screen.image.fill(self.model.currentScreen.background)
 		for button in self.model.currentScreen.buttons:
 			self.screen.sub(button)
-		self.screen.sub(self.model.currentScreen.title)
-
-	def screenSub(self):
 		for actor in self.model.currentScreen.actors:
-			screen.sub(actor)
+			self.screen.sub(actor)
 
 
 if __name__ == "__main__":
 	pygame.init()
 	size = (WINDOWWIDTH,WINDOWHEIGHT)
-	screen = planes.Display((600, 600))
+	screen = MatSciScreen.DropDisplay((600, 600))
 	screen.grab = True
 	screen.image.fill(BLACK)
 	model = Model()
@@ -141,7 +126,6 @@ if __name__ == "__main__":
 		screen.render()
 		
 		view.draw()
-		view.screenSub()
 		pygame.display.flip()
 		time.sleep(.001)
 
