@@ -36,6 +36,7 @@ import pygame
 import planes
 from collections import deque
 from screen import Screen
+from screen import Button
 
 class Material(planes.Plane):
 

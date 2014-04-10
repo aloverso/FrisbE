@@ -8,8 +8,10 @@ import planes
 from planes import Plane
 import planes.gui
 from screen import Screen
+from screen import Button
 
 import MatSciScreen
+import moveScreen3
 
 WINDOWWIDTH = 600
 WINDOWHEIGHT = 600
@@ -19,15 +21,7 @@ GREEN = (0, 255, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 
-class Button(planes.gui.Button):
-	def __init__(self, label, rect, callback, model):
-		planes.gui.Button.__init__(self, label, rect, callback)
-		planes.Plane.__init__(self,label,rect,draggable=False, grab=False)
-		self.image.fill(WHITE)
-		self.rect = rect
-		self.model = model
-	def update(self):
-		pass
+
 
 class StartButton(Button):
 	def __init__(self, label, im, rect, callback, model):
@@ -79,6 +73,7 @@ class Model:
 		self.settingsscreen = Screen([self.home,self.settings,self.tutorial],[titleRect("settings.png",tr,WHITE)],BLACK)
 		self.tutorialscreen = Screen([self.home,self.settings, self.tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
 		self.gamescreen = MatSciScreen.MixingScreen()
+		#self.gamescreen = moveScreen3.MoveScreen()
 		self.screens = [self.homescreen, self.settingsscreen, self.tutorialscreen, self.gamescreen]
 		self.currentScreen = self.homescreen
 
@@ -99,11 +94,10 @@ class View:
 		for actor in self.model.currentScreen.actors:
 			self.screen.sub(actor)
 
-
 if __name__ == "__main__":
 	pygame.init()
 	size = (WINDOWWIDTH,WINDOWHEIGHT)
-	screen = MatSciScreen.DropDisplay((600, 600))
+	screen = MatSciScreen.DropDisplay(size)
 	screen.grab = True
 	screen.image.fill(BLACK)
 	model = Model()
