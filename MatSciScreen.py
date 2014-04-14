@@ -45,6 +45,7 @@ class Material(planes.Plane):
         self.image.fill((255, 0, 0))
         self.Xpos = rect.x
         self.Ypos = rect.y
+        self.position = (self.Xpos, self.Ypos)
         self.name = name
         self.strength = 0
         self.meltingPoint = 0
@@ -54,17 +55,27 @@ class Material(planes.Plane):
 
 class DropZone(planes.Plane):
     def __init__(self, name, rect):
-        planes.Plane.__init__(self, name, rect, draggable = False, grab = True)
-        self.name = name
-        self.image.fill((0,0,255))
+
         self.name = name
         self.rect = rect
         self.Xpos = self.rect.x
+
         self.Ypos = self.rect.y
 
+        planes.Plane.__init__(self, name, rect, draggable = False, grab = True)
+        self.image.fill((0,0,255))
+
     def dropped_upon(self, plane, coordinates):
-       planes.Plane.dropped_upon(self, plane, coordinates)
+       print coordinates
+       print self.Xpos
+       print plane.Xpos
+       planes.Plane.dropped_upon(self, plane, (250,350))
+       
+       plane.position = (100,100)
+       print coordinates[0]+plane.Xpos, coordinates[1]+plane.Ypos
+
        plane.moving = False
+       
 
 class DropDisplay(planes.Display):
     def dropped_upon(self, plane, coordinates):
@@ -73,12 +84,11 @@ class DropDisplay(planes.Display):
 
 class MixingScreen(Screen):
     def __init__(self):
-        drop1 = DropZone("drop1", pygame.Rect(0, 0, 100, 100))
-        drop2 = DropZone("drop2", pygame.Rect(450,300, 100,100))
+        dropBig = DropZone('bigDrop', pygame.Rect(200, 300, 200, 200))
         self.materials = []
-        for i in range(0,4):
+        for i in range(0,3):
             self.materials.append(Material("mat"+str(i), pygame.Rect((400, 600/(len(self.materials)+1) * i, 20, 20))))
-        self.dropZones = [drop1,drop2]
+        self.dropZones = [dropBig]
         self.actors = self.dropZones + self.materials
         Screen.__init__(self, [], self.actors, (0,128,0))
 
