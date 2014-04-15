@@ -12,6 +12,8 @@ from screen import Button
 
 import MatSciScreen
 import moveScreen3
+import ModSimGame1
+
 
 WINDOWWIDTH = 600
 WINDOWHEIGHT = 600
@@ -72,7 +74,7 @@ class Model:
 		self.homescreen = Screen([self.start,self.settings,self.tutorial],[titleRect("home.png",tr,WHITE)],BLACK)
 		self.settingsscreen = Screen([self.home,self.settings,self.tutorial],[titleRect("settings.png",tr,WHITE)],BLACK)
 		self.tutorialscreen = Screen([self.home,self.settings, self.tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
-		self.gamescreen = MatSciScreen.MixingScreen()
+		self.gamescreen = ModSimGame1.GameScreen()
 		#self.gamescreen = moveScreen3.MoveScreen()
 		self.screens = [self.homescreen, self.settingsscreen, self.tutorialscreen, self.gamescreen]
 		self.currentScreen = self.homescreen
