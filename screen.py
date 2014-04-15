@@ -35,3 +35,16 @@ class Button(planes.gui.Button):
 	def update(self):
 		pass
 
+class DropZone(planes.Plane):
+    def __init__(self, name, rect):
+        planes.Plane.__init__(self, name, rect, draggable = False, grab = True)
+        self.name = name
+        self.image.fill((0,0,255))
+        self.name = name
+        self.rect = rect
+        self.Xpos = self.rect.x
+        self.Ypos = self.rect.y
+
+    def dropped_upon(self, plane, coordinates):
+       planes.Plane.dropped_upon(self, plane, coordinates)
+       plane.moving = False

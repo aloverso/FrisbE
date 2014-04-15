@@ -29,7 +29,8 @@ class StartButton(Button):
 		Button.__init__(self, label, rect, callback, model)
 		self.image = pygame.image.load(im)
 	def clicked(self, button_name):
-		self.model.currentScreen = self.model.gamescreen
+		self.model.currentScreen = self.model.game.currentscreen
+		self.model.inGame = True
 
 class HomeButton(Button):
 	def __init__(self, label, im, rect, callback, model):
@@ -75,9 +76,11 @@ class Model:
 		self.tutorialscreen = Screen([self.home,self.settings, self.tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
 		#self.gamescreen = MatSciScreen.MixingScreen()
 		#self.gamescreen = moveScreen3.MoveScreen()
-		self.gamescreen = RoboGame(self)
-		self.screens = [self.homescreen, self.settingsscreen, self.tutorialscreen, self.gamescreen]
+		self.game = RoboGame(self)
+		self.screens = [self.homescreen, self.settingsscreen, self.tutorialscreen]
 		self.currentScreen = self.homescreen
+
+		self.inGame = False
 
 	def update(self):
 		pass
@@ -116,6 +119,9 @@ if __name__ == "__main__":
 			if event.type == pygame.QUIT:
 			    print("got pygame.QUIT, terminating")
 			    raise SystemExit
+		if model.inGame:
+			model.game.update()
+
 		screen.process(events)
 		model.update()
 		screen.update()
