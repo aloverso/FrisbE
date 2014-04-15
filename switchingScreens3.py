@@ -12,12 +12,7 @@ from screen import Button
 
 import MatSciScreen
 import moveScreen3
-<<<<<<< HEAD
-import ModSimGame1
-
-=======
 from roboGame1 import RoboGame
->>>>>>> 6854e7a618b6645ae68f6358ee08425dbefd0909
 
 WINDOWWIDTH = 600
 WINDOWHEIGHT = 600
@@ -34,7 +29,8 @@ class StartButton(Button):
 		Button.__init__(self, label, rect, callback, model)
 		self.image = pygame.image.load(im)
 	def clicked(self, button_name):
-		self.model.currentScreen = self.model.gamescreen
+		self.model.currentScreen = self.model.game.currentscreen
+		self.model.inGame = True
 
 class HomeButton(Button):
 	def __init__(self, label, im, rect, callback, model):
@@ -78,15 +74,13 @@ class Model:
 		self.homescreen = Screen([self.start,self.settings,self.tutorial],[titleRect("home.png",tr,WHITE)],BLACK)
 		self.settingsscreen = Screen([self.home,self.settings,self.tutorial],[titleRect("settings.png",tr,WHITE)],BLACK)
 		self.tutorialscreen = Screen([self.home,self.settings, self.tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
-<<<<<<< HEAD
-		self.gamescreen = ModSimGame1.GameScreen()
-=======
 		#self.gamescreen = MatSciScreen.MixingScreen()
->>>>>>> 6854e7a618b6645ae68f6358ee08425dbefd0909
 		#self.gamescreen = moveScreen3.MoveScreen()
-		self.gamescreen = RoboGame(self)
-		self.screens = [self.homescreen, self.settingsscreen, self.tutorialscreen, self.gamescreen]
+		self.game = RoboGame(self)
+		self.screens = [self.homescreen, self.settingsscreen, self.tutorialscreen]
 		self.currentScreen = self.homescreen
+
+		self.inGame = False
 
 	def update(self):
 		pass
@@ -125,6 +119,9 @@ if __name__ == "__main__":
 			if event.type == pygame.QUIT:
 			    print("got pygame.QUIT, terminating")
 			    raise SystemExit
+		if model.inGame:
+			model.game.update()
+
 		screen.process(events)
 		model.update()
 		screen.update()
