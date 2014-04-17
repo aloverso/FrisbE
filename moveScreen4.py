@@ -142,7 +142,7 @@ class MoveScreen(Screen):
         time.sleep(.5)
 
     def update(self):
-        for actor in self.actors:
+        for actor in self.actors: 
             actor.update
         if self.runClicked:
             if len(self.commands) > 0:
