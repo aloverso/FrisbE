@@ -33,11 +33,8 @@ BLUE = (0, 0, 255)
 
 
 class ModSimGame:
-    def __init__(self, model):
-        self.model = model
+    def __init__(self):
         self.currentscreen = ModSimScreen(self)
-    def update(self):
-        self.model.currentScreen = self.currentscreen
 
 
 

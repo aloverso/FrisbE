@@ -18,9 +18,14 @@ from screen import Screen
 from screen import Button
 from screen import DropZone
 import time
+from random import randint
 
 MOVEBUTTON_HEIGHT = 75
 MOVEBUTTON_WIDTH = 50
+
+
+WINDOWWIDTH = 1200
+WINDOWHEIGHT = 750
 
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
@@ -116,6 +121,10 @@ class MoveScreen(Screen):
         self.actors = [self.robot]
         Screen.__init__(self,buttons,self.actors,BLACK)
         self.runClicked = False
+        self.walls = []
+        numWalls = randint((WINDOWWIDTH*WINDOWHEIGHT)/(self.robot.width*self.robot.height))
+        for i in range(numWalls):
+            self.walls.append(Wall("wall"+str(i), pygame.Rect(x,y,self.robot.width,self.robot.height)))
 
     def addCommand(self, im, xMove, yMove):
         xPos = MOVEBUTTON_WIDTH*2+10 + len(self.commands)*(50+5)

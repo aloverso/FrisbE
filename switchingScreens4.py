@@ -13,6 +13,9 @@ from screen import Button
 import MatSciScreen
 import moveScreen3
 from roboGame1 import RoboGame
+from ModSimGame1 import ModSimGame
+
+
 
 WINDOWWIDTH = 1200
 WINDOWHEIGHT = 750
@@ -32,6 +35,15 @@ class RoboButton(Button):
 		self.model.currentGame = self.model.robogame
 		self.model.inGame = True
 
+class ModSimButton(Button):
+	def __init__(self, label, im, rect, callback, model):
+		Button.__init__(self, label, rect, callback, model)
+		self.image.fill(im)
+		#self.image = pygame.image.load(im)
+	def clicked(self, button_name):
+		self.model.currentGame = self.model.modsimgame
+		self.model.inGame = True
+
 class titleRect(planes.Plane):
 	def __init__(self, im, rect, color):
 		planes.Plane.__init__(self,"title",rect,draggable=False, grab=False)
@@ -44,9 +56,11 @@ class titleRect(planes.Plane):
 class Model:
 	def __init__(self):
 		robo = RoboButton("robogame", GREEN, pygame.Rect(WINDOWWIDTH/8, 3*WINDOWHEIGHT/8, 5*WINDOWWIDTH/16, 3*WINDOWHEIGHT/8), RoboButton.clicked, self)
+		modsim = ModSimButton("modsimbutton", GREEN, pygame.Rect(WINDOWWIDTH/2, 3*WINDOWHEIGHT/8, 5*WINDOWWIDTH/16, 3*WINDOWHEIGHT/8), ModSimButton.clicked, self)
 		tr = pygame.Rect(WINDOWWIDTH/8, WINDOWHEIGHT/8, 3*WINDOWWIDTH/4, 1*WINDOWHEIGHT/8)
-		self.dashboardScreen = Screen([robo], [titleRect(BLUE, tr, WHITE)], BLACK)
+		self.dashboardScreen = Screen([robo, modsim], [titleRect(BLUE, tr, WHITE)], BLACK)
 		self.robogame = RoboGame()
+		self.modsimgame = ModSimGame()
 		self.currentScreen = self.dashboardScreen
 		self.currentGame = None
 		self.inGame = False

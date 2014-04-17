@@ -10,7 +10,6 @@ import planes.gui
 from screen import Screen
 from screen import Button
 from screen import DropZone
-from titleScreen import TitleScreen
 
 import MatSciScreen
 from moveScreen4 import MoveScreen
