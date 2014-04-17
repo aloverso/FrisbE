@@ -40,11 +40,16 @@ class DropZone(planes.Plane):
         planes.Plane.__init__(self, name, rect, draggable = False, grab = True)
         self.name = name
         self.image.fill((0,0,255))
-        self.name = name
         self.rect = rect
         self.Xpos = self.rect.x
         self.Ypos = self.rect.y
 
     def dropped_upon(self, plane, coordinates):
-       planes.Plane.dropped_upon(self, plane, coordinates)
-       plane.moving = False
+    	print (coordinates[0]+self.Xpos, coordinates[1]+self.Ypos)
+        planes.Plane.dropped_upon(self, plane, (coordinates[0]+self.Xpos, coordinates[1]+self.Ypos))
+        plane.moving = False
+
+class DropDisplay(planes.Display):
+    def dropped_upon(self, plane, coordinates):
+         if isinstance(plane, planes.Plane):
+             planes.Display.dropped_upon(self, plane, (plane.Xpos, plane.Ypos))

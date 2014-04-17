@@ -35,6 +35,9 @@ class Upgrade(planes.Plane):
         planes.Plane.__init__(self, name, rect, draggable, grab)
         self.cost = cost
         self.image.fill(im)
+        self.position = rect.center
+        self.Xpos = self.position[0]
+        self.Ypos = self.position[1]
 
     def clicked(self, button_name):
         self.image.fill((255,0,0))
@@ -74,8 +77,3 @@ class BuildScreen(Screen):
         buttons = [start, store, add]
         self.actors = [robot,upgrade1]
         Screen.__init__(self,buttons,self.actors,BLACK)
-
-    def update(self):
-        pass
-
-

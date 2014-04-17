@@ -1,28 +1,3 @@
-#!/usr/bin/python3
-
-"""Square clicking using planes
-
-   Copyright 2010 Florian Berger <fberger@florian-berger.de>
-
-   Based on a pure PyGame implementation
-"""
-
-# This file is part of planes.
-#
-# planes is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# planes is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with planes.  If not, see <http://www.gnu.org/licenses/>.
-
-# work started on 03. Oct 2010
 
 import sys
 
@@ -33,52 +8,58 @@ sys.path.append("../")
 sys.path.append("./")
 
 import pygame
+from planes import *
 import planes
 from collections import deque
 from screen import Screen
 from screen import Button
+from screen import DropZone
+import MatSciGame
 
-class Material(planes.Plane):
 
-    def __init__(self, name, rect, draggable = True, grab = True):
-        planes.Plane.__init__(self, name, rect, draggable, grab)
-        self.image.fill((255, 0, 0))
-        self.Xpos = rect.x
-        self.Ypos = rect.y
-        self.name = name
-        self.strength = 0
-        self.meltingPoint = 0
-
-    def clicked(self, button_name):
-        self.image.fill((255,0,0))
-
-class DropZone(planes.Plane):
-    def __init__(self, name, rect):
-        planes.Plane.__init__(self, name, rect, draggable = False, grab = True)
-        self.name = name
-        self.image.fill((0,0,255))
-        self.name = name
-        self.rect = rect
-        self.Xpos = self.rect.x
-        self.Ypos = self.rect.y
-
+class MixZone(DropZone):
+    def __init__(self,name,rect,screen):
+        DropZone.__init__(self,name, rect)
+        self.screen = screen
+        
+        self.firstDropped = None
+        self.firstDroppedCoordinates = None
+        
+        self.secondDropped = None
+        self.secondDroppedCoordinates = None
+        self.thingsDropped = 0
+        
+        
     def dropped_upon(self, plane, coordinates):
-       planes.Plane.dropped_upon(self, plane, coordinates)
-       plane.moving = False
-
-class DropDisplay(planes.Display):
-    def dropped_upon(self, plane, coordinates):
-         if isinstance(plane, Material):
-             planes.Display.dropped_upon(self, plane, (plane.Xpos, plane.Ypos))
+       self.thingsDropped +=1
+       planes.Plane.dropped_upon(self, plane, (coordinates[0]+self.Xpos, coordinates[1]+self.Ypos))
+       
+       if self.thingsDropped == 1:
+           self.firstDropped = plane
+           self.firstDroppedCoordinates = coordinates
+           
+           if isinstance(self.get_plane_at(self.firstDroppedCoordinates), MatSciGame.Material):
+               self.thingsDropped -=1
+               print self.thingsDropped
+       
+       if self.thingsDropped == 2:
+           self.secondDropped = plane
+           self.secondDroppedCoordinates = coordinates
+           
+           self.screen.newMaterials.append((MatSciGame.Material("Newmat"+`len(self.screen.newMaterials)`, pygame.Rect((100, (len(self.screen.newMaterials)+1)*60, 20, 20)))))
+           self.screen.actors =  self.screen.dropZones + self.screen.materials + self.screen.newMaterials
+           self.thingsDropped = 0
 
 class MixingScreen(Screen):
-    def __init__(self):
-        drop1 = DropZone("drop1", pygame.Rect(0, 0, 100, 100))
-        drop2 = DropZone("drop2", pygame.Rect(450,300, 100,100))
+    def __init__(self, game):
+        dropBig = MixZone('bigDrop', pygame.Rect(200, 300, 200, 200), self)
+        self.game = game
         self.materials = []
+        self.newMaterials = []
         for i in range(0,4):
-            self.materials.append(Material("mat"+str(i), pygame.Rect((400, 600/(len(self.materials)+1) * i, 20, 20))))
-        self.dropZones = [drop1,drop2]
-        self.actors = self.dropZones + self.materials
+            self.materials.append(MatSciGame.Material("mat"+str(i), pygame.Rect((500, i* 600/(len(self.materials)+1), 20, 20))))
+        self.dropZones = [dropBig]
+        self.actors = self.dropZones + self.materials + self.newMaterials
+
         Screen.__init__(self, [], self.actors, (0,128,0))
 

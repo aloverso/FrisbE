@@ -11,7 +11,6 @@ from screen import Screen
 from screen import Button
 from screen import DropZone
 
-import MatSciScreen
 from moveScreen4 import MoveScreen
 from buildScreen1 import BuildScreen
 from storeScreen1 import StoreScreen
@@ -81,7 +80,7 @@ class Robot(DropZone):
         self.rect = pygame.Rect(self.Xpos, self.Ypos, self.width, self.height)
 
     def dropped_upon(self, plane, coordinates):
-       planes.Plane.dropped_upon(self, plane, coordinates)
+       planes.Plane.dropped_upon(self, plane, (coordinates[0]+self.Xpos, coordinates[1]+self.Ypos))
        plane.moving = False
        self.money -= plane.cost
        self.upgrades.append(plane)

@@ -100,9 +100,9 @@ class Command(planes.Plane):
         
 
 class Wall(planes.Plane):
-    def __init__(self, label, rect):
+    def __init__(self, name, rect):
         planes.Plane.__init__(self, name, rect, draggable=False, grab=False)
-
+        self.image.fill(WHITE)
 
    
 class MoveScreen(Screen):
@@ -121,10 +121,13 @@ class MoveScreen(Screen):
         self.actors = [self.robot]
         Screen.__init__(self,buttons,self.actors,BLACK)
         self.runClicked = False
-        self.walls = []
-        numWalls = randint((WINDOWWIDTH*WINDOWHEIGHT)/(self.robot.width*self.robot.height))
+        """
+        numWalls = randint(2*(self.robot.level+1),(WINDOWWIDTH*WINDOWHEIGHT)/(self.robot.width*self.robot.height))
         for i in range(numWalls):
-            self.walls.append(Wall("wall"+str(i), pygame.Rect(x,y,self.robot.width,self.robot.height)))
+            x = randint(0, WINDOWWIDTH/self.robot.width)*self.robot.width
+            y = randint(0, WINDOWHEIGHT/self.robot.height)*self.robot.height
+            self.actors.append(Wall("wall"+str(i), pygame.Rect(x,y,self.robot.width,self.robot.height)))
+        """
 
     def addCommand(self, im, xMove, yMove):
         xPos = MOVEBUTTON_WIDTH*2+10 + len(self.commands)*(50+5)
