@@ -12,12 +12,8 @@ from screen import Button
 
 import MatSciScreen
 import moveScreen3
-
-import ModSimGame1
-
-
-from roboGame1 import RoboGame
-
+#from roboGame1 import RoboGame
+from ModSimGame1 import ModSimGame
 
 WINDOWWIDTH = 1200
 WINDOWHEIGHT = 800
@@ -34,7 +30,8 @@ class StartButton(Button):
 		Button.__init__(self, label, rect, callback, model)
 		self.image = pygame.image.load(im)
 	def clicked(self, button_name):
-		self.model.currentScreen = self.model.gamescreen
+		self.model.currentScreen = self.model.game.currentscreen
+		self.model.inGame = True
 
 class HomeButton(Button):
 	def __init__(self, label, im, rect, callback, model):
@@ -68,25 +65,24 @@ class titleRect(planes.Plane):
 
 class Model:
 	def __init__(self):
-		self.start = StartButton("start","startbut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWWIDTH/8 + 10,3*WINDOWWIDTH/4,WINDOWWIDTH/8),StartButton.clicked, self)
-		self.settings = SettingsButton("settings","setbut.png",pygame.Rect(WINDOWWIDTH/8,6*WINDOWWIDTH/8 + 30,3*WINDOWWIDTH/4,WINDOWWIDTH/8),SettingsButton.clicked, self)
-		self.tutorial = TutorialButton("tutorial","tutbut.png",pygame.Rect(WINDOWWIDTH/8,5*WINDOWWIDTH/8 + 20,3*WINDOWWIDTH/4,WINDOWWIDTH/8),TutorialButton.clicked, self)
-		self.home = HomeButton("home","homebut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWWIDTH/8 + 10,3*WINDOWWIDTH/4,WINDOWWIDTH/8),HomeButton.clicked, self)
+		self.start = StartButton("start","startbut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),StartButton.clicked, self)
+		self.settings = SettingsButton("settings","setbut.png",pygame.Rect(WINDOWWIDTH/8,6*WINDOWHEIGHT/8 + 30,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),SettingsButton.clicked, self)
+		self.tutorial = TutorialButton("tutorial","tutbut.png",pygame.Rect(WINDOWWIDTH/8,5*WINDOWHEIGHT/8 + 20,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),TutorialButton.clicked, self)
+		self.home = HomeButton("home","homebut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),HomeButton.clicked, self)
 		self.backhome = HomeButton("home", "mainmenu.png",pygame.Rect(0,0,100,100),HomeButton.clicked, self)
 		tr = pygame.Rect(WINDOWWIDTH/8, WINDOWHEIGHT/8, 3*WINDOWWIDTH/4, 3*WINDOWHEIGHT/8)
 		gamerect = pygame.Rect(100,100,450,450)
 		self.homescreen = Screen([self.start,self.settings,self.tutorial],[titleRect("home.png",tr,WHITE)],BLACK)
 		self.settingsscreen = Screen([self.home,self.settings,self.tutorial],[titleRect("settings.png",tr,WHITE)],BLACK)
 		self.tutorialscreen = Screen([self.home,self.settings, self.tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
-
-		self.gamescreen = ModSimGame1.GameScreen()
-
 		#self.gamescreen = MatSciScreen.MixingScreen()
-
 		#self.gamescreen = moveScreen3.MoveScreen()
-		#self.gamescreen = RoboGame(self)
-		self.screens = [self.homescreen, self.settingsscreen, self.tutorialscreen, self.gamescreen]
+		#self.game = RoboGame(self)
+		self.game = ModSimGame(self)
+		self.screens = [self.homescreen, self.settingsscreen, self.tutorialscreen]
 		self.currentScreen = self.homescreen
+
+		self.inGame = False
 
 	def update(self):
 		pass
@@ -125,6 +121,9 @@ if __name__ == "__main__":
 			if event.type == pygame.QUIT:
 			    print("got pygame.QUIT, terminating")
 			    raise SystemExit
+		if model.inGame:
+			model.game.update()
+
 		screen.process(events)
 		model.update()
 		screen.update()
