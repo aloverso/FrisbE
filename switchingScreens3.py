@@ -14,8 +14,8 @@ import MatSciScreen
 import moveScreen3
 from roboGame1 import RoboGame
 
-WINDOWWIDTH = 600
-WINDOWHEIGHT = 600
+WINDOWWIDTH = 1200
+WINDOWHEIGHT = 750
 
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
@@ -64,10 +64,10 @@ class titleRect(planes.Plane):
 
 class Model:
 	def __init__(self):
-		self.start = StartButton("start","startbut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWWIDTH/8 + 10,3*WINDOWWIDTH/4,WINDOWWIDTH/8),StartButton.clicked, self)
-		self.settings = SettingsButton("settings","setbut.png",pygame.Rect(WINDOWWIDTH/8,6*WINDOWWIDTH/8 + 30,3*WINDOWWIDTH/4,WINDOWWIDTH/8),SettingsButton.clicked, self)
-		self.tutorial = TutorialButton("tutorial","tutbut.png",pygame.Rect(WINDOWWIDTH/8,5*WINDOWWIDTH/8 + 20,3*WINDOWWIDTH/4,WINDOWWIDTH/8),TutorialButton.clicked, self)
-		self.home = HomeButton("home","homebut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWWIDTH/8 + 10,3*WINDOWWIDTH/4,WINDOWWIDTH/8),HomeButton.clicked, self)
+		self.start = StartButton("start","startbut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),StartButton.clicked, self)
+		self.settings = SettingsButton("settings","setbut.png",pygame.Rect(WINDOWWIDTH/8,6*WINDOWHEIGHT/8 + 30,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),SettingsButton.clicked, self)
+		self.tutorial = TutorialButton("tutorial","tutbut.png",pygame.Rect(WINDOWWIDTH/8,5*WINDOWHEIGHT/8 + 20,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),TutorialButton.clicked, self)
+		self.home = HomeButton("home","homebut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),HomeButton.clicked, self)
 		self.backhome = HomeButton("home", "mainmenu.png",pygame.Rect(0,0,100,100),HomeButton.clicked, self)
 		tr = pygame.Rect(WINDOWWIDTH/8, WINDOWHEIGHT/8, 3*WINDOWWIDTH/4, 3*WINDOWHEIGHT/8)
 		gamerect = pygame.Rect(100,100,450,450)
@@ -76,7 +76,7 @@ class Model:
 		self.tutorialscreen = Screen([self.home,self.settings, self.tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
 		#self.gamescreen = MatSciScreen.MixingScreen()
 		#self.gamescreen = moveScreen3.MoveScreen()
-		self.game = RoboGame(self)
+		self.game = RoboGame()
 		self.screens = [self.homescreen, self.settingsscreen, self.tutorialscreen]
 		self.currentScreen = self.homescreen
 
@@ -120,7 +120,8 @@ if __name__ == "__main__":
 			    print("got pygame.QUIT, terminating")
 			    raise SystemExit
 		if model.inGame:
-			model.game.update()
+			model.game.currentscreen.update()
+			model.currentScreen = model.game.currentscreen
 
 		screen.process(events)
 		model.update()
