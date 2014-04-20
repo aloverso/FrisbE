@@ -9,14 +9,16 @@ from planes import Plane
 import planes.gui
 from screen import Screen
 from screen import Button
+from screen import DropDisplay
 
-import MatSciScreen
-import moveScreen3
+#import MatSciScreen
+#import moveScreen3
 
-import ModSimGame1
+#import ModSimGame1
 
 
-from roboGame1 import RoboGame
+#from roboGame1 import RoboGame
+import MechEE_screen
 
 
 WINDOWWIDTH = 1200
@@ -79,8 +81,8 @@ class Model:
 		self.settingsscreen = Screen([self.home,self.settings,self.tutorial],[titleRect("settings.png",tr,WHITE)],BLACK)
 		self.tutorialscreen = Screen([self.home,self.settings, self.tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
 
-		self.gamescreen = ModSimGame1.GameScreen()
-
+		#self.gamescreen = ModSimGame1.GameScreen()
+		self.gamescreen = MechEE_screen.primaryScreen()
 		#self.gamescreen = MatSciScreen.MixingScreen()
 
 		#self.gamescreen = moveScreen3.MoveScreen()
@@ -108,7 +110,7 @@ class View:
 if __name__ == "__main__":
 	pygame.init()
 	size = (WINDOWWIDTH,WINDOWHEIGHT)
-	screen = MatSciScreen.DropDisplay(size)
+	screen = DropDisplay(size)
 	screen.grab = True
 	screen.image.fill(BLACK)
 	model = Model()

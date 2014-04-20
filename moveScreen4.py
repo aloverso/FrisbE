@@ -19,6 +19,7 @@ from screen import Button
 from screen import DropZone
 import time
 from random import randint
+import levels
 
 MOVEBUTTON_HEIGHT = 75
 MOVEBUTTON_WIDTH = 50
@@ -84,7 +85,10 @@ class RunButton(Button):
 class Command(planes.Plane):
     def __init__(self, robot, im, xMove, yMove, rect, name):
         planes.Plane.__init__(self, name, rect, draggable=False, grab=False)
-        self.image = pygame.image.load(im)
+        if isinstance(im,tuple):
+            self.image.fill(im)
+        else:
+            self.image = pygame.image.load(im)
         self.im = im
         self.xMove = xMove
         self.yMove = yMove
@@ -97,12 +101,6 @@ class Command(planes.Plane):
         #self.image = pygame.image.load(self.im)
         #self.destroy()
         pass
-        
-
-class Wall(planes.Plane):
-    def __init__(self, name, rect):
-        planes.Plane.__init__(self, name, rect, draggable=False, grab=False)
-        self.image.fill(WHITE)
 
    
 class MoveScreen(Screen):
@@ -114,13 +112,21 @@ class MoveScreen(Screen):
         down = DownButton("down",pygame.Rect(MOVEBUTTON_WIDTH+5,0,MOVEBUTTON_WIDTH,MOVEBUTTON_HEIGHT),DownButton.clicked, self)
         back = BackButton("back", pygame.Rect(0, MOVEBUTTON_HEIGHT*2 + 10,MOVEBUTTON_WIDTH, 25),BackButton.clicked, self)
         clear = ClearButton("clear", pygame.Rect(MOVEBUTTON_WIDTH+5, MOVEBUTTON_HEIGHT*2 + 10, MOVEBUTTON_WIDTH, 25),ClearButton.clicked, self)
-        run = RunButton("run", pygame.Rect(0, MOVEBUTTON_HEIGHT*2 + 10 + 30, MOVEBUTTON_WIDTH*2 + 5, 25), RunButton.clicked, self)
+        run = RunButton("run", pygame.Rect(0, MOVEBUTTON_HEIGHT*2 + 10 + 30, MOVEBUTTON_WIDTH*2 + 5, 45), RunButton.clicked, self)
         self.robot = robot
         self.commands = []
         buttons = [up,down,left,right,back,clear,run]
         self.actors = [self.robot]
         Screen.__init__(self,buttons,self.actors,BLACK)
         self.runClicked = False
+
+        if self.robot.level == 1:
+            self.walls = levels.level1walls
+            for wall in self.walls:
+                self.actors.append(wall)
+
+        for i in range(60):
+            self.addCommand(GREEN, 0, 0)
         """
         numWalls = randint(2*(self.robot.level+1),(WINDOWWIDTH*WINDOWHEIGHT)/(self.robot.width*self.robot.height))
         for i in range(numWalls):
@@ -130,14 +136,34 @@ class MoveScreen(Screen):
         """
 
     def addCommand(self, im, xMove, yMove):
-        xPos = MOVEBUTTON_WIDTH*2+10 + len(self.commands)*(50+5)
-        command = Command(self.robot, im, xMove, yMove, pygame.Rect(xPos,0,50,75), "command"+str(xPos))
-        self.commands.append(command)
-        self.actors.append(command)
+        if len(self.commands) != 0:
+            yPos = self.commands[len(self.commands)-1].rect.y
+            xPos = self.commands[len(self.commands)-1].rect.x + MOVEBUTTON_WIDTH + 5
+        else:
+            yPos = 0
+            xPos = MOVEBUTTON_WIDTH*2+10
+        if xPos+MOVEBUTTON_WIDTH > WINDOWWIDTH:
+            xPos = MOVEBUTTON_WIDTH*2+10
+            yPos = yPos + MOVEBUTTON_HEIGHT + 5
+        if yPos < 3 * MOVEBUTTON_HEIGHT:
+            command = Command(self.robot, im, xMove, yMove, pygame.Rect(xPos,yPos,50,75), "command"+str(xPos)+str(yPos))
+            self.commands.append(command)
+            self.actors.append(command)
 
     def runCommands(self, command):
         command.beingRun()
-        self.robot.move(command.xMove, command.yMove)
+        newRobotRect = pygame.Rect(self.robot.rect.x + command.xMove, self.robot.rect.y + command.yMove, self.robot.rect.width, self.robot.rect.height)
+        canMove = True
+        for wall in self.walls:
+            if newRobotRect.colliderect(wall.rect):
+                canMove = False
+        if newRobotRect.x + self.robot.width > WINDOWWIDTH or newRobotRect.x < 0 or newRobotRect.y + self.robot.height > WINDOWHEIGHT:
+            canMove = False
+        if canMove:
+            self.robot.move(command.xMove, command.yMove)
+        else:
+            self.commands = []
+            self.robot.reset()
         command.doneRunning()
         time.sleep(.5)
 
@@ -157,7 +183,6 @@ class MoveScreen(Screen):
 """
 BUGS:
 - clear and back work logically but don' remove the icons from the screen
-- run commands isn't going discretely
-
+- how labels?
 """
 

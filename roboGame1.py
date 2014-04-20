@@ -71,6 +71,8 @@ class Robot(DropZone):
 		#self.image = pygame.image.load(im)
 		self.image.fill(im)
 		self.upgrades = []
+		self.startX = rect.x
+		self.startY = rect.y
     
     def update(self):
         '''updates the actor's position and updates the rectangle object of the
@@ -90,6 +92,10 @@ class Robot(DropZone):
     	self.Xpos += xMove*self.width
     	self.Ypos += yMove*self.height
 
+    def reset(self):
+    	self.Xpos = self.startX
+    	self.Ypos = self.startY
+
 class Upgrade(planes.Plane):
     def __init__(self, name, rect, im, cost, draggable=True, grab = True):
         planes.Plane.__init__(self, name, rect, draggable, grab)
@@ -104,7 +110,7 @@ class Upgrade(planes.Plane):
 
 class RoboGame:
 	def __init__(self):
-		self.robot = Robot("robot", pygame.Rect(200,200,100,100), GREEN)
+		self.robot = Robot("robot", pygame.Rect(0,WINDOWHEIGHT-100,50,50), GREEN)
 		self.buildscreen =  BuildScreen(self.robot,self)
 		self.movescreen = MoveScreen(self.robot,self)
 		self.storescreen = StoreScreen(self.robot, self)
