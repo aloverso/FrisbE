@@ -19,8 +19,8 @@ import ModSimGame1
 from roboGame1 import RoboGame
 
 
-WINDOWWIDTH = 1200
-WINDOWHEIGHT = 800
+WINDOWWIDTH = 600
+WINDOWHEIGHT = 600
 
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
