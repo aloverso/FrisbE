@@ -51,7 +51,7 @@ class StartButton(Button):
         Button.__init__(self, label, rect, callback, model)
     def clicked(self, button_name):
         self.model.game.currentscreen = self.model.game.movescreen
-
+        self.model.robot.setPosition(self.model.game.movescreen.startPosition[0], self.model.game.movescreen.startPosition[1])
 
 class AddButton(Button):
     def __init__(self, label, rect, callback, model):
@@ -65,15 +65,17 @@ class StoreButton(Button):
         Button.__init__(self, label, rect, callback, model)
     def clicked(self, button_name):
         self.model.game.currentscreen = self.model.game.storescreen
+        self.model.robot.setPosition(self.model.game.storescreen.startPosition[0], self.model.game.storescreen.startPosition[1])
 
 class BuildScreen(Screen):
     def __init__(self, robot, game):
         self.robot = robot
+        self.startPosition = (400,400)
         self.game = game
         store = StoreButton("storebutton", pygame.Rect(0, WINDOWHEIGHT-50, 75, 50), StoreButton.clicked, self)
         start = StartButton("movescreen", pygame.Rect(WINDOWWIDTH-75, WINDOWHEIGHT-50, 75, 50), StartButton.clicked, self)
         add = AddButton("add", pygame.Rect(500, 0, 75, 50), AddButton.clicked, self)
-        upgrade1 = Upgrade("u1", pygame.Rect(0,0,50,50), BLUE, 20)
+        upgrade1 = Upgrade("u1", pygame.Rect(0,0,10,10), BLUE, 20)
         buttons = [start, store, add]
         self.actors = [robot,upgrade1]
         Screen.__init__(self,buttons,self.actors,BLACK)

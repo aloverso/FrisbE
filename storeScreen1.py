@@ -52,13 +52,14 @@ class StoreScreen(Screen):
     def __init__(self, robot, game):
         self.robot = robot
         self.game = game
+        self.startPosition = (400,400)
         start = BuildButton("tobuildscreen", pygame.Rect(WINDOWWIDTH-75, WINDOWHEIGHT-50, 75, 50), BuildButton.clicked, self)
         upgrade1 = Upgrade("u1", pygame.Rect(0,0,50,50), BLUE, 20)
         upgrade2 = Upgrade("u2", pygame.Rect(70,0,50,50), GREEN, 20)
         upgrade3 = Upgrade("u3", pygame.Rect(140,0,50,50), WHITE, 20)
         self.shoppingcart = DropZone("shoppingcart", pygame.Rect(200,200,200,200))
         buttons = [start]
-        self.actors = [upgrade1, upgrade2, upgrade3, self.shoppingcart]
+        self.actors = [self.shoppingcart, upgrade1, upgrade2, upgrade3]
         Screen.__init__(self,buttons,self.actors,BLACK)
 
     def update(self):
