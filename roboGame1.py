@@ -82,11 +82,11 @@ class Robot(DropZone):
         self.rect = pygame.Rect(self.Xpos, self.Ypos, self.width, self.height)
 
     def dropped_upon(self, plane, coordinates):
-       planes.Plane.dropped_upon(self, plane, (coordinates[0]+self.Xpos, coordinates[1]+self.Ypos))
-       plane.moving = False
-       self.money -= plane.cost
-       self.upgrades.append(plane)
-       plane.applyUpgrade(self)
+		planes.Plane.dropped_upon(self, plane, (coordinates[0]+self.Xpos, coordinates[1]+self.Ypos))
+		plane.moving = False
+		self.money -= plane.cost
+		self.upgrades.append(plane)
+		plane.applyUpgrade(self)
 
     def move(self, xMove, yMove):
     	self.Xpos += xMove*self.width
@@ -95,6 +95,10 @@ class Robot(DropZone):
     def reset(self):
     	self.Xpos = self.startX
     	self.Ypos = self.startY
+
+    def setPosition(self,x,y):
+		self.Xpos = x
+		self.Ypos = y
 
 class Upgrade(planes.Plane):
     def __init__(self, name, rect, im, cost, draggable=True, grab = True):
@@ -110,7 +114,7 @@ class Upgrade(planes.Plane):
 
 class RoboGame:
 	def __init__(self):
-		self.robot = Robot("robot", pygame.Rect(0,WINDOWHEIGHT-100,50,50), GREEN)
+		self.robot = Robot("robot", pygame.Rect(400,400,50,50), GREEN)
 		self.buildscreen =  BuildScreen(self.robot,self)
 		self.movescreen = MoveScreen(self.robot,self)
 		self.storescreen = StoreScreen(self.robot, self)

@@ -53,3 +53,16 @@ class DropDisplay(planes.Display):
     def dropped_upon(self, plane, coordinates):
          if isinstance(plane, planes.Plane):
              planes.Display.dropped_upon(self, plane, (plane.Xpos, plane.Ypos))
+
+class ScreenText(planes.gui.Label):
+	def __init__(self,name,text,rect,font):
+		planes.Plane.__init__(self,name,rect,draggable=False, grab=False)
+		planes.gui.Label.__init__(self,name,text,rect,background_color=GREEN, text_color=BLACK)
+		self.font = font
+		# font is declared as the following: fontname (or whatever you call it) = pygame.font.SysFont("Arial", 40)
+		# it takes the font (Arial) and fontsize (40)
+		# we should stick to Arial probably because pygame doesn't support many fonts and it looks nice
+		# change your font size as needed
+	
+	def updateText(self, text):
+		self.text = text
