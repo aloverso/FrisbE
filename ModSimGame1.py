@@ -103,9 +103,17 @@ class ModSimScreen(Screen):
         pass
     def updateEnv(self):
         self.howManyRays+=1
+
         print 'rays ' + str(self.howManyRays)
-        self.actors.append(Ray("rayA"+str(self.howManyRays), pygame.Rect(100,100+self.rayOffset,10,10), "ray.jpg"))
-  
+        self.actors.append(Ray("rayA"+str(self.howManyRays), pygame.Rect(100,100+self.rayOffset,10,10), "ray.jpg", self))
+        self.rayOffset += 10
+
+    #def removeActor(self,which_actor):
+        #self.actors.remove(which_actor)
+
+        #actIndex = self.actors.index(which_actor.name)
+        #self.actors.remove(actIndex)
+        #self.remove()
 
 class TimeStepButton(Button):
     def __init__(self, label, im, rect, callback, model):
@@ -121,6 +129,7 @@ class TimeStepButton(Button):
         # numRays*=2
         # RayButton.clicked()
 
+
 class RayButton(Button):
     def __init__(self, label, im, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
@@ -129,9 +138,9 @@ class RayButton(Button):
     def clicked(self, button_name):
         print 'ray'
         #instantiate and put a ray on the gamescreen
-        
-        self.model.actors.append(Ray("rayA"+str(self.model.howManyRays), pygame.Rect(100,100+self.model.rayOffset,10,10), "ray.jpg"))
-        self.model.howManyRays +=1
+        self.model.howManyRays +=1 
+        self.model.actors.append(Ray("rayA"+str(self.model.howManyRays), pygame.Rect(100,100+self.model.rayOffset,10,10), "ray.jpg",self.model))
+
         self.model.rayOffset += 10
         print self.model.howManyRays
         #remove self
@@ -152,7 +161,7 @@ class SharkButton(Button):
         #remove self
 
 class Ray(planes.Plane):
-    def __init__(self, name, rect, im, draggable = False, grab = True):
+    def __init__(self, name, rect, im, model, draggable = False, grab = True):
         planes.Plane.__init__(self, name, rect, draggable, grab)
         #print self
         #self.image = None
@@ -161,8 +170,18 @@ class Ray(planes.Plane):
         #self.rect = rect
         self.Xpos = rect.x
         self.Ypos = rect.y
-    def clicked(self):
-        pass
+        self.model = model
+
+    def clicked(self, button_name):
+        names = [actor.name for actor in self.model.actors]
+        if self.name in names:
+            index = names.index(self.name)
+            del(self.model.actors[index])
+
+        #pass
+        #self.model.removeActor(self)
+        # index = self.model.actors.index(self)
+        # self.model.actors[index] = None
 
 class Shark(planes.Plane):
     def __init__(self, name, rect, draggable = False, grab = True, ):
@@ -173,7 +192,7 @@ class Shark(planes.Plane):
         #self.rect = rect
         self.Xpos = rect.x
         self.Ypos = rect.y
-    def clicked(self):
+    def clicked(self, button_name):
         pass
   
 #if __name__ == "__main__":
