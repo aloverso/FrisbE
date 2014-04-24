@@ -46,6 +46,7 @@ from collections import deque
 from screen import Screen
 from screen import Button
 from MatSciScreen import MixingScreen
+from MatSciScreen import ForceTestScreen
 
 
 WINDOWWIDTH = 1200
@@ -85,6 +86,20 @@ class TutorialButton(Button):
 	def clicked(self, button_name):
 		self.model.currentscreen = self.model.tutorialscreen
 
+class ForceScreenButton(Button):
+    def __init__(self, label, im, rect, callback, model):
+        Button.__init__(self, label, rect, callback, model)
+        self.image = pygame.image.load(im)
+    def clicked(self, button_name):
+        self.model.currentscreen = self.model.forceScreen
+
+class MixScreenButton(Button):
+    def __init__(self, label, im, rect, callback, model):
+        Button.__init__(self, label, rect, callback, model)
+        self.image = pygame.image.load(im)
+    def clicked(self, button_name):
+        self.model.currentscreen = self.model.startScreen
+        
 class titleRect(planes.Plane):
 	def __init__(self, im, rect, color):
 		planes.Plane.__init__(self,"title",rect,draggable=False, grab=False)
@@ -93,9 +108,10 @@ class titleRect(planes.Plane):
 		self.color = color
 		self.image = pygame.image.load(im)
 
-class Material(planes.Plane):
+#Stuff I need for my game: materials
 
-    def __init__(self, name = None, rect = None, draggable = True, grab = True):
+class Material(planes.Plane):
+    def __init__(self, name, strength, meltingPoint, rect, draggable = True, grab = True):
         planes.Plane.__init__(self, name, rect, draggable, grab)
         self.image.fill((255, 0, 0))
 
@@ -103,33 +119,22 @@ class Material(planes.Plane):
         self.Xpos = self.position[0]
         self.Ypos = self.position[1]
         self.name = name
-        self.strength = 0
-        self.meltingPoint = 0
+        self.strength = strength
+        self.meltingPoint = meltingPoint
 
     def clicked(self, button_name):
         self.image.fill((255,0,0))
-
-class DropZone(planes.Plane):
-    def __init__(self, name, rect, screen):
-
-        self.name = name
-        self.rect = rect
-        self.Xpos = self.rect.x
-        self.Ypos = self.rect.y
-
-        self.screen = screen
-        planes.Plane.__init__(self, name, rect, draggable = False, grab = True)
-        self.image.fill((0,0,255))
         
-
-
-
 class MatSciGame():
     def __init__(self):
         self.materials = []
         self.newMaterials = []
         self.actors = self.materials + self.newMaterials
-        self.startScreen = MixingScreen(self)
+        self.clock = pygame.time.Clock()
+        
+        self.startScreen = MixingScreen(self, self.materials, self.newMaterials)
+        self.forceScreen = ForceTestScreen(self, self.materials, self.newMaterials)
+        
         start = StartButton("start","startbut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),StartButton.clicked, self)
         settings = SettingsButton("settings","setbut.png",pygame.Rect(WINDOWWIDTH/8,6*WINDOWHEIGHT/8 + 30,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),SettingsButton.clicked, self)
         tutorial = TutorialButton("tutorial","tutbut.png",pygame.Rect(WINDOWWIDTH/8,5*WINDOWHEIGHT/8 + 20,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),TutorialButton.clicked, self)

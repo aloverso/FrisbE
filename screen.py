@@ -43,11 +43,13 @@ class DropZone(planes.Plane):
         self.rect = rect
         self.Xpos = self.rect.x
         self.Ypos = self.rect.y
+        self.thingsDroppedOnMe = []
 
     def dropped_upon(self, plane, coordinates):
     	print (coordinates[0]+self.Xpos, coordinates[1]+self.Ypos)
         planes.Plane.dropped_upon(self, plane, (coordinates[0]+self.Xpos, coordinates[1]+self.Ypos))
         plane.moving = False
+      	self.thingsDroppedOnMe.append(plane)
 
 class DropDisplay(planes.Display):
     def dropped_upon(self, plane, coordinates):

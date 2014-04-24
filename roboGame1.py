@@ -73,6 +73,7 @@ class Robot(DropZone):
 		self.upgrades = []
 		self.startX = rect.x
 		self.startY = rect.y
+		self.motorspeed = 0.4
     
     def update(self):
         '''updates the actor's position and updates the rectangle object of the
@@ -92,29 +93,14 @@ class Robot(DropZone):
     	self.Xpos += xMove*self.width
     	self.Ypos += yMove*self.height
 
-    def reset(self):
-    	self.Xpos = self.startX
-    	self.Ypos = self.startY
-
     def setPosition(self,x,y):
 		self.Xpos = x
 		self.Ypos = y
 
-class Upgrade(planes.Plane):
-    def __init__(self, name, rect, im, cost, draggable=True, grab = True):
-        planes.Plane.__init__(self, name, rect, draggable, grab)
-        self.cost = cost
-        self.image.fill(im)
-
-    def clicked(self, button_name):
-        self.image.fill((255,0,0))
-
-    def applyUpgrade(self, robot):
-    	pass
-
 class RoboGame:
 	def __init__(self):
 		self.robot = Robot("robot", pygame.Rect(400,400,50,50), GREEN)
+		self.purchases = []
 		self.buildscreen =  BuildScreen(self.robot,self)
 		self.movescreen = MoveScreen(self.robot,self)
 		self.storescreen = StoreScreen(self.robot, self)

@@ -137,7 +137,8 @@ class MoveScreen(Screen):
         self.runningThisScreen = False
 
         self.startTime = 0
-        self.timeLabel = ScreenText("timetext", "Time: "+str((pygame.time.get_ticks() - self.startTime)/1000.0), pygame.Rect(WINDOWWIDTH-225,0,200,50))
+        font1 = pygame.font.SysFont("Arial", 40)
+        self.timeLabel = ScreenText("timetext", "Time: "+str((pygame.time.get_ticks() - self.startTime)/1000.0), pygame.Rect(WINDOWWIDTH-225,0,200,50), font1)
         self.actors.append(self.timeLabel)
         """
         for i in range(60):
@@ -191,7 +192,7 @@ class MoveScreen(Screen):
             self.clearCommands()
             self.robot.setPosition(self.startPosition[0], self.startPosition[1])
         command.doneRunning()
-        time.sleep(.3)
+        time.sleep(self.robot.motorspeed)
 
     def clearCommands(self):
         for command in self.commands:
