@@ -24,7 +24,7 @@ pygame.init()
 from pygame.locals import *
 
 WINDOWWIDTH = 1200
-WINDOWHEIGHT = 800
+WINDOWHEIGHT = 750
 
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
@@ -45,7 +45,8 @@ class ModSimGame:
         self.settingsscreen = Screen([home,settings,tutorial],[titleRect("settings.png",tr,WHITE)],BLACK)
         self.tutorialscreen = Screen([home,settings, tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
         self.currentscreen = self.homescreen
-   # def add_actors(self):
+
+
 
 class StartButton(Button):
     def __init__(self, label, im, rect, callback, model):
@@ -54,12 +55,14 @@ class StartButton(Button):
     def clicked(self, button_name):
         self.model.currentscreen = self.model.modsimscreen
 
+
 class HomeButton(Button):
     def __init__(self, label, im, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
     def clicked(self, button_name):
         self.model.currentscreen = self.model.homescreen
+
 
 class SettingsButton(Button):
     def __init__(self, label, im, rect, callback,model):
@@ -68,12 +71,14 @@ class SettingsButton(Button):
     def clicked(self, button_name):
         self.model.currentscreen = self.model.settingsscreen
 
+
 class TutorialButton(Button):
     def __init__(self, label, im, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
     def clicked(self, button_name):
         self.model.currentscreen = self.model.tutorialscreen
+
 
 class titleRect(planes.Plane):
     def __init__(self, im, rect, color):
@@ -83,91 +88,151 @@ class titleRect(planes.Plane):
         self.color = color
         self.image = pygame.image.load(im)
 
+
+
 class ModSimScreen(Screen):
     def __init__(self,gamemodel):
+        self.gamemodel = gamemodel
         self.buttons = []
         self.howManyRays = 0
         self.howManySharks = 0
         self.howManyScallops = 0
+        self.howManyPlankton = 0
         self.rayOffset = 10
         self.sharkOffset = 10
+        self.scallopOffset = 10
+        self.planktonOffset = 10
         self.timesteps = 0
-        button0 = TimeStepButton("time", "ray.jpg", pygame.Rect(8.5*WINDOWWIDTH/10,8*WINDOWHEIGHT/10, WINDOWWIDTH/10, WINDOWHEIGHT/10), TimeStepButton.clicked, self)
-        button1 = RayButton("ray","ray.jpg",pygame.Rect(9*WINDOWWIDTH/10,0,WINDOWWIDTH/10,WINDOWWIDTH/10),RayButton.clicked, self)
-        button2 = SharkButton("shark","shark.jpg",pygame.Rect(8*WINDOWWIDTH/10,0,WINDOWWIDTH/10,WINDOWWIDTH/10),SharkButton.clicked, self)
+
+        button0 = TimeStepButton("time", "ray.jpg", pygame.Rect(8*WINDOWWIDTH/10,8*WINDOWHEIGHT/10, 2*WINDOWWIDTH/10, WINDOWHEIGHT/10), TimeStepButton.clicked, self)
+        button1 = RayButton("ray","ray.jpg",pygame.Rect(8*WINDOWWIDTH/10,WINDOWHEIGHT/10,WINDOWWIDTH/10,WINDOWHEIGHT/10),RayButton.clicked, self)
+        button2 = SharkButton("shark","shark.jpg",pygame.Rect(9*WINDOWWIDTH/10,WINDOWHEIGHT/10,WINDOWWIDTH/10,WINDOWHEIGHT/10),SharkButton.clicked, self)
+        button3 = ScallopButton("scallop", "scallop.jpg", pygame.Rect(8*WINDOWWIDTH/10,2*WINDOWHEIGHT/10, WINDOWWIDTH/10, WINDOWHEIGHT/10), ScallopButton.clicked, self)
+        button4 = PlanktonButton("plankton", "plankton.jpeg", pygame.Rect(9*WINDOWWIDTH/10, 2*WINDOWHEIGHT/10, WINDOWWIDTH/10, WINDOWHEIGHT/10), PlanktonButton.clicked, self)
+        button5 = FishermanButton("fisherman", "fisherman.jpg")
+        ###########
+        buttonback = BackButton("back", "ray.jpg", pygame.Rect(8*WINDOWWIDTH/10, 9*WINDOWHEIGHT/10, 2*WINDOWWIDTH/10, WINDOWHEIGHT/10), BackButton.clicked, self)
+        self.buttons.append(buttonback)
+        ##########
+
         self.buttons.append(button0)
         self.buttons.append(button1)
         self.buttons.append(button2)
+        self.buttons.append(button3)
+        self.buttons.append(button4)
+        #fisherman
+        #
         Screen.__init__(self, self.buttons, [], (0,0,0))
+
     def update(self):
         pass
-    def updateEnv(self):
-        self.howManyRays+=1
 
-        print 'rays ' + str(self.howManyRays)
+    def updateEnv(self):
+        self.actors = []
+        self.howManyRays = 0
+        self.howManySharks = 0
+        self.howManyScallops = 0
+        self.howManyPlankton = 0
+
+        self.rayOffset = 0
+        self.sharkOffset = 0
+        self.scallopOffset = 0
+        self.planktonOffset = 0
+
+        #equations in for loops
         self.actors.append(Ray("rayA"+str(self.howManyRays), pygame.Rect(100,100+self.rayOffset,10,10), "ray.jpg", self))
+        self.howManyRays+=1
+        print 'rays ' + str(self.howManyRays)
         self.rayOffset += 10
 
-    #def removeActor(self,which_actor):
-        #self.actors.remove(which_actor)
 
-        #actIndex = self.actors.index(which_actor.name)
-        #self.actors.remove(actIndex)
-        #self.remove()
 
 class TimeStepButton(Button):
     def __init__(self, label, im, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
         #self.image = pygame.transform.scale(pygame.image.load(im), (50,10))
-        self.image.fill((50,10,75))
+        self.image.fill((100,10,75))
 
     def clicked(self, button_name):
         print 'timestep'
         self.model.timesteps +=1
         print self.model.timesteps
         self.model.updateEnv()
-        # numRays*=2
-        # RayButton.clicked()
+
+
+
+###############################################################################
+class BackButton(Button):
+    def __init__(self, label, im, rect, callback, model):
+        Button.__init__(self, label, rect, callback, model)
+        self.image.fill((0,0,255))
+    def clicked(self, button_name):
+        self.model.gamemodel.currentscreen = self.model.gamemodel.homescreen
+###############################################################################
+
 
 
 class RayButton(Button):
     def __init__(self, label, im, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.transform.scale(pygame.image.load(im), (WINDOWWIDTH/10,WINDOWWIDTH/10))
+        self.image = pygame.transform.scale(pygame.image.load(im), (WINDOWWIDTH/10,WINDOWHEIGHT/10))
        
     def clicked(self, button_name):
-        print 'ray'
-        #instantiate and put a ray on the gamescreen
-        self.model.howManyRays +=1 
+        #instantiate and put a ray on the gamescreen        
         self.model.actors.append(Ray("rayA"+str(self.model.howManyRays), pygame.Rect(100,100+self.model.rayOffset,10,10), "ray.jpg",self.model))
-
+        self.model.howManyRays +=1 
         self.model.rayOffset += 10
-        print self.model.howManyRays
-        #remove self
+        print 'rays ' + str(self.model.howManyRays)
+      
+
 
 class SharkButton(Button):
     def __init__(self, label, im, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.transform.scale(pygame.image.load(im), (WINDOWWIDTH/10,WINDOWWIDTH/10))
+        self.image = pygame.transform.scale(pygame.image.load(im), (WINDOWWIDTH/10,WINDOWHEIGHT/10))
         
     def clicked(self, button_name):
-        print 'shark'
-        #instantiate and put a ray on the gamescreen
 
-        self.model.actors.append(Shark("sharkA"+str(self.model.howManySharks), pygame.Rect(120,100+self.model.sharkOffset,10,10), "shark.jpg"))
+        self.model.actors.append(Shark("sharkA"+str(self.model.howManySharks), pygame.Rect(140,100+self.model.sharkOffset,10,10), "shark.jpg", self.model))
         self.model.howManySharks +=1  
         self.model.sharkOffset += 10
-        print self.model.howManySharks
-        #remove self
+        print 'sharks ' + str(self.model.howManySharks)
+
+
+
+class ScallopButton(Button):
+    def __init__(self, label, im, rect, callback, model):
+        Button.__init__(self, label, rect, callback, model)
+        self.image = pygame.transform.scale(pygame.image.load(im), (WINDOWWIDTH/10,WINDOWHEIGHT/10))
+       
+    def clicked(self, button_name):
+        #instantiate and put a ray on the gamescreen        
+        self.model.actors.append(Scallop("scallopA"+str(self.model.howManyScallops), pygame.Rect(180,100+self.model.scallopOffset,10,10), "scallop.jpg",self.model))
+        self.model.howManyScallops +=1 
+        self.model.scallopOffset += 10
+        print 'scallops ' + str(self.model.howManyScallops)
+
+
+
+class PlanktonButton(Button):
+    def __init__(self, label, im, rect, callback, model):
+        Button.__init__(self, label, rect, callback, model)
+        self.image = pygame.transform.scale(pygame.image.load(im), (WINDOWWIDTH/10,WINDOWHEIGHT/10))
+       
+    def clicked(self, button_name):
+        #instantiate and put a ray on the gamescreen        
+        self.model.actors.append(Plankton("planktonA"+str(self.model.howManyPlankton), pygame.Rect(220,100+self.model.planktonOffset,10,10), "plankton.jpeg",self.model))
+        self.model.howManyPlankton +=1 
+        self.model.planktonOffset += 10
+        print 'plankton ' + str(self.model.howManyPlankton)
+
+
 
 class Ray(planes.Plane):
     def __init__(self, name, rect, im, model, draggable = False, grab = True):
         planes.Plane.__init__(self, name, rect, draggable, grab)
-        #print self
-        #self.image = None
-        #self.image.fill((0,0,255))
+
         self.image = pygame.transform.scale(pygame.image.load(im), (10,10))
-        #self.rect = rect
         self.Xpos = rect.x
         self.Ypos = rect.y
         self.model = model
@@ -177,49 +242,62 @@ class Ray(planes.Plane):
         if self.name in names:
             index = names.index(self.name)
             del(self.model.actors[index])
+            self.model.rayOffset -= 10
+            self.model.howManyRays -=1
 
-        #pass
-        #self.model.removeActor(self)
-        # index = self.model.actors.index(self)
-        # self.model.actors[index] = None
+
 
 class Shark(planes.Plane):
-    def __init__(self, name, rect, draggable = False, grab = True, ):
+    def __init__(self, name, rect, im, model, draggable = False, grab = True):
         planes.Plane.__init__(self, name, rect, draggable, grab)
-        #print self
-        #self.image = None
-        self.image.fill((0,255,0))
-        #self.rect = rect
+
+        self.image = pygame.transform.scale(pygame.image.load(im), (10,10))
         self.Xpos = rect.x
         self.Ypos = rect.y
+        self.model = model
+
     def clicked(self, button_name):
-        pass
-  
-#if __name__ == "__main__":
-    
-  
-#class Animal_or_Event(Actor):
-#    def __init__(self, x,y,width,height):
-#        Actor.__init__(self,x,y,width,height,which_animalevent)
-#        
-#class PopulationGraph:
-#
-#class PopulationsModel:
-#    def __init__(self):
-#        self.width = 640
-#        self.height = 480
-#
-#class PopulationsView:
-#    def __init__(self, model, screen):
-#        self.model = model
-#        self.screen = screen
-#    
-#class PopulationsController:
-#    def __init__(self, model, screen):
-#        self.model = model
-#        self.screen = screen
-#        self.mouse_pos = (0,0)
-#    
-#        def handle_mouse_event(self, event):        
-#        if event.type == MOUSEBUTTONDOWN:
-#            self.mouse_pos = pygame.mouse.get_pos()
+        names = [actor.name for actor in self.model.actors]
+        if self.name in names:
+            index = names.index(self.name)
+            del(self.model.actors[index])
+            self.model.sharkOffset -= 10
+            self.model.howManySharks -=1
+
+
+
+class Scallop(planes.Plane):
+    def __init__(self, name, rect, im, model, draggable = False, grab = True):
+        planes.Plane.__init__(self, name, rect, draggable, grab)
+
+        self.image = pygame.transform.scale(pygame.image.load(im), (10,10))
+        self.Xpos = rect.x
+        self.Ypos = rect.y
+        self.model = model
+
+    def clicked(self, button_name):
+        names = [actor.name for actor in self.model.actors]
+        if self.name in names:
+            index = names.index(self.name)
+            del(self.model.actors[index])
+            self.model.scallopOffset -= 10
+            self.model.howManyScallops -=1
+
+
+
+class Plankton(planes.Plane):
+    def __init__(self, name, rect, im, model, draggable = False, grab = True):
+        planes.Plane.__init__(self, name, rect, draggable, grab)
+
+        self.image = pygame.transform.scale(pygame.image.load(im), (10,10))
+        self.Xpos = rect.x
+        self.Ypos = rect.y
+        self.model = model
+
+    def clicked(self, button_name):
+        names = [actor.name for actor in self.model.actors]
+        if self.name in names:
+            index = names.index(self.name)
+            del(self.model.actors[index])
+            self.model.planktonOffset -= 10
+            self.model.howManyPlankton -=1  
