@@ -13,7 +13,7 @@ from screen import DropDisplay
 
 import moveScreen3
 from roboGame1 import RoboGame
-from ModSimGame1 import ModSimGame
+#from ModSimGame1 import ModSimGame
 from MatSciGame import MatSciGame
 
 
@@ -74,14 +74,14 @@ class titleRect(planes.Plane):
 
 class Model:
 	def __init__(self):
-		robo = RoboButton("robogame", "RobotGameButton.png", pygame.Rect(WINDOWWIDTH/8, WINDOWHEIGHT/4, 5*WINDOWWIDTH/16, 3*WINDOWHEIGHT/8), RoboButton.clicked, self)
-		modsim = ModSimButton("modsimbutton", "ModSimButton.png", pygame.Rect(WINDOWWIDTH/2, WINDOWHEIGHT/4, 5*WINDOWWIDTH/16, 3*WINDOWHEIGHT/8), ModSimButton.clicked, self)
-		matsci = MatSciButton("matscibutton", "MatSciButton.png", pygame.Rect(WINDOWWIDTH/8, 11*WINDOWHEIGHT/16, 5*WINDOWWIDTH/16, 3*WINDOWHEIGHT/8), MatSciButton.clicked, self)
-		mechee = ModSimButton("mecheebutton", "DesignGame.png", pygame.Rect(WINDOWWIDTH/2, 11*WINDOWHEIGHT/16, 5*WINDOWWIDTH/16, 3*WINDOWHEIGHT/8), ModSimButton.clicked, self)
-		tr = pygame.Rect(WINDOWWIDTH/8, WINDOWHEIGHT/16, 3*WINDOWWIDTH/4, 1*WINDOWHEIGHT/8)
+		robo = RoboButton("robogame", "RobotGameButton.png", pygame.Rect(50,50,250,300), RoboButton.clicked, self)
+		modsim = ModSimButton("modsimbutton", "ModSimButton.png", pygame.Rect(50,400,250,300), ModSimButton.clicked, self)
+		matsci = MatSciButton("matscibutton", "MatSciButton.png", pygame.Rect(900,50,250,300), MatSciButton.clicked, self)
+		mechee = ModSimButton("mecheebutton", "DesignGame.png", pygame.Rect(900,400,250,300), ModSimButton.clicked, self)
+		tr = pygame.Rect(350,50,600,650)
 		self.dashboardScreen = Screen([robo, modsim, matsci, mechee], [titleRect(BLUE, tr, WHITE)], BLACK)
 		self.robogame = RoboGame()
-		self.modsimgame = ModSimGame()
+		self.modsimgame = MatSciGame()
 		self.matscigame = MatSciGame()
 		self.currentScreen = self.dashboardScreen
 		self.currentGame = None
@@ -127,6 +127,11 @@ if __name__ == "__main__":
 		if model.inGame:
 			model.currentGame.currentscreen.update()
 			model.currentScreen = model.currentGame.currentscreen
+			if model.currentGame.toDash:
+				model.currentGame.toDash = False
+				model.currentScreen = model.dashboardScreen
+				model.currentGame = None
+				model.inGame = False
 
 		screen.process(events)
 		model.update()

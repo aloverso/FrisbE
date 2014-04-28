@@ -29,6 +29,13 @@ MOVEBUTTON_WIDTH = 50
 WINDOWWIDTH = 1200
 WINDOWHEIGHT = 750
 
+
+scrleft = 50
+scrright = 1150
+scrtop = 50
+scrbottom = 700
+
+
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 WHITE = (255, 255, 255)
@@ -89,6 +96,14 @@ class RunButton(Button):
     def clicked(self, button_name):
         self.model.runClicked = True
 
+class BuildButton(Button):
+    def __init__(self, label, rect, callback, model):
+        Button.__init__(self, label, rect, callback, model)
+    def clicked(self, button_name):
+        self.model.game.currentscreen = self.model.game.buildscreen
+        self.model.robot.setPosition(self.model.game.buildscreen.startPosition[0], self.model.game.buildscreen.startPosition[1])
+
+
 class Command(planes.Plane):
     def __init__(self, robot, im, xMove, yMove, rect, name):
         planes.Plane.__init__(self, name, rect, draggable=False, grab=False)
@@ -118,28 +133,31 @@ class MoveScreen(Screen):
         down = DownButton("down",pygame.Rect(MOVEBUTTON_WIDTH+5,0,MOVEBUTTON_WIDTH,MOVEBUTTON_HEIGHT),DownButton.clicked, self)
         back = BackButton("back", pygame.Rect(0, MOVEBUTTON_HEIGHT*2 + 10,MOVEBUTTON_WIDTH, 25),BackButton.clicked, self)
         clear = ClearButton("clear", pygame.Rect(MOVEBUTTON_WIDTH+5, MOVEBUTTON_HEIGHT*2 + 10, MOVEBUTTON_WIDTH, 25),ClearButton.clicked, self)
-        run = RunButton("run", pygame.Rect(0, MOVEBUTTON_HEIGHT*2 + 10 + 30, MOVEBUTTON_WIDTH*2 + 5, 45), RunButton.clicked, self)
+        self.run = RunButton("run", pygame.Rect(0, MOVEBUTTON_HEIGHT*2 + 10 + 30, MOVEBUTTON_WIDTH*2 + 5, 45), RunButton.clicked, self)
         self.robot = robot
         self.commands = []
-        self.actors = []
-        buttons = [up,down,left,right,back,clear,run]
-        Screen.__init__(self,buttons,self.actors,BLACK)
+        self.buttonsWithoutRun = [up,down,left,right,back,clear]
         self.runClicked = False
         self.startPosition = (levels.level1start[0]-self.robot.width, levels.level1start[1]-self.robot.height)
+        self.notificationCreationTime = 0
+        self.notification = None
 
         if self.robot.level == 1:
             self.walls = levels.level1walls
             self.goal = levels.level1goal
             self.money = levels.level1money
-            self.actors = self.actors + self.walls + self.money
 
-        self.actors.append(self.robot)
         self.runningThisScreen = False
+        self.moneyCollected = 0
 
         self.startTime = 0
         font1 = pygame.font.SysFont("Arial", 40)
         self.timeLabel = ScreenText("timetext", "Time: "+str((pygame.time.get_ticks() - self.startTime)/1000.0), pygame.Rect(WINDOWWIDTH-225,0,200,50), font1)
-        self.actors.append(self.timeLabel)
+
+        self.actorsWithoutNotification = [self.robot] + self.walls + self.money + [self.timeLabel]
+        self.actors = self.actorsWithoutNotification
+        Screen.__init__(self,self.buttonsWithoutRun,self.actors,BLACK)
+
         """
         for i in range(60):
             self.addCommand(GREEN, 0, 0)
@@ -173,8 +191,10 @@ class MoveScreen(Screen):
         for coin in self.money:
             if newRobotRect.colliderect(coin.rect):
                 self.robot.money += coin.value
+                self.moneyCollected += coin.value
                 coin.fill()
-                self.money.remove(coin)
+                coin = None
+
         for wall in self.walls:
             if newRobotRect.colliderect(wall.rect):
                 canMove = False
@@ -182,15 +202,32 @@ class MoveScreen(Screen):
             canMove = False
         if canMove:
             self.robot.move(command.xMove, command.yMove)
+
+        #TEST IF YOU WON!
         elif newRobotRect.colliderect(self.goal):
-            print self.robot.money
+            self.clearCommands()
+            font2 = pygame.font.SysFont("Arial", 40)
             timeElapsed = (pygame.time.get_ticks() - self.startTime)/1000
-            self.robot.money += 1000.0/timeElapsed
-            print timeElapsed
-            print self.robot.money
+            winnings = 3000/timeElapsed
+            self.robot.money += winnings
+            winNotification = ScreenText("winlabel", "Level "+str(self.robot.level)+" Complete! \n Total Time: "+
+                str(timeElapsed) + "\n Time Bonus: "+ str(winnings) + "\n Money Collected: "+ str(self.moneyCollected)
+                + "\n Your Total Money: "+str(self.robot.money), 
+                pygame.Rect(WINDOWWIDTH/8, WINDOWHEIGHT/8,3*WINDOWWIDTH/4,3*WINDOWHEIGHT/4), font2)
+            self.actors.append(winNotification)
+            toBuildScreen = BuildButton("tobuildscreen", pygame.Rect(WINDOWWIDTH/8 + 10, 3*WINDOWHEIGHT/4, 3*WINDOWWIDTH/4 - 20, 1*WINDOWHEIGHT/8 - 10), BuildButton.clicked, self)
+            self.buttons.append(toBuildScreen)
+            self.robot.level += 1
+
+        #did you hit a wall?
         else:
             self.clearCommands()
-            self.robot.setPosition(self.startPosition[0], self.startPosition[1])
+            font3 = pygame.font.SysFont("Arial", 30)
+            self.notificationCreationTime = pygame.time.get_ticks()
+            wallHitNotif = ScreenText("hitwall", "Wall Hit!  10-second penalty", pygame.Rect(WINDOWWIDTH-225,60,200,50), font3)
+            self.startTime -= 10000
+            self.actors.append(wallHitNotif)
+            self.robot.move(command.xMove*-1, command.yMove*-1)
         command.doneRunning()
         time.sleep(self.robot.motorspeed)
 
@@ -200,18 +237,30 @@ class MoveScreen(Screen):
         self.commands = []
 
     def update(self):
+        if len(self.commands) >= 10:
+            self.run.image.fill(WHITE)
+            self.buttons.append(self.run)
+        else:
+            self.run.image.fill(BLACK)
+            self.buttons = self.buttonsWithoutRun
         if not self.runningThisScreen:
             self.runningThisScreen = True
             self.startTime = pygame.time.get_ticks()
         self.timeLabel.updateText("Time: " + str((pygame.time.get_ticks() - self.startTime)/1000))
-        for actor in self.actors: 
-            actor.update
         if self.runClicked:
+            self.run.image.fill(BLACK)
             if len(self.commands) > 0:
                 self.runCommands(self.commands[0])
                 self.commands = self.commands[1:]
             else:
                 self.runClicked = False
+        if self.notificationCreationTime > 0:
+            if pygame.time.get_ticks() - self.notificationCreationTime >= 3000:
+                self.actors[len(self.actors)-1].image.fill(BLACK)
+                self.actors = self.actorsWithoutNotification
+                self.notificationCreationTime = 0
+        
+
 
 
 

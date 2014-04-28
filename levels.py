@@ -35,15 +35,14 @@ class Money(planes.Plane):
 
 megawall = Wall("megawall", WHITE, pygame.Rect(0, WINDOWHEIGHT-WHworkable, WINDOWWIDTH, 5))
 
-w1 = Wall("w1", WHITE, pygame.Rect(WINDOWWIDTH/4, WINDOWHEIGHT - 3*WHworkable/4, 3*WINDOWWIDTH/4, 20))
-w2 = Wall("w2", WHITE, pygame.Rect(0, (WINDOWHEIGHT - WHworkable/2), 3*WINDOWWIDTH/4, 20))
-w3 = Wall("w3", WHITE, pygame.Rect(WINDOWWIDTH/4, WINDOWHEIGHT-WHworkable/4, 3*WINDOWWIDTH/4, 20))
+w1_1 = Wall("w1_1", WHITE, pygame.Rect(WINDOWWIDTH/4, WINDOWHEIGHT - 3*WHworkable/4, 3*WINDOWWIDTH/4, 20))
+w1_2 = Wall("w1_2", WHITE, pygame.Rect(0, (WINDOWHEIGHT - WHworkable/2), 3*WINDOWWIDTH/4, 20))
+w1_3 = Wall("w1_3", WHITE, pygame.Rect(WINDOWWIDTH/4, WINDOWHEIGHT-WHworkable/4, 3*WINDOWWIDTH/4, 20))
 level1goal = Wall("goal", RED, pygame.Rect(WINDOWWIDTH-120, WINDOWHEIGHT-WHworkable + 5, 120, (WINDOWHEIGHT-WHworkable)/2))
 level1start = (WINDOWWIDTH,WINDOWHEIGHT)
-level1walls = [megawall,w1,w2,w3, level1goal]
-m1 = Money("m1",20,BLUE, pygame.Rect(100, WINDOWHEIGHT-100, 20, 20))
-m2 = Money("m2",30,BLUE, pygame.Rect(100, WINDOWHEIGHT-300, 20, 20))
-m3 = Money("m3",30,BLUE, pygame.Rect(100, WINDOWHEIGHT-500, 20, 20))
-m5 = Money("m5",30,BLUE,pygame.Rect(100, WINDOWHEIGHT-400, 20, 20))
-m0 = Money("m0", 0, BLACK, pygame.Rect(0,0,0,0))
-level1money = [m5,m2,m3,m1, m0]
+level1walls = [megawall,w1_1,w1_2,w1_3, level1goal]
+m1_1 = Money("m1_1",20,BLUE, pygame.Rect(100, WINDOWHEIGHT-100, 20, 20))
+m1_2 = Money("m1_2",30,BLUE, pygame.Rect(100, WINDOWHEIGHT-350, 20, 20))
+m1_3 = Money("m1_3",30,BLUE, pygame.Rect(100, WINDOWHEIGHT-500, 20, 20))
+m1_4 = Money("m1_4",30,BLUE,pygame.Rect(WINDOWWIDTH-100, WINDOWHEIGHT-200, 20, 20))
+level1money = [m1_4,m1_2,m1_3,m1_1]

@@ -10,6 +10,8 @@ import planes.gui
 from screen import Screen
 from screen import Button
 from screen import DropZone
+import storeScreen1
+
 
 from moveScreen4 import MoveScreen
 from buildScreen1 import BuildScreen
@@ -22,6 +24,11 @@ BLUE = (0, 0, 255)
 
 WINDOWWIDTH = 1200
 WINDOWHEIGHT = 750
+
+scrleft = 50
+scrright = 1150
+scrtop = 50
+scrbottom = 700
 
 class StartButton(Button):
 	def __init__(self, label, im, rect, callback, model):
@@ -37,12 +44,6 @@ class HomeButton(Button):
 	def clicked(self, button_name):
 		self.model.currentscreen = self.model.homescreen
 
-class SettingsButton(Button):
-	def __init__(self, label, im, rect, callback,model):
-		Button.__init__(self, label, rect, callback, model)
-		self.image = pygame.image.load(im)
-	def clicked(self, button_name):
-		self.model.currentscreen = self.model.settingsscreen
 
 class TutorialButton(Button):
 	def __init__(self, label, im, rect, callback, model):
@@ -59,11 +60,18 @@ class titleRect(planes.Plane):
 		self.color = color
 		self.image = pygame.image.load(im)
 
-class Robot(DropZone):
+class BackButton(Button):
+    def __init__(self, label, im, rect, callback, model):
+        Button.__init__(self, label, rect, callback, model)
+        self.image = pygame.image.load(im)
+    def clicked(self, button_name):
+        self.model.toDash = True
+
+class Robot(planes.Plane):
     def __init__(self, name, rect, im):
-		DropZone.__init__(self, name, rect)
-		self.vx = 0.0
-		self.vy = 0.0
+		planes.Plane.__init__(self, name, rect, draggable=False, grab = False)
+		self.Xpos = rect.x
+		self.Ypos = rect.y
 		self.width = rect.width
 		self.height = rect.height
 		self.level = 1
@@ -74,20 +82,12 @@ class Robot(DropZone):
 		self.startX = rect.x
 		self.startY = rect.y
 		self.motorspeed = 0.4
+		self.bumper = 10
     
     def update(self):
         '''updates the actor's position and updates the rectangle object of the
         actor'''
-        self.Xpos += self.vx
-        self.Ypos += self.vy
         self.rect = pygame.Rect(self.Xpos, self.Ypos, self.width, self.height)
-
-    def dropped_upon(self, plane, coordinates):
-		planes.Plane.dropped_upon(self, plane, (coordinates[0]+self.Xpos, coordinates[1]+self.Ypos))
-		plane.moving = False
-		self.money -= plane.cost
-		self.upgrades.append(plane)
-		plane.applyUpgrade(self)
 
     def move(self, xMove, yMove):
     	self.Xpos += xMove*self.width
@@ -104,16 +104,18 @@ class RoboGame:
 		self.buildscreen =  BuildScreen(self.robot,self)
 		self.movescreen = MoveScreen(self.robot,self)
 		self.storescreen = StoreScreen(self.robot, self)
-		start = StartButton("start","startbut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),StartButton.clicked, self)
-		settings = SettingsButton("settings","setbut.png",pygame.Rect(WINDOWWIDTH/8,6*WINDOWHEIGHT/8 + 30,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),SettingsButton.clicked, self)
-		tutorial = TutorialButton("tutorial","tutbut.png",pygame.Rect(WINDOWWIDTH/8,5*WINDOWHEIGHT/8 + 20,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),TutorialButton.clicked, self)
-		home = HomeButton("home","homebut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),HomeButton.clicked, self)
-		tr = pygame.Rect(WINDOWWIDTH/8, WINDOWHEIGHT/8, 3*WINDOWWIDTH/4, 3*WINDOWHEIGHT/8)
-		self.homescreen = Screen([start,settings,tutorial],[titleRect("home.png",tr,WHITE)],BLACK)
-		self.settingsscreen = Screen([home,settings,tutorial],[titleRect("settings.png",tr,WHITE)],BLACK)
-		self.tutorialscreen = Screen([home,settings, tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
+
+		back = BackButton("back", "back_button.png", pygame.Rect(50,600,550,50), BackButton.clicked, self)
+
+		start = StartButton("start","start_button.png",pygame.Rect(650,50,500,300),StartButton.clicked, self)
+		tutorial = TutorialButton("tutorial","tutorial_button.png",pygame.Rect(650, 400, 500, 300),TutorialButton.clicked, self)
+		home = HomeButton("home","title_button.png",pygame.Rect(650,50,500,300),HomeButton.clicked, self)
+		tr = pygame.Rect(50, 50, 500, 575)
+		self.homescreen = Screen([start,tutorial, back],[titleRect("robogame_logo.png",tr,WHITE)],BLACK)
+		self.tutorialscreen = Screen([home, tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
 
 		self.currentscreen = self.homescreen
+		self.toDash = False
 
 """
 TODO
