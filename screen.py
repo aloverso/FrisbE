@@ -46,7 +46,6 @@ class DropZone(planes.Plane):
         self.thingsDroppedOnMe = []
 
     def dropped_upon(self, plane, coordinates):
-    	print (coordinates[0]+self.Xpos, coordinates[1]+self.Ypos)
         planes.Plane.dropped_upon(self, plane, (coordinates[0]+self.Xpos, coordinates[1]+self.Ypos))
         plane.moving = False
       	self.thingsDroppedOnMe.append(plane)
@@ -59,7 +58,8 @@ class DropDisplay(planes.Display):
 class ScreenText(planes.gui.Label):
 	def __init__(self,name,text,rect,font):
 		planes.Plane.__init__(self,name,rect,draggable=False, grab=False)
-		planes.gui.Label.__init__(self,name,text,rect,background_color=GREEN, text_color=BLACK)
+		self.background_color = (0,0,0,0)
+		planes.gui.Label.__init__(self,name,text,rect,self.background_color, WHITE)
 		self.font = font
 		# font is declared as the following: fontname (or whatever you call it) = pygame.font.SysFont("Arial", 40)
 		# it takes the font (Arial) and fontsize (40)
@@ -68,3 +68,7 @@ class ScreenText(planes.gui.Label):
 	
 	def updateText(self, text):
 		self.text = text
+
+	def updateColor(self, color):
+		#print color
+		self.text_color = color

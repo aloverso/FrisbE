@@ -13,7 +13,7 @@ from screen import DropDisplay
 
 import moveScreen3
 from roboGame1 import RoboGame
-#from ModSimGame1 import ModSimGame
+from ModSimGame1 import ModSimGame
 from MatSciGame import MatSciGame
 
 
@@ -69,19 +69,19 @@ class titleRect(planes.Plane):
 		self.image.fill(color)
 		self.rect = rect
 		self.color = color
-		#self.image = pygame.image.load(im)
-		self.image.fill(im)
+		self.image = pygame.image.load(im)
+		#self.image.fill(im)
 
 class Model:
 	def __init__(self):
-		robo = RoboButton("robogame", "RobotGameButton.png", pygame.Rect(50,50,250,300), RoboButton.clicked, self)
+		robo = RoboButton("robogame", "robowrangler_button.png", pygame.Rect(50,50,250,300), RoboButton.clicked, self)
 		modsim = ModSimButton("modsimbutton", "ModSimButton.png", pygame.Rect(50,400,250,300), ModSimButton.clicked, self)
 		matsci = MatSciButton("matscibutton", "MatSciButton.png", pygame.Rect(900,50,250,300), MatSciButton.clicked, self)
 		mechee = ModSimButton("mecheebutton", "DesignGame.png", pygame.Rect(900,400,250,300), ModSimButton.clicked, self)
 		tr = pygame.Rect(350,50,600,650)
-		self.dashboardScreen = Screen([robo, modsim, matsci, mechee], [titleRect(BLUE, tr, WHITE)], BLACK)
+		self.dashboardScreen = Screen([robo, modsim, matsci, mechee], [titleRect("frisbe_logo.png", tr, WHITE)], BLACK)
 		self.robogame = RoboGame()
-		self.modsimgame = MatSciGame()
+		self.modsimgame = ModSimGame()
 		self.matscigame = MatSciGame()
 		self.currentScreen = self.dashboardScreen
 		self.currentGame = None
