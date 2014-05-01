@@ -13,7 +13,7 @@ from screen import DropDisplay
 
 import moveScreen3
 from roboGame1 import RoboGame
-#from ModSimGame1 import ModSimGame
+from ModSimGame1 import ModSimGame
 from MatSciGame import MatSciGame
 
 
@@ -81,7 +81,7 @@ class Model:
 		tr = pygame.Rect(350,50,600,650)
 		self.dashboardScreen = Screen([robo, modsim, matsci, mechee], [titleRect(BLUE, tr, WHITE)], BLACK)
 		self.robogame = RoboGame()
-		self.modsimgame = MatSciGame()
+		self.modsimgame = ModSimGame()
 		self.matscigame = MatSciGame()
 		self.currentScreen = self.dashboardScreen
 		self.currentGame = None
