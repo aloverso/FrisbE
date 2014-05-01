@@ -76,8 +76,8 @@ class Robot(planes.Plane):
 		self.height = rect.height
 		self.level = 1
 		self.money = 100
-		#self.image = pygame.image.load(im)
-		self.image.fill(im)
+		self.image = pygame.image.load(im)
+		#self.image.fill(im)
 		self.upgrades = []
 		self.startX = rect.x
 		self.startY = rect.y
@@ -99,19 +99,19 @@ class Robot(planes.Plane):
 
 class RoboGame:
 	def __init__(self):
-		self.robot = Robot("robot", pygame.Rect(400,400,50,50), GREEN)
+		self.robot = Robot("robot", pygame.Rect(400,400,58,50), "robot_head.png")
 		self.purchases = []
 		self.buildscreen =  BuildScreen(self.robot,self)
 		self.movescreen = MoveScreen(self.robot,self)
 		self.storescreen = StoreScreen(self.robot, self)
 
-		back = BackButton("back", "back_button.png", pygame.Rect(50,600,550,50), BackButton.clicked, self)
+		back = BackButton("back", "back_button.png", pygame.Rect(50,650,550,50), BackButton.clicked, self)
 
 		start = StartButton("start","start_button.png",pygame.Rect(650,50,500,300),StartButton.clicked, self)
 		tutorial = TutorialButton("tutorial","tutorial_button.png",pygame.Rect(650, 400, 500, 300),TutorialButton.clicked, self)
 		home = HomeButton("home","title_button.png",pygame.Rect(650,50,500,300),HomeButton.clicked, self)
 		tr = pygame.Rect(50, 50, 500, 575)
-		self.homescreen = Screen([start,tutorial, back],[titleRect("robogame_logo.png",tr,WHITE)],BLACK)
+		self.homescreen = Screen([start,tutorial, back],[titleRect("robowrangler_logo.png",tr,WHITE)],BLACK)
 		self.tutorialscreen = Screen([home, tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
 
 		self.currentscreen = self.homescreen

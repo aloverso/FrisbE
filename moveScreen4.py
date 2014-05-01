@@ -45,38 +45,39 @@ BLUE = (0, 0, 255)
 class UpButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("up.png")
+        self.image = pygame.image.load("up_button.png")
     def clicked(self, button_name):
         if not self.model.runClicked:
-            self.model.addCommand("up.png", 0, -1)
+            self.model.addCommand("up_command.png", 0, -1)
 
 class DownButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("down.png")
+        self.image = pygame.image.load("down_button.png")
     def clicked(self, button_name):
         if not self.model.runClicked:
-            self.model.addCommand("down.png", 0, 1)
+            self.model.addCommand("down_command.png", 0, 1)
 
 class LeftButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("left.png")
+        self.image = pygame.image.load("left_button.png")
     def clicked(self, button_name):
         if not self.model.runClicked:
-            self.model.addCommand("left.png", -1, 0)
+            self.model.addCommand("left_command.png", -1, 0)
 
 class RightButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("right.png")
+        self.image = pygame.image.load("right_button.png")
     def clicked(self, button_name):
         if not self.model.runClicked:
-            self.model.addCommand("right.png", 1, 0)
+            self.model.addCommand("right_command.png", 1, 0)
 
 class ClearButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
+        self.image = pygame.image.load("clear_button.png")
     def clicked(self, button_name):
         if not self.model.runClicked:
             self.model.clearCommands()
@@ -84,8 +85,9 @@ class ClearButton(Button):
 class BackButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
+        self.image = pygame.image.load("delete_button.png")
     def clicked(self, button_name):
-        if not self.model.runClicked:
+        if len(self.model.commands) > 0 and not self.model.runClicked:
             commandToRemove = self.model.commands[len(self.model.commands)-1]
             commandToRemove.image.fill(BLACK)
             self.model.commands = self.model.commands[:len(self.model.commands)-1]
@@ -93,16 +95,18 @@ class BackButton(Button):
 class RunButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
+        self.im = pygame.image.load("run_button.png")
     def clicked(self, button_name):
         self.model.runClicked = True
 
 class BuildButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
+        self.image = pygame.image.load("back_button_med.png")
     def clicked(self, button_name):
+        self.model.robot.money -= self.model.moneyCollected
         self.model.game.currentscreen = self.model.game.buildscreen
         self.model.robot.setPosition(self.model.game.buildscreen.startPosition[0], self.model.game.buildscreen.startPosition[1])
-
 
 class Command(planes.Plane):
     def __init__(self, robot, im, xMove, yMove, rect, name):
@@ -133,10 +137,11 @@ class MoveScreen(Screen):
         down = DownButton("down",pygame.Rect(MOVEBUTTON_WIDTH+5,0,MOVEBUTTON_WIDTH,MOVEBUTTON_HEIGHT),DownButton.clicked, self)
         back = BackButton("back", pygame.Rect(0, MOVEBUTTON_HEIGHT*2 + 10,MOVEBUTTON_WIDTH, 25),BackButton.clicked, self)
         clear = ClearButton("clear", pygame.Rect(MOVEBUTTON_WIDTH+5, MOVEBUTTON_HEIGHT*2 + 10, MOVEBUTTON_WIDTH, 25),ClearButton.clicked, self)
-        self.run = RunButton("run", pygame.Rect(0, MOVEBUTTON_HEIGHT*2 + 10 + 30, MOVEBUTTON_WIDTH*2 + 5, 45), RunButton.clicked, self)
+        self.run = RunButton("run", pygame.Rect(0, MOVEBUTTON_HEIGHT*2 + 10 + 30, 105, 45), RunButton.clicked, self)
+        build = BuildButton("buildscreenbutton", pygame.Rect(WINDOWWIDTH-225, 110, 200, 50), BuildButton.clicked, self)
         self.robot = robot
         self.commands = []
-        self.buttonsWithoutRun = [up,down,left,right,back,clear]
+        self.buttonsWithoutRun = [up,down,left,right,back,clear, build]
         self.runClicked = False
         self.startPosition = (levels.level1start[0]-self.robot.width, levels.level1start[1]-self.robot.height)
         self.notificationCreationTime = 0
@@ -152,9 +157,10 @@ class MoveScreen(Screen):
 
         self.startTime = 0
         font1 = pygame.font.SysFont("Arial", 40)
-        self.timeLabel = ScreenText("timetext", "Time: "+str((pygame.time.get_ticks() - self.startTime)/1000.0), pygame.Rect(WINDOWWIDTH-225,0,200,50), font1)
+        self.moneyLabel = ScreenText("moneytext", "Money: "+str(self.robot.money), pygame.Rect(WINDOWWIDTH-225, 0, 200, 50), font1)
+        self.timeLabel = ScreenText("timetext", "Time: "+str((pygame.time.get_ticks() - self.startTime)/1000.0), pygame.Rect(WINDOWWIDTH-225,55,200,50), font1)
 
-        self.actorsWithoutNotification = [self.robot] + self.walls + self.money + [self.timeLabel]
+        self.actorsWithoutNotification = [self.robot] + self.walls + self.money + [self.timeLabel, self.moneyLabel]
         self.actors = self.actorsWithoutNotification
         Screen.__init__(self,self.buttonsWithoutRun,self.actors,BLACK)
 
@@ -224,7 +230,7 @@ class MoveScreen(Screen):
             self.clearCommands()
             font3 = pygame.font.SysFont("Arial", 30)
             self.notificationCreationTime = pygame.time.get_ticks()
-            wallHitNotif = ScreenText("hitwall", "Wall Hit!  10-second penalty", pygame.Rect(WINDOWWIDTH-225,60,200,50), font3)
+            wallHitNotif = ScreenText("hitwall", "Wall Hit!  10-second penalty", pygame.Rect(WINDOWWIDTH-225,165,200,50), font3)
             self.startTime -= 10000
             self.actors.append(wallHitNotif)
             self.robot.move(command.xMove*-1, command.yMove*-1)
@@ -238,7 +244,7 @@ class MoveScreen(Screen):
 
     def update(self):
         if len(self.commands) >= 10:
-            self.run.image.fill(WHITE)
+            self.run.image = pygame.image.load("run_button.png")
             self.buttons.append(self.run)
         else:
             self.run.image.fill(BLACK)
@@ -247,8 +253,10 @@ class MoveScreen(Screen):
             self.runningThisScreen = True
             self.startTime = pygame.time.get_ticks()
         self.timeLabel.updateText("Time: " + str((pygame.time.get_ticks() - self.startTime)/1000))
+        self.moneyLabel.updateText("Money: "+str(self.robot.money))
         if self.runClicked:
             self.run.image.fill(BLACK)
+            self.buttons = self.buttonsWithoutRun
             if len(self.commands) > 0:
                 self.runCommands(self.commands[0])
                 self.commands = self.commands[1:]
