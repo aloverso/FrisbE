@@ -13,7 +13,7 @@ from screen import DropDisplay
 
 import moveScreen3
 from roboGame1 import RoboGame
-#from ModSimGame1 import ModSimGame
+from ModSimGame1 import ModSimGame
 from MatSciGame import MatSciGame
 
 
@@ -81,7 +81,7 @@ class Model:
 		tr = pygame.Rect(WINDOWWIDTH/2-300,WINDOWHEIGHT/2 - 650/2,600,650)
 		self.dashboardScreen = Screen([robo, modsim, matsci, mechee], [titleRect("frisbe_logo.png", tr, WHITE)], (0,84,166))
 		self.robogame = RoboGame()
-		self.modsimgame = MatSciGame()
+		self.modsimgame = ModSimGame()
 		self.matscigame = MatSciGame()
 		self.currentScreen = self.dashboardScreen
 		self.currentGame = None
