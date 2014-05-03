@@ -46,6 +46,7 @@ class StartButton(Button):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
     def clicked(self, button_name):
+        self.model.game.movescreen = MoveScreen(self.model.robot, self.model.game)
         self.model.game.currentscreen = self.model.game.movescreen
         self.model.robot.setPosition(self.model.game.movescreen.startPosition[0], self.model.game.movescreen.startPosition[1])
 
@@ -65,6 +66,24 @@ class BackButton(Button):
     def clicked(self, button_name):
         self.model.game.currentscreen = self.model.game.homescreen
 
+class DefaultButton(Button):
+    def __init__(self, label, rect, callback, model):
+        Button.__init__(self, label, rect, callback, model)
+        self.image = pygame.image.load("default_button.png")
+    def clicked(self, button_name):
+        self.model.robot.motorspeed = self.model.robot.defaultMotorspeed
+        self.model.robot.bumper = self.model.robot.defaultBumper
+        for i in range(len(self.model.motorUpgradeIndicators)):
+            if i == 0:
+                self.model.motorUpgradeIndicators[i].on()
+            else:
+                self.model.motorUpgradeIndicators[i].off()
+        for i in range(len(self.model.bumperUpgradeIndicators)):
+            if i == 0:
+                self.model.bumperUpgradeIndicators[i].on()
+            else:
+                self.model.bumperUpgradeIndicators[i].off()
+
 class UpgradeZone(DropZone):
     def __init__(self, name, rect, robot, model):
         DropZone.__init__(self,name,rect)
@@ -72,10 +91,8 @@ class UpgradeZone(DropZone):
         self.model = model
         self.image = pygame.image.load("robot.png")
     def dropped_upon(self, plane, coordinates):
-        print plane.origRect
         planes.Plane.dropped_upon(self, plane, (plane.Xpos, plane.Ypos))
         plane.moving = False
-        self.robot.money -= plane.cost
         self.robot.upgrades.append(plane)
         if isinstance(plane, storeScreen1.MotorUpgrade):
             self.robot.motorspeed = plane.value
@@ -86,7 +103,11 @@ class UpgradeZone(DropZone):
                     self.model.motorUpgradeIndicators[i].off()
         if isinstance(plane, storeScreen1.BumperUpgrade):
             self.robot.bumper = plane.value
-        #plane.rect = plane.origRect
+            for i in range(len(self.model.bumperUpgradeIndicators)):
+                if i == plane.order:
+                    self.model.bumperUpgradeIndicators[i].on()
+                else:
+                    self.model.bumperUpgradeIndicators[i].off()
 
 class UpgradeIndicator(planes.Plane):
     def __init__(self,name,rect):
@@ -107,18 +128,29 @@ class BuildScreen(Screen):
         self.robot = robot
         self.startPosition = (400,400)
         self.game = game
-        self.upgradezone = UpgradeZone("upgradezone", pygame.Rect(350,100,360,590), self.robot, self)
+        self.upgradezone = UpgradeZone("upgradezone", pygame.Rect(410,70,360,590), self.robot, self)
         store = StoreButton("storebutton", pygame.Rect(scrleft, scrbottom-100, 200, 100), "store_button.png", StoreButton.clicked, self)
         start = StartButton("movescreen", pygame.Rect(scrright-200, scrbottom-100, 200, 100), "start_game_button.png", StartButton.clicked, self)
         back = BackButton("backbutton", pygame.Rect(WINDOWWIDTH-225, 60, 200, 50), BackButton.clicked, self)
-        buttons = [start, store, back]
+        defaultbutt = DefaultButton("defaultbutton", pygame.Rect(WINDOWWIDTH-225, 500, 200, 50), DefaultButton.clicked, self)
+        buttons = [start, store, back, defaultbutt]
 
-        self.motorUpgradeIndicators = [UpgradeIndicator("m0", pygame.Rect(1000, 200, 20, 20)), UpgradeIndicator("m1", pygame.Rect(1030, 200, 20, 20)), UpgradeIndicator("m2", pygame.Rect(1060, 200, 20, 20)), UpgradeIndicator("m3", pygame.Rect(1090, 200, 20, 20))]
+        font0 = pygame.font.SysFont("Arial", 18)
+        self.motorLevelLabel = ScreenText("mll", "Motor Upgrade Level", pygame.Rect(950, 210, 200, 50), font0)
+        self.motorUpgradeIndicators = [UpgradeIndicator("m0", pygame.Rect(1000, 250, 20, 20)), UpgradeIndicator("m1", pygame.Rect(1030, 250, 20, 20)), UpgradeIndicator("m2", pygame.Rect(1060, 250, 20, 20)), UpgradeIndicator("m3", pygame.Rect(1090, 250, 20, 20))]
         for i in range(len(self.motorUpgradeIndicators)):
             if i == 0:
                 self.motorUpgradeIndicators[i].on()
             else:
-                self.motorUpgradeIndicators[i].off()  
+                self.motorUpgradeIndicators[i].off()
+
+        self.bumperLevelLabel = ScreenText("bll", "Bumper Upgrade Level", pygame.Rect(950, 280, 200, 50), font0)
+        self.bumperUpgradeIndicators = [UpgradeIndicator("b0", pygame.Rect(1000, 320, 20, 20)), UpgradeIndicator("b1", pygame.Rect(1030, 320, 20, 20)), UpgradeIndicator("b2", pygame.Rect(1060, 320, 20, 20)), UpgradeIndicator("b3", pygame.Rect(1090, 320, 20, 20))]
+        for i in range(len(self.bumperUpgradeIndicators)):
+            if i == 0:
+                self.bumperUpgradeIndicators[i].on()
+            else:
+                self.bumperUpgradeIndicators[i].off()  
 
         font1 = pygame.font.SysFont("Arial", 40)
         self.moneyLabel = ScreenText("moneytext", "Money: "+str(self.robot.money), pygame.Rect(WINDOWWIDTH-225, 0, 200, 50), font1)
@@ -126,11 +158,11 @@ class BuildScreen(Screen):
         self.motorLabel.image = pygame.image.load("motorupgrade_label.png")
         self.bumperLabel = planes.Plane("bumperLabel", pygame.Rect(scrleft, scrtop+60+50 + 30, 170, 50), draggable=False, grab=False)
         self.bumperLabel.image = pygame.image.load("bumperupgrade_label.png")
-
-        self.actors = [self.upgradezone, self.motorLabel, self.bumperLabel, self.moneyLabel] + self.game.purchases + self.motorUpgradeIndicators
+        self.labels = [self.motorLabel, self.bumperLabel, self.moneyLabel, self.motorLevelLabel, self.bumperLevelLabel]
+        self.actors = [self.upgradezone] + self.labels + self.game.purchases + self.motorUpgradeIndicators + self.bumperUpgradeIndicators
         self.startPosition = (200,200)
         Screen.__init__(self,buttons,self.actors,BLACK)
 
     def update(self):
-        self.actors = [self.upgradezone, self.motorLabel, self.bumperLabel, self.moneyLabel] + self.game.purchases + self.motorUpgradeIndicators
+        self.actors = [self.upgradezone] + self.labels + self.game.purchases + self.motorUpgradeIndicators + self.bumperUpgradeIndicators
         self.moneyLabel.updateText("Money: "+str(self.robot.money))

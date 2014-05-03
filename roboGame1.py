@@ -82,7 +82,9 @@ class Robot(planes.Plane):
 		self.startX = rect.x
 		self.startY = rect.y
 		self.motorspeed = 0.4
+		self.defaultMotorspeed = 0.4
 		self.bumper = 10
+		self.defaultBumper = 10
     
     def update(self):
         '''updates the actor's position and updates the rectangle object of the
@@ -90,8 +92,8 @@ class Robot(planes.Plane):
         self.rect = pygame.Rect(self.Xpos, self.Ypos, self.width, self.height)
 
     def move(self, xMove, yMove):
-    	self.Xpos += xMove*self.width
-    	self.Ypos += yMove*self.height
+    	self.Xpos += xMove
+    	self.Ypos += yMove
 
     def setPosition(self,x,y):
 		self.Xpos = x
@@ -105,21 +107,14 @@ class RoboGame:
 		self.movescreen = MoveScreen(self.robot,self)
 		self.storescreen = StoreScreen(self.robot, self)
 
-		back = BackButton("back", "back_button.png", pygame.Rect(50,650,550,50), BackButton.clicked, self)
+		back = BackButton("back", "back_button_long.png", pygame.Rect(50,650,500,50), BackButton.clicked, self)
 
 		start = StartButton("start","start_button.png",pygame.Rect(650,50,500,300),StartButton.clicked, self)
 		tutorial = TutorialButton("tutorial","tutorial_button.png",pygame.Rect(650, 400, 500, 300),TutorialButton.clicked, self)
 		home = HomeButton("home","title_button.png",pygame.Rect(650,50,500,300),HomeButton.clicked, self)
 		tr = pygame.Rect(50, 50, 500, 575)
 		self.homescreen = Screen([start,tutorial, back],[titleRect("robowrangler_logo.png",tr,WHITE)],BLACK)
-		self.tutorialscreen = Screen([home, tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
+		self.tutorialscreen = Screen([home, tutorial],[titleRect("robo_tutorial.png",tr,WHITE)],BLACK)
 
 		self.currentscreen = self.homescreen
 		self.toDash = False
-
-"""
-TODO
-
-- Why is the upgrade not landing on the robot
-- How to print strings/numbers to screen (i.e. display money value)  <- need this for most games
-"""

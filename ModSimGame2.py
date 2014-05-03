@@ -42,13 +42,13 @@ class ModSimGame:
     def __init__(self):
         self.modsimscreen = ModSimScreen(self)
 
-        back = BackButton("back", "back_button.png", pygame.Rect(50,600,550,50), BackButton.clicked, self)
+        back = BackButton("back", "back_button_long.png", pygame.Rect(50,600,550,50), BackButton.clicked, self)
         start = StartButton("start","start_button.png",pygame.Rect(650,50,500,300),StartButton.clicked, self)
         tutorial = TutorialButton("tutorial","tutorial_button.png",pygame.Rect(650, 400, 500, 300),TutorialButton.clicked, self)
         home = HomeButton("home","title_button.png",pygame.Rect(650,50,500,300),HomeButton.clicked, self)
         tr = pygame.Rect(50, 50, 500, 575)
         # MAKE LOGO 500 by 575
-        self.homescreen = Screen([start,tutorial, back],[titleRect("robogame_logo.png",tr,WHITE)],BLACK)
+        self.homescreen = Screen([start,tutorial, back],[titleRect("modsim_logo.png",tr,WHITE)],BLACK)
         #self.tutorialscreen = Screen([home, tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
         self.tutorialscreen = Screen([],[titleRect("tut.png",tr,WHITE)],BLACK)
 
@@ -253,9 +253,13 @@ class ModSimScreen(Screen):
 
         #deltascallops = A0*((1-(A0/Ca)))*(1-(R0/Rc))*betaA
 
-        deltaplankton = P0*((1-(P0/Cp))*(-1 + (A0/Ac)))*betaP
+        #deltaplankton = P0*((1-(P0/Cp))*(-1 + (A0/Ac)))*betaP
+        #deltascallops = A0*(1-A0/Ca)*(-1 + (P0/Pc))*betaA
 
-        deltascallops = A0*((1-(A0/Ca))*((P0/Pc)-(R0/Rc)))*betaA
+        deltaplankton = P0*(1-P0/Cp)*(betaP-.2)
+        deltascallops = A0*(1-A0/Ca)*(-betaA*P0 + .1)
+
+        #deltascallops = A0*((1-(A0/Ca))*((P0/Pc)-(R0/Rc)))*betaA
         
         #deltascallops = A0*(1-(A0/Ca))*(-1+(P0/Pc))*(-1 + (R0/Rc))*betaA
         
@@ -264,8 +268,6 @@ class ModSimScreen(Screen):
         deltarays = R0*(1-(R0/Cr))*(-1 +(A0/Ac))*(-1+(S0/Sc))*betaR
         deltasharks = S0*(1-S0/Cs)*(-1+(R0/Rc))*betaS
 
-        # deltaplankton = P0*(betaP-.2*S0)
-        # deltascallops = -A0*(-betaA*P0 + .1)
 
         P1 = P0 + deltaplankton
         A1 = A0 + deltascallops

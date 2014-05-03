@@ -74,12 +74,12 @@ class titleRect(planes.Plane):
 
 class Model:
 	def __init__(self):
-		robo = RoboButton("robogame", "robowrangler_button.png", pygame.Rect(50,50,250,300), RoboButton.clicked, self)
-		modsim = ModSimButton("modsimbutton", "ModSimButton.png", pygame.Rect(50,400,250,300), ModSimButton.clicked, self)
-		matsci = MatSciButton("matscibutton", "MatSciButton.png", pygame.Rect(900,50,250,300), MatSciButton.clicked, self)
-		mechee = ModSimButton("mecheebutton", "DesignGame.png", pygame.Rect(900,400,250,300), ModSimButton.clicked, self)
-		tr = pygame.Rect(350,50,600,650)
-		self.dashboardScreen = Screen([robo, modsim, matsci, mechee], [titleRect("frisbe_logo.png", tr, WHITE)], BLACK)
+		robo = RoboButton("robogame", "robowrangler_button.png", pygame.Rect(25,50,250,300), RoboButton.clicked, self)
+		modsim = ModSimButton("modsimbutton", "modsim_logo_button.png", pygame.Rect(25,400,250,300), ModSimButton.clicked, self)
+		matsci = MatSciButton("matscibutton", "matsci_logo_button.png", pygame.Rect(925,50,250,300), MatSciButton.clicked, self)
+		mechee = ModSimButton("mecheebutton", "gearup_logo_button.png", pygame.Rect(925,400,250,300), ModSimButton.clicked, self)
+		tr = pygame.Rect(WINDOWWIDTH/2-300,WINDOWHEIGHT/2 - 650/2,600,650)
+		self.dashboardScreen = Screen([robo, modsim, matsci, mechee], [titleRect("frisbe_logo.png", tr, WHITE)], (0,84,166))
 		self.robogame = RoboGame()
 		self.modsimgame = ModSimGame()
 		self.matscigame = MatSciGame()
@@ -122,7 +122,6 @@ if __name__ == "__main__":
 		events = pygame.event.get()
 		for event in events:
 			if event.type == pygame.QUIT:
-			    print("got pygame.QUIT, terminating")
 			    raise SystemExit
 		if model.inGame:
 			model.currentGame.currentscreen.update()
