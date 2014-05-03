@@ -59,8 +59,7 @@ class ScreenText(planes.gui.Label):
 	def __init__(self,name,text,rect,font):
 		planes.Plane.__init__(self,name,rect,draggable=False, grab=False)
 		self.background_color = (0,0,0,0)
-		planes.gui.Label.__init__(self,name,text,rect,self.background_color, WHITE)
-		self.font = font
+		planes.gui.Label.__init__(self,name,text,rect,GREEN, WHITE, font)
 		# font is declared as the following: fontname (or whatever you call it) = pygame.font.SysFont("Arial", 40)
 		# it takes the font (Arial) and fontsize (40)
 		# we should stick to Arial probably because pygame doesn't support many fonts and it looks nice

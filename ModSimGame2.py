@@ -42,15 +42,6 @@ class ModSimGame:
     def __init__(self):
         self.modsimscreen = ModSimScreen(self)
 
-        # start = StartButton("start","startbut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),StartButton.clicked, self)
-        # settings = SettingsButton("settings","setbut.png",pygame.Rect(WINDOWWIDTH/8,6*WINDOWHEIGHT/8 + 30,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),SettingsButton.clicked, self)
-        # tutorial = TutorialButton("tutorial","tutbut.png",pygame.Rect(WINDOWWIDTH/8,5*WINDOWHEIGHT/8 + 20,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),TutorialButton.clicked, self)
-        # home = HomeButton("home","homebut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),HomeButton.clicked, self)
-        # tr = pygame.Rect(WINDOWWIDTH/8, WINDOWHEIGHT/8, 3*WINDOWWIDTH/4, 3*WINDOWHEIGHT/8)
-        # self.homescreen = Screen([start,settings,tutorial],[titleRect("home.png",tr,WHITE)],BLACK)
-        # self.settingsscreen = Screen([home,settings,tutorial],[titleRect("settings.png",tr,WHITE)],BLACK)
-        # self.tutorialscreen = Screen([home,settings, tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
-
         back = BackButton("back", "back_button.png", pygame.Rect(50,600,550,50), BackButton.clicked, self)
         start = StartButton("start","start_button.png",pygame.Rect(650,50,500,300),StartButton.clicked, self)
         tutorial = TutorialButton("tutorial","tutorial_button.png",pygame.Rect(650, 400, 500, 300),TutorialButton.clicked, self)
@@ -109,50 +100,9 @@ class BackButton(Button):
 
 
 
-# class StartButton(Button):
-#     def __init__(self, label, im, rect, callback, model):
-#         Button.__init__(self, label, rect, callback, model)
-#         self.image = pygame.image.load(im)
-#     def clicked(self, button_name):
-#         self.model.currentscreen = self.model.modsimscreen
-
-
-# class HomeButton(Button):
-#     def __init__(self, label, im, rect, callback, model):
-#         Button.__init__(self, label, rect, callback, model)
-#         self.image = pygame.image.load(im)
-#     def clicked(self, button_name):
-#         self.model.currentscreen = self.model.homescreen
-
-
-# class SettingsButton(Button):
-#     def __init__(self, label, im, rect, callback,model):
-#         Button.__init__(self, label, rect, callback, model)
-#         self.image = pygame.image.load(im)
-#     def clicked(self, button_name):
-#         self.model.currentscreen = self.model.settingsscreen
-
-
-# class TutorialButton(Button):
-#     def __init__(self, label, im, rect, callback, model):
-#         Button.__init__(self, label, rect, callback, model)
-#         self.image = pygame.image.load(im)
-#     def clicked(self, button_name):
-#         self.model.currentscreen = self.model.tutorialscreen
-
-
-# class titleRect(planes.Plane):
-#     def __init__(self, im, rect, color):
-#         planes.Plane.__init__(self,"title",rect,draggable=False, grab=False)
-#         self.image.fill(color)
-#         self.rect = rect
-#         self.color = color
-#         self.image = pygame.image.load(im)
-
-
-
 class ModSimScreen(Screen):
     def __init__(self,gamemodel):
+
         self.gamemodel = gamemodel
         self.buttons = []
         self.actors = []
@@ -160,15 +110,13 @@ class ModSimScreen(Screen):
         self.howManySharks = 0
         self.howManyScallops = 0
         self.howManyPlankton = 0
-        self.howManyFishermen = 0
-        self.howManyHurricanes = 0
+
 
         self.rayOffset = 0
         self.sharkOffset = 0
         self.scallopOffset = 0
         self.planktonOffset = 0
-        self.fishermanOffset = 0
-        self.hurricaneOffset = 0
+
         self.timesteps = 0
 
         font1 = pygame.font.SysFont("Arial", 20)
@@ -182,14 +130,12 @@ class ModSimScreen(Screen):
         self.numplanktonLabel = ScreenText("planktontext", "Plankton: "+str(self.howManyPlankton), pygame.Rect(410,0,100,40), font1)
         self.changeplanktonLabel = ScreenText("changeplanktontext", "Change: "+str(self.howManyPlankton), pygame.Rect(410,40,100,40), font1)
 
-        buttonReset = ResetButton("reset", "timestep_button.png", pygame.Rect(8*WINDOWWIDTH/10-40,8*WINDOWHEIGHT/10-30, 2*WINDOWWIDTH/10, WINDOWHEIGHT/10), ResetButton.clicked, self)
+        buttonReset = ResetButton("reset", "hurricane.jpg", pygame.Rect(8*WINDOWWIDTH/10-40,8*WINDOWHEIGHT/10-30, 2*WINDOWWIDTH/10, WINDOWHEIGHT/10), ResetButton.clicked, self)
         button0 = TimeStepButton("time", "timestep_button.png", pygame.Rect(8*WINDOWWIDTH/10-40,7*WINDOWHEIGHT/10-40, 2*WINDOWWIDTH/10, WINDOWHEIGHT/10), TimeStepButton.clicked, self)
         button1 = RayButton("ray","ray.jpg",pygame.Rect(8*WINDOWWIDTH/10-30,WINDOWHEIGHT/10,WINDOWWIDTH/10,WINDOWHEIGHT/10),RayButton.clicked, self)
         button2 = SharkButton("shark","shark.jpg",pygame.Rect(9*WINDOWWIDTH/10-20,WINDOWHEIGHT/10,WINDOWWIDTH/10,WINDOWHEIGHT/10),SharkButton.clicked, self)
         button3 = ScallopButton("scallop", "scallop.jpg", pygame.Rect(8*WINDOWWIDTH/10-30,2*WINDOWHEIGHT/10, WINDOWWIDTH/10, WINDOWHEIGHT/10), ScallopButton.clicked, self)
         button4 = PlanktonButton("plankton", "plankton.jpeg", pygame.Rect(9*WINDOWWIDTH/10-20, 2*WINDOWHEIGHT/10, WINDOWWIDTH/10, WINDOWHEIGHT/10), PlanktonButton.clicked, self)
-        button5 = FishermanButton("fisherman", "fisherman.jpg", pygame.Rect(8*WINDOWWIDTH/10-30, 3*WINDOWHEIGHT/10, WINDOWWIDTH/10, WINDOWHEIGHT/10), FishermanButton.clicked, self)                            
-        button6 = HurricaneButton("hurricane", "hurricane.jpg", pygame.Rect(9*WINDOWWIDTH/10-20, 3*WINDOWHEIGHT/10, WINDOWWIDTH/10, WINDOWHEIGHT/10), HurricaneButton.clicked, self)
         
         ###########
         buttonback = GBackButton("back", "back_button_ingame.png", pygame.Rect(8*WINDOWWIDTH/10-40, 9*WINDOWHEIGHT/10-20, 2*WINDOWWIDTH/10, WINDOWHEIGHT/10), BackButton.clicked, self)
@@ -201,8 +147,7 @@ class ModSimScreen(Screen):
         self.buttons.append(button2)
         self.buttons.append(button3)
         self.buttons.append(button4)
-        self.buttons.append(button5)
-        self.buttons.append(button6)
+
         self.actors.append(self.timeLabel)
         self.actors.append(self.numrayLabel)
         self.actors.append(self.changerayLabel)
@@ -234,15 +179,22 @@ class ModSimScreen(Screen):
         self.sharkOffset = 0
         self.scallopOffset = 0
         self.planktonOffset = 0
-        self.fishermanOffset = 0
-        self.hurricaneOffset = 0
+
 
         self.howManyRays = 0
         self.howManySharks = 0
         self.howManyScallops = 0
         self.howManyPlankton = 0
-        self.howManyFishermen = 0
-        self.howManyHurricanes = 0
+
+        self.numrayLabel.updateText("Rays: " + str(self.howManyRays))
+        self.changerayLabel.updateText("Change: " + str(0))
+        self.numsharkLabel.updateText("Sharks: " + str(self.howManySharks))
+        self.changesharkLabel.updateText("Change: " + str(0))
+        self.numscallopLabel.updateText("Scallops: " + str(self.howManyScallops))
+        self.changescallopLabel.updateText("Change: " + str(0))
+        self.numplanktonLabel.updateText("Plankton: " + str(self.howManyPlankton))
+        self.changeplanktonLabel.updateText("Change: " + str(0))
+
         self.timesteps = 0
         print 'reset '
 
@@ -283,11 +235,11 @@ class ModSimScreen(Screen):
 
         # Ac = 60000
         # Rc = 50000
-        Pc = 100000
-        Ac = 100000
-        Rc = 20000
+        Pc = 10000
+        Ac = 10000
+        Rc = 10000
         #Sc = 1100
-        Sc = 11000
+        Sc = 10000
 
         # betaA = .12
         # betaR = .11
@@ -300,11 +252,20 @@ class ModSimScreen(Screen):
         betaS = .13
 
         #deltascallops = A0*((1-(A0/Ca)))*(1-(R0/Rc))*betaA
-        deltaplankton = P0*((1-(P0/Cp)))*(-1 + (A0/Ac))*betaP
-        #deltascallops = A0*(1-(A0/Ca))*(((P0/Pc)-(R0/Rc))*betaA
-        deltascallops = A0*(1-(A0/Ca))*(-1+(P0/Pc))*(-1 + (R0/Rc))*betaA
-        deltarays = R0*(1-(R0/Cr))*((A0/Ac)-(S0/Sc))*betaR
+
+        deltaplankton = P0*((1-(P0/Cp))*(-1 + (A0/Ac)))*betaP
+
+        deltascallops = A0*((1-(A0/Ca))*((P0/Pc)-(R0/Rc)))*betaA
+        
+        #deltascallops = A0*(1-(A0/Ca))*(-1+(P0/Pc))*(-1 + (R0/Rc))*betaA
+        
+
+        #deltarays = R0*(1-(R0/Cr))*((A0/Ac)-(S0/Sc))*betaR
+        deltarays = R0*(1-(R0/Cr))*(-1 +(A0/Ac))*(-1+(S0/Sc))*betaR
         deltasharks = S0*(1-S0/Cs)*(-1+(R0/Rc))*betaS
+
+        # deltaplankton = P0*(betaP-.2*S0)
+        # deltascallops = -A0*(-betaA*P0 + .1)
 
         P1 = P0 + deltaplankton
         A1 = A0 + deltascallops
@@ -317,16 +278,13 @@ class ModSimScreen(Screen):
         self.sharkOffset = 0
         self.scallopOffset = 0
         self.planktonOffset = 0
-        self.fishermanOffset = 0
-        self.hurricaneOffset = 0
+
 
         self.howManyRays = int(R1/5000)
         #self.howManySharks = int(S1/500)
         self.howManySharks = int(S1/5000)
         self.howManyScallops = int(A1/5000)
         self.howManyPlankton = int(P1/5000)
-        self.howManyFishermen = 0
-        self.howManyHurricanes = 0
 
 
         self.changeInRays = (self.howManyRays-rays_t_minus_1)
@@ -368,19 +326,13 @@ class ModSimScreen(Screen):
         print 'plankton ' + str(self.howManyPlankton)
 
 
-        #equations in for loops
-        #self.actors.append(Ray("rayA"+str(self.howManyRays), pygame.Rect(100,100+self.rayOffset,10,10), "ray.jpg", self))
-        #self.howManyRays+=1
-        #print 'rays ' + str(self.howManyRays)
-        #self.rayOffset += 10
-
 
 class ResetButton(Button):
     def __init__(self, label, im, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
         #self.image = pygame.image.load(im)
-        #self.image = pygame.transform.scale(pygame.image.load(im), (50,10))
-        self.image.fill((255,10,75))
+        self.image = pygame.transform.scale(pygame.image.load(im), (240,75))
+        #self.image.fill((255,10,75))
 
     def clicked(self, button_name):
         self.model.reset()
@@ -390,7 +342,6 @@ class TimeStepButton(Button):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
         #self.image = pygame.transform.scale(pygame.image.load(im), (50,10))
-        #self.image.fill((100,10,75))
 
     def clicked(self, button_name):
         self.model.timesteps +=1
@@ -471,34 +422,6 @@ class PlanktonButton(Button):
 
 
 
-class FishermanButton(Button):
-    def __init__(self, label, im, rect, callback, model):
-        Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.transform.scale(pygame.image.load(im), (WINDOWWIDTH/10,WINDOWHEIGHT/10))
-       
-    def clicked(self, button_name):
-        self.model.howManyFishermen +=1 
-     
-        self.model.actors.append(Fisherman("fishermanA"+str(self.model.howManyFishermen), pygame.Rect(580,100+self.model.fishermanOffset,10,10), "fisherman.jpg",self.model))
-        self.model.fishermanOffset += 10 
-        print 'fishermen ' + str(self.model.howManyFishermen)
-
-
-
-class HurricaneButton(Button):
-    def __init__(self, label, im, rect, callback, model):
-        Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.transform.scale(pygame.image.load(im), (WINDOWWIDTH/10,WINDOWHEIGHT/10))
-       
-    def clicked(self, button_name):
-        self.model.howManyHurricanes +=1 
-   
-        self.model.actors.append(Hurricane("hurricaneA"+str(self.model.howManyHurricanes), pygame.Rect(700,100+self.model.hurricaneOffset,10,10), "hurricane.jpg",self.model))
-        self.model.hurricaneOffset += 10   
-        print 'hurricane ' + str(self.model.howManyHurricanes)
-
-
-
 class Ray(planes.Plane):
     def __init__(self, name, rect, im, model, draggable = False, grab = True):
         planes.Plane.__init__(self, name, rect, draggable, grab)
@@ -574,39 +497,4 @@ class Plankton(planes.Plane):
             self.model.howManyPlankton -=1  
 
 
-
-class Fisherman(planes.Plane):
-    def __init__(self, name, rect, im, model, draggable = False, grab = True):
-        planes.Plane.__init__(self, name, rect, draggable, grab)
-
-        self.image = pygame.transform.scale(pygame.image.load(im), (10,10))
-        self.Xpos = rect.x
-        self.Ypos = rect.y
-        self.model = model
-
-    def clicked(self, button_name):
-        names = [actor.name for actor in self.model.actors]
-        if self.name in names:
-            index = names.index(self.name)
-            del(self.model.actors[index])
-            self.model.fishermanOffset -= 10
-            self.model.howManyFishermen -=1  
-
-
-
-class Hurricane(planes.Plane):
-    def __init__(self, name, rect, im, model, draggable = False, grab = True):
-        planes.Plane.__init__(self, name, rect, draggable, grab)
-
-        self.image = pygame.transform.scale(pygame.image.load(im), (10,10))
-        self.Xpos = rect.x
-        self.Ypos = rect.y
-        self.model = model
-
-    def clicked(self, button_name):
-        names = [actor.name for actor in self.model.actors]
-        if self.name in names:
-            index = names.index(self.name)
-            del(self.model.actors[index])
-            self.model.hurricaneOffset -= 10
-            self.model.howManyHurricanes -=1  
+ 

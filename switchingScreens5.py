@@ -13,7 +13,7 @@ from screen import DropDisplay
 
 import moveScreen3
 from roboGame1 import RoboGame
-from ModSimGame1 import ModSimGame
+from ModSimGame2 import ModSimGame
 from MatSciGame import MatSciGame
 
 
