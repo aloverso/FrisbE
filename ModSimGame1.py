@@ -51,7 +51,7 @@ class ModSimGame:
         # self.settingsscreen = Screen([home,settings,tutorial],[titleRect("settings.png",tr,WHITE)],BLACK)
         # self.tutorialscreen = Screen([home,settings, tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
 
-        back = BackButton("back", "back_button.png", pygame.Rect(50,600,550,50), BackButton.clicked, self)
+        back = BackButton("back", "back_button_big.png", pygame.Rect(50,600,550,50), BackButton.clicked, self)
         start = StartButton("start","start_button.png",pygame.Rect(650,50,500,300),StartButton.clicked, self)
         tutorial = TutorialButton("tutorial","tutorial_button.png",pygame.Rect(650, 400, 500, 300),TutorialButton.clicked, self)
         home = HomeButton("home","title_button.png",pygame.Rect(650,50,500,300),HomeButton.clicked, self)

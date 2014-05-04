@@ -15,6 +15,7 @@ import moveScreen3
 from roboGame1 import RoboGame
 from ModSimGame1 import ModSimGame
 from MatSciGame import MatSciGame
+from GameReal import MechEEgame
 
 
 
@@ -60,7 +61,7 @@ class MechEEButton(Button):
 		#self.image.fill(im)
 		self.image = pygame.image.load(im)
 	def clicked(self, button_name):
-		self.model.currentGame = self.model.matscigame
+		self.model.currentGame = self.model.MechEEgame
 		self.model.inGame = True
 
 class titleRect(planes.Plane):
@@ -77,12 +78,13 @@ class Model:
 		robo = RoboButton("robogame", "robowrangler_button.png", pygame.Rect(25,50,250,300), RoboButton.clicked, self)
 		modsim = ModSimButton("modsimbutton", "modsim_logo_button.png", pygame.Rect(25,400,250,300), ModSimButton.clicked, self)
 		matsci = MatSciButton("matscibutton", "matsci_logo_button.png", pygame.Rect(925,50,250,300), MatSciButton.clicked, self)
-		mechee = ModSimButton("mecheebutton", "gearup_logo_button.png", pygame.Rect(925,400,250,300), ModSimButton.clicked, self)
+		mechee = MechEEButton("mecheebutton", "gearup_logo_button.png", pygame.Rect(925,400,250,300), ModSimButton.clicked, self)
 		tr = pygame.Rect(WINDOWWIDTH/2-300,WINDOWHEIGHT/2 - 650/2,600,650)
 		self.dashboardScreen = Screen([robo, modsim, matsci, mechee], [titleRect("frisbe_logo.png", tr, WHITE)], (0,84,166))
 		self.robogame = RoboGame()
 		self.modsimgame = ModSimGame()
 		self.matscigame = MatSciGame()
+		self.MechEEgame = MechEEgame()
 		self.currentScreen = self.dashboardScreen
 		self.currentGame = None
 		self.inGame = False

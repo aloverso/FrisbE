@@ -11,6 +11,7 @@ from screen import Screen
 from screen import Button
 from screen import DropZone
 
+from playScreen import playScreen
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 WHITE = (255, 255, 255)
@@ -24,7 +25,7 @@ class StartButton(Button):
 		Button.__init__(self, label, rect, callback, model)
 		self.image = pygame.image.load(im)
 	def clicked(self, button_name):
-		self.model.currentscreen = self.model.startScreen
+		self.model.currentscreen = self.model.playScreen
 
 class HomeButton(Button):
 	def __init__(self, label, im, rect, callback, model):
@@ -33,24 +34,12 @@ class HomeButton(Button):
 	def clicked(self, button_name):
 		self.model.currentscreen = self.model.homescreen
 
-class SettingsButton(Button):
-	def __init__(self, label, im, rect, callback,model):
-		Button.__init__(self, label, rect, callback, model)
-		self.image = pygame.image.load(im)
-	def clicked(self, button_name):
-		self.model.currentscreen = self.model.settingsscreen
-
-class TutorialButton(Button):
-	def __init__(self, label, im, rect, callback, model):
-		Button.__init__(self, label, rect, callback, model)
-		self.image = pygame.image.load(im)
-	def clicked(self, button_name):
-		self.model.currentscreen = self.model.tutorialscreen
 
 class PlayScreenButton(Button):
     def __init__(self, label, im, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
+
     def clicked(self, button_name):
         self.model.currentscreen = self.model.playScreen
 
@@ -60,6 +49,14 @@ class infoScreenButton(Button):
         self.image = pygame.image.load(im)
     def clicked(self, button_name):
         self.model.currentscreen = self.model.infoScreen
+
+class TutorialButton(Button):
+    def __init__(self, label, im, rect, callback, model):
+        Button.__init__(self, label, rect, callback, model)
+        self.image = pygame.image.load(im)
+    def clicked(self, button_name):
+        self.model.currentscreen = self.model.tutorialscreen
+
         
 class titleRect(planes.Plane):
 	def __init__(self, im, rect, color):
@@ -69,43 +66,32 @@ class titleRect(planes.Plane):
 		self.color = color
 		self.image = pygame.image.load(im)
 
-#Stuff I need for my game: Tools, Parts, Target Location
-
-class Tool(planes.Plane):
-    def __init__(self, name, number, rect, draggable = True, grab = True):
+class Tools(planes.Plane):
+    def __init__(self, name, number, rect, im, draggable = True, grab = True):
         planes.Plane.__init__(self, name, rect, draggable, grab)
-        self.image.fill((255, 0, 0))
-
         self.position = rect.center
         self.Xpos = self.position[0]
         self.Ypos = self.position[1]
         self.name = name
         self.number = number
+        if isinstance(im, str):
+            self.image = pygame.image.load(im)
+        else:
+            self.image.fill(im)
     
-    def clicked(self, button_name):
-        self.image.fill((255,0,0))
 
 class Parts(planes.Plane):
-	def __init__(self, name, number, rect, draggable = True, grab = True):
-		self.position = rect.right
-		self.Xpos = self.position[0]
-		self.Ypos = self.position[1]
-		self.name = name
-		self.number = number
-
-	def clicked(self, button_name):
-		pass
-
-
-
-class Target(planes.Plane):
-	def __init__(self, name, number, rect, draggable = False, grab = False):
-		self.position = rect.center
-		self.Xpos = self.position[0]
-		self.Ypos = self.position[1]
-		self.name = name
-		self.number = number
-
+    def __init__(self, name, number, rect, im, draggable = True, grab = True):
+        planes.Plane.__init__(self, name, rect, draggable, grab)
+        self.position = rect.center
+        self.Xpos = self.position[0]
+        self.Ypos = self.position[1]
+        self.name = name
+        self.number = number
+        if isinstance(im, str):
+            self.image = pygame.image.load(im)
+        else:
+            self.image.fill(im)
 	
         
 class MechEEgame():
@@ -114,18 +100,20 @@ class MechEEgame():
         self.parts = []
         self.targets = []
         self.level = 0
-        self.actors = self.tools + self.targets + self.parts
+        self.actors = self.tools + self.parts
+
+        self.toDash = False
         
-        self.startScreen = playScreen(self, self.tools, self.parts)
-        self.infoScreen = infoScreen(self, self.tools, self.parts)
+
+        self.playScreen = playScreen(self.tools, self.parts, self)
+        #self.infoScreen = infoScreen(self.tools, self.parts, self)
         
         start = StartButton("start","startbut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),StartButton.clicked, self)
-        settings = SettingsButton("settings","setbut.png",pygame.Rect(WINDOWWIDTH/8,6*WINDOWHEIGHT/8 + 30,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),SettingsButton.clicked, self)
+        info = infoScreenButton("info","i.jpg",pygame.Rect(WINDOWWIDTH/8,6*WINDOWHEIGHT/8 + 30,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),infoScreenButton.clicked, self)
         tutorial = TutorialButton("tutorial","tutbut.png",pygame.Rect(WINDOWWIDTH/8,5*WINDOWHEIGHT/8 + 20,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),TutorialButton.clicked, self)
         home = HomeButton("home","homebut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),HomeButton.clicked, self)
         tr = pygame.Rect(WINDOWWIDTH/8, WINDOWHEIGHT/8, 3*WINDOWWIDTH/4, 3*WINDOWHEIGHT/8)
-        self.homescreen = Screen([start,settings,tutorial],[titleRect("home.png",tr,WHITE)],BLACK)
-        self.settingsscreen = Screen([home,settings,tutorial],[titleRect("settings.png",tr,WHITE)],BLACK)
-        self.tutorialscreen = Screen([home,settings, tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
+
+        self.homescreen = Screen([start,tutorial],[titleRect("home.png",tr,WHITE)],BLACK)
     
         self.currentscreen = self.homescreen
