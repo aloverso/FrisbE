@@ -196,6 +196,8 @@ class ModSimScreen(Screen):
         self.scallopOffset = 0
 
         self.rayX = 0
+        self.sharkX = 0
+        self.scallopX = 0
         #self.planktonOffset = 0
 
 
@@ -384,7 +386,7 @@ class ModSimScreen(Screen):
 
         for i in range(1,self.howManyRays+1):
             
-            self.actors.append(Ray("rayA"+str(i), pygame.Rect(100,100+self.rayOffset,10,10), "ray.jpg", self))
+            self.actors.append(Ray("rayA"+str(i), pygame.Rect(100+self.rayX,100+self.rayOffset,10,10), "ray.jpg", self))
             self.rayOffset +=10
         print 'rays ' + str(self.howManyRays)
 
