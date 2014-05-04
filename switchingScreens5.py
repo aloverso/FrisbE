@@ -13,7 +13,7 @@ from screen import DropDisplay
 
 import moveScreen3
 from roboGame1 import RoboGame
-from ModSimGame2 import ModSimGame
+from ModSimGame3 import ModSimGame
 from MatSciGame import MatSciGame
 
 
@@ -97,7 +97,11 @@ class View:
 
 	def draw(self):
 		screen.remove_all()
-		self.screen.image.fill(self.model.currentScreen.background)
+		if isinstance (self.model.currentScreen.background, str):
+			self.screen.image = pygame.transform.scale(pygame.image.load(self.model.currentScreen.background), (1200,750))
+			#self.screen.image = pygame.image.load(self.model.currentScreen.background)
+		else:
+			self.screen.image.fill(self.model.currentScreen.background)
 		for actor in self.model.currentScreen.actors:
 			self.screen.sub(actor)
 		for button in self.model.currentScreen.buttons:
