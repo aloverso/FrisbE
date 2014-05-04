@@ -147,6 +147,12 @@ class MoveScreen(Screen):
             level = levels.Level1()
         elif self.robot.level ==2:
             level = levels.Level2()
+        elif self.robot.level ==3:
+            level = levels.Level3()
+        elif self.robot.level ==4:
+            level = levels.Level4()
+        else:
+            level = levels.Level3()
 
         self.startPosition = (level.start[0] - self.robot.width, level.start[1] - self.robot.height)
         self.notificationCreationTime = 0
@@ -163,7 +169,7 @@ class MoveScreen(Screen):
         font1 = pygame.font.SysFont("Arial", 40)
         self.moneyLabel = ScreenText("moneytext", "Money: "+str(self.robot.money), pygame.Rect(WINDOWWIDTH-225, 0, 200, 50), font1)
         self.timeLabel = ScreenText("timetext", "Time: "+str((pygame.time.get_ticks() - self.startTime)/1000.0), pygame.Rect(WINDOWWIDTH-225,55,200,50), font1)
-        self.timeLabel.updateColor((0,0,200))
+        self.timeLabel.updateColor((100,100,255))
         self.actorsWithoutNotification = self.walls + self.money + [self.timeLabel, self.moneyLabel,self.robot]
         self.actors = self.actorsWithoutNotification
         Screen.__init__(self,self.buttonsWithoutRun,self.actors,BLACK)
@@ -197,10 +203,8 @@ class MoveScreen(Screen):
         for wall in self.walls:
             if newRobotRect.colliderect(wall.rect):
                 canMove = False
-                print wall.name
         if newRobotRect.x + self.robot.width > WINDOWWIDTH or newRobotRect.x < 0 or newRobotRect.y + self.robot.height > WINDOWHEIGHT:
             canMove = False
-            print newRobotRect.x
         self.robot.move(command.xMove, command.yMove)
 
         #TEST IF YOU WON!
@@ -224,6 +228,7 @@ class MoveScreen(Screen):
             self.robot.level += 1
 
         #did you hit a wall?
+
         elif not canMove:
             self.clearCommands()
             font3 = pygame.font.SysFont("Arial", 14)
@@ -262,7 +267,6 @@ class MoveScreen(Screen):
             else:
                 self.runClicked = False
         if self.notificationCreationTime > 0:
-            print self.notification.text_color
             if pygame.time.get_ticks() - self.notificationCreationTime >= 3000:
                 self.notification.image.fill(BLACK)
                 self.actors = self.actorsWithoutNotification

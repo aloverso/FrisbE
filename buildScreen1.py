@@ -55,7 +55,6 @@ class StoreButton(Button):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
     def clicked(self, button_name):
-        self.model.game.movescreen = MoveScreen(self.model.robot, self.model.game)
         self.model.game.currentscreen = self.model.game.storescreen
         self.model.robot.setPosition(self.model.game.storescreen.startPosition[0], self.model.game.storescreen.startPosition[1])
 

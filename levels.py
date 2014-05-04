@@ -37,6 +37,11 @@ class Money(planes.Plane):
     def fill(self):
     	self.image.fill(BLACK)
 
+class SpecialWall(Wall):
+	def __init__(self, name, im, rect):
+		Wall.__init__(self, name, im, rect)
+		self.bump = 0
+
 class Level1:
 	def __init__(self):
 		megawall = Wall("megawall", "megawall.png", pygame.Rect(0, WINDOWHEIGHT-WHworkable, WINDOWWIDTH, 5))
@@ -55,7 +60,7 @@ class Level1:
 		self.walls = walls
 		self.goal = goal
 		self.start = start
-
+		self.specialwall = None
 
 class Level2:
 	def __init__(self):
@@ -80,6 +85,8 @@ class Level2:
 		self.walls = walls
 		self.goal = goal
 		self.start = start
+		self.specialwall = None
+
 
 class Level3:
 	def __init__(self):
@@ -100,3 +107,26 @@ class Level3:
 		self.walls = walls
 		self.goal = goal
 		self.start = start
+		self.specialwall = None
+
+class Level4:
+	def __init__(self):
+		megawall = Wall("megawall", "megawall.png", pygame.Rect(0, WINDOWHEIGHT-WHworkable, WINDOWWIDTH, 5))
+
+		w1 = Wall("w1", "wall1.png", pygame.Rect(WINDOWWIDTH/4, WINDOWHEIGHT - 3*WHworkable/4, 3*WINDOWWIDTH/4, 20))
+		w2 = Wall("w2", "wall1.png", pygame.Rect(0, (WINDOWHEIGHT - WHworkable/2), 3*WINDOWWIDTH/4, 20))
+		w3 = Wall("w3", WHITE, pygame.Rect(WINDOWWIDTH/4, WINDOWHEIGHT-WHworkable/4, 3*WINDOWWIDTH/4, 20))
+		goal = Wall("goal", "goal.png", pygame.Rect(WINDOWWIDTH-120, WINDOWHEIGHT-WHworkable + 5, 120, (WINDOWHEIGHT-WHworkable)/2 + 3))
+		start = (WINDOWWIDTH,WINDOWHEIGHT)
+		walls = [megawall,w1,w2,w3, goal]
+		m1 = Money("m1",20, pygame.Rect(100, WINDOWHEIGHT-100, 20, 20))
+		m2 = Money("m2",30, pygame.Rect(100, WINDOWHEIGHT-350, 20, 20))
+		m3 = Money("m3",30, pygame.Rect(400, WINDOWHEIGHT-480, 20, 20))
+		m4 = Money("m4",30, pygame.Rect(WINDOWWIDTH-100, WINDOWHEIGHT-200, 20, 20))
+		money = [m4,m2,m3,m1]
+		self.money = money
+		self.walls = walls
+		self.goal = goal
+		self.start = start
+		self.specialwall = w3
+

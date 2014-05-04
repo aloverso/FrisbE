@@ -13,7 +13,7 @@ from screen import DropDisplay
 
 import moveScreen3
 from roboGame1 import RoboGame
-from ModSimGame1 import ModSimGame
+#from ModSimGame1 import ModSimGame
 from MatSciGame import MatSciGame
 
 
@@ -79,9 +79,9 @@ class Model:
 		matsci = MatSciButton("matscibutton", "matsci_logo_button.png", pygame.Rect(925,50,250,300), MatSciButton.clicked, self)
 		mechee = ModSimButton("mecheebutton", "gearup_logo_button.png", pygame.Rect(925,400,250,300), ModSimButton.clicked, self)
 		tr = pygame.Rect(WINDOWWIDTH/2-300,WINDOWHEIGHT/2 - 650/2,600,650)
-		self.dashboardScreen = Screen([robo, modsim, matsci, mechee], [titleRect("frisbe_logo.png", tr, WHITE)], (0,84,166))
+		self.dashboardScreen = Screen([robo, modsim, matsci, mechee], [titleRect("frisbe_logo3.png", tr, WHITE)], (1,39,77))
 		self.robogame = RoboGame()
-		self.modsimgame = ModSimGame()
+		self.modsimgame = MatSciGame()
 		self.matscigame = MatSciGame()
 		self.currentScreen = self.dashboardScreen
 		self.currentGame = None
