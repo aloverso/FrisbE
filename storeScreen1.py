@@ -54,7 +54,7 @@ class Upgrade(planes.Plane):
         self.model = model
         self.origRect = pygame.Rect(rect.x, rect.y, rect.width, rect.height)
         font1 = pygame.font.SysFont("Arial", 20)
-        self.description = ScreenText("desc", "Cost: "+str(self.cost), pygame.Rect(self.Xpos+self.width/2, self.Ypos+self.height/2, 50, 20), font1)
+        self.description = ScreenText("desc", "Cost: "+str(self.cost), pygame.Rect(self.Xpos+self.width/2, self.Ypos+self.height/2, 80, 20), font1)
 
     def mouseover_callback(self):
         if isinstance(self.model, StoreScreen):
@@ -88,6 +88,7 @@ class BuyButton(Button):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
     def clicked(self, button_name):
+        self.model.moneyLabel.updateBackground((0,255,0,100))
         if self.model.robot.money >= self.model.shoppingcart.costincart:
             lis = self.model.shoppingcart.thingsDroppedOnMe
             for i in range(len(lis)):
@@ -162,15 +163,12 @@ class StoreScreen(Screen):
         Screen.__init__(self,buttons,self.actors,BLACK)
 
     def update(self):
+        print self.moneyLabel.background_color
         self.moneyLabel.updateText("Money: "+str(self.robot.money))
         self.shoppingcart.checkDroppedUpon()
-        print self.shoppingcart.costincart
         self.shoppingcart.calculateCostInCart()
         self.costInCartlabel.updateText("Cost in Cart: "+str(self.shoppingcart.costincart))
-        print self.costInCartlabel.text_color
-        print self.robot.money
         if self.shoppingcart.costincart > self.robot.money:
             self.costInCartlabel.updateColor((255,0,0))
-            print "yes"
         else:
             self.costInCartlabel.updateColor(WHITE)
