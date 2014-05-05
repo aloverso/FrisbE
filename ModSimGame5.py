@@ -53,7 +53,6 @@ class ModSimGame:
         # MAKE LOGO 500 by 575
         self.homescreen = Screen([start,tutorial, back],[titleRect("modsim_logo.png",tr,WHITE)],BLACK)
         self.tutorialscreen = Screen([home2],[titleRect2("tutorial_modsim.png",tr2,WHITE)],BLACK)
-        #self.tutorialscreen = Screen([],[titleRect("tut.png",tr,WHITE)],BLACK)
 
         self.currentscreen = self.homescreen
         self.toDash = False
@@ -89,7 +88,7 @@ class titleRect(planes.Plane):
         self.image.fill(color)
         self.rect = rect
         self.color = color
-        self.image = pygame.image.load(im)
+        self.image = pygame.transform.scale(pygame.image.load(im), (500,500))
 
 class titleRect2(planes.Plane):
     def __init__(self, im, rect, color):
@@ -97,7 +96,7 @@ class titleRect2(planes.Plane):
         self.image.fill(color)
         self.rect = rect
         self.color = color
-        #self.image = pygame.image.load(im)
+
         self.image = pygame.transform.scale(pygame.image.load(im), (500,730))
 
 
@@ -120,7 +119,7 @@ class ModSimScreen(Screen):
         self.howManyRays = 0
         self.howManySharks = 0
         self.howManyScallops = 0
-        #self.howManyPlankton = 0
+
 
 
         self.rayOffset = 0
@@ -130,7 +129,6 @@ class ModSimScreen(Screen):
         self.rayX = 0
         self.sharkX = 0
         self.scallopX = 0
-        #self.planktonOffset = 0
 
         self.timesteps = 0
 
@@ -143,15 +141,13 @@ class ModSimScreen(Screen):
         self.changesharkLabel = ScreenText("changesharktext", "Change: "+str(self.howManySharks), pygame.Rect(300,40,150,30), font1)
         self.numscallopLabel = ScreenText("scalloptext", "Scallops: "+str(self.howManyScallops), pygame.Rect(530,0,150,30), font1)
         self.changescallopLabel = ScreenText("changescalloptext", "Change: "+str(self.howManyScallops), pygame.Rect(530,40,150,30), font1)
-        #self.numplanktonLabel = ScreenText("planktontext", "Plankton: "+str(self.howManyPlankton), pygame.Rect(410,0,100,40), font1)
-        #self.changeplanktonLabel = ScreenText("changeplanktontext", "Change: "+str(self.howManyPlankton), pygame.Rect(410,40,100,40), font1)
+
         self.winLabel = ScreenText("wintext", "YOU WIN!", pygame.Rect(0,0,1200,750), font2)
         buttonReset = ResetButton("reset", "reset_button.png", pygame.Rect(8*WINDOWWIDTH/10-40,8*WINDOWHEIGHT/10-30, 2*WINDOWWIDTH/10, WINDOWHEIGHT/10), ResetButton.clicked, self)
         button0 = TimeStepButton("time", "timestep_button.png", pygame.Rect(8*WINDOWWIDTH/10-40,7*WINDOWHEIGHT/10-40, 2*WINDOWWIDTH/10, WINDOWHEIGHT/10), TimeStepButton.clicked, self)
         button1 = RayButton("ray","ray.png",pygame.Rect(8.5*WINDOWWIDTH/10-30,WINDOWHEIGHT/10,WINDOWWIDTH/10,WINDOWHEIGHT/10),RayButton.clicked, self)
         button2 = SharkButton("shark","shark.png",pygame.Rect(8.5*WINDOWWIDTH/10-30,2*WINDOWHEIGHT/10 + 10,WINDOWWIDTH/10,WINDOWHEIGHT/10),SharkButton.clicked, self)
         button3 = ScallopButton("scallop", "scallop.png", pygame.Rect(8.5*WINDOWWIDTH/10-30,3*WINDOWHEIGHT/10 + 20, WINDOWWIDTH/10, WINDOWHEIGHT/10), ScallopButton.clicked, self)
-        #button4 = PlanktonButton("plankton", "plankton.jpeg", pygame.Rect(9*WINDOWWIDTH/10-20, 2*WINDOWHEIGHT/10, WINDOWWIDTH/10, WINDOWHEIGHT/10), PlanktonButton.clicked, self)
         
         ###########
         buttonback = GBackButton("back", "back_button_ingame.png", pygame.Rect(8*WINDOWWIDTH/10-40, 9*WINDOWHEIGHT/10-20, 2*WINDOWWIDTH/10, WINDOWHEIGHT/10), BackButton.clicked, self)
@@ -171,10 +167,9 @@ class ModSimScreen(Screen):
         self.actors.append(self.changesharkLabel)
         self.actors.append(self.numscallopLabel)
         self.actors.append(self.changescallopLabel)
-        #self.actors.append(self.numplanktonLabel)
-        #self.actors.append(self.changeplanktonLabel)
+
         Screen.__init__(self, self.buttons, self.actors, "Background_modsim.png")
-        #Screen.__init__(self, self.buttons, self.actors, "underwater.jpg")
+
 
     def update(self):
 
@@ -190,8 +185,7 @@ class ModSimScreen(Screen):
         self.actors.append(self.changesharkLabel)
         self.actors.append(self.numscallopLabel)
         self.actors.append(self.changescallopLabel)
-        #self.actors.append(self.numplanktonLabel)
-        #self.actors.append(self.changeplanktonLabel)
+
 
         self.rayOffset = 0
         self.sharkOffset = 0
@@ -200,13 +194,12 @@ class ModSimScreen(Screen):
         self.rayX = 0
         self.sharkX = 0
         self.scallopX = 0
-        #self.planktonOffset = 0
 
 
         self.howManyRays = 0
         self.howManySharks = 0
         self.howManyScallops = 0
-        #self.howManyPlankton = 0
+
 
         self.numrayLabel.updateText("Rays: " + str(self.howManyRays))
         self.changerayLabel.updateText("Change: " + str(0))
@@ -214,8 +207,7 @@ class ModSimScreen(Screen):
         self.changesharkLabel.updateText("Change: " + str(0))
         self.numscallopLabel.updateText("Scallops: " + str(self.howManyScallops))
         self.changescallopLabel.updateText("Change: " + str(0))
-        #self.numplanktonLabel.updateText("Plankton: " + str(self.howManyPlankton))
-        #self.changeplanktonLabel.updateText("Change: " + str(0))
+
 
         self.timesteps = 0
         self.timeLabel.updateText("Timestep: " + str(self.timesteps))
@@ -230,8 +222,7 @@ class ModSimScreen(Screen):
         self.actors.append(self.changesharkLabel)
         self.actors.append(self.numscallopLabel)
         self.actors.append(self.changescallopLabel)
-        #self.actors.append(self.numplanktonLabel)
-        #self.actors.append(self.changeplanktonLabel)
+
 
         rays_t_minus_1 = self.howManyRays
         sharks_t_minus_1 = self.howManySharks
@@ -239,55 +230,15 @@ class ModSimScreen(Screen):
         #plankton_t_minus_1 = self.howManyPlankton
 
         ############MODEL CONSTANTS############
-        # A0 = self.howManyScallops*10000
-        # R0 = self.howManyRays*10000
-        #P0 = self.howManyPlankton*5000
+
         A0 = self.howManyScallops*5000
         R0 = self.howManyRays*5000
-        #S0 = self.howManySharks*500
         S0 = self.howManySharks*5000
 
-        # Ca = 2000000 #might want to remove some zeroes
-        # Cr = 1500000
-        #Cp = 20000000
-        Ca = 20000000
-        Cr = 10000000
-        Cs = 10000000
-        #Cs = 50000
-        #Cs = 800000
 
-        # Ac = 60000
-        # Rc = 50000
-        #Pc = 100000
-        Ac = 100000
-        Rc = 100000
-        #Sc = 1100
-        Sc = 100000
-
-        # betaA = .12
-        # betaR = .11
-        # betaS = .10
 
         ##############MODEL#####################
-        #betaP = .2
-        betaA = .15
-        betaR = .14
-        betaS = .13
 
-        #deltascallops = A0*(1-A0/Ca)*(-1 + (P0/Pc))*betaA
-        #deltaplankton = P0*(1-P0/Cp)*(betaP-.2)
-        #deltascallops = A0*(1-A0/Ca)*(-betaA*P0 + .1)
-        #deltascallops = A0*((1-(A0/Ca))*((P0/Pc)-(R0/Rc)))*betaA
-        #deltascallops = A0*(1-(A0/Ca))*(-1+(P0/Pc))*(-1 + (R0/Rc))*betaA
-        #deltarays = R0*(1-(R0/Cr))*(-1 +(A0/Ac))*(-1+(S0/Sc))*betaR
-
-        #deltaplankton = P0*((1-(P0/Cp))*(-1 + (A0/Ac)))*betaP
-
-        #deltascallops = A0*((1-(A0/Ca)))*(1-(R0/Rc))*betaA
-
-        #deltarays = R0*(1-(R0/Cr))*((A0/Ac)-(S0/Sc))*betaR
-
-        #deltasharks = S0*(1-S0/Cs)*(-1+(R0/Rc))*betaS
 
         if R0>A0/4.0:
             deltascallops = -5000
@@ -343,10 +294,6 @@ class ModSimScreen(Screen):
             deltasharks = 0
 
 
-
-
-
-        #P1 = P0 + deltaplankton
         A1 = A0 + deltascallops
         R1 = R0 + deltarays
         S1 = S0 + deltasharks
@@ -363,20 +310,18 @@ class ModSimScreen(Screen):
         self.rayOffset = 0
         self.sharkOffset = 0
         self.scallopOffset = 0
-        #self.planktonOffset = 0
 
 
         self.howManyRays = int(R1/5000)
-        #self.howManySharks = int(S1/500)
         self.howManySharks = int(S1/5000)
         self.howManyScallops = int(A1/5000)
-        #self.howManyPlankton = int(P1/5000)
+
 
 
         self.changeInRays = (self.howManyRays-rays_t_minus_1)
         self.changeInSharks = (self.howManySharks-sharks_t_minus_1)
         self.changeInScallops = (self.howManyScallops-scallops_t_minus_1)
-        #self.changeInPlankton = (self.howManyPlankton-plankton_t_minus_1)
+
 
         self.numrayLabel.updateText("Rays: " + str(self.howManyRays))
         self.changerayLabel.updateText("Change: " + str(self.changeInRays))
@@ -384,8 +329,7 @@ class ModSimScreen(Screen):
         self.changesharkLabel.updateText("Change: " + str(self.changeInSharks))
         self.numscallopLabel.updateText("Scallops: " + str(self.howManyScallops))
         self.changescallopLabel.updateText("Change: " + str(self.changeInScallops))
-        #self.numplanktonLabel.updateText("Plankton: " + str(self.howManyPlankton))
-        #self.changeplanktonLabel.updateText("Change: " + str(self.changeInPlankton))
+
 
         for i in range(1,self.howManyRays+1):
             
@@ -467,14 +411,7 @@ class ModSimScreen(Screen):
 
             self.scallopOffset += 10
             
-
         print 'scallops ' + str(self.howManyScallops)
-
-        # for i in range(1,self.howManyPlankton+1):
-            
-        #     self.actors.append(Plankton("planktonA"+str(i), pygame.Rect(460,100+self.planktonOffset,10,10), "plankton.jpeg", self))
-        #     self.planktonOffset +=10
-        # print 'plankton ' + str(self.howManyPlankton)
 
 
         if abs(self.changeInRays) <=2:
@@ -485,6 +422,7 @@ class ModSimScreen(Screen):
             self.actors.append(self.winLabel)
             print "you win"
 
+
 class ResetButton(Button):
     def __init__(self, label, im, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
@@ -494,6 +432,7 @@ class ResetButton(Button):
 
     def clicked(self, button_name):
         self.model.reset()
+
 
 class TimeStepButton(Button):
     def __init__(self, label, im, rect, callback, model):
@@ -507,8 +446,6 @@ class TimeStepButton(Button):
         self.model.updateEnv()
 
 
-
-###############################################################################
 class GBackButton(Button):
     def __init__(self, label, im, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
@@ -516,7 +453,6 @@ class GBackButton(Button):
         #self.image.fill((0,0,255))
     def clicked(self, button_name):
         self.model.gamemodel.currentscreen = self.model.gamemodel.homescreen
-###############################################################################
 
 
 
@@ -622,20 +558,6 @@ class ScallopButton(Button):
 
 
 
-# class PlanktonButton(Button):
-#     def __init__(self, label, im, rect, callback, model):
-#         Button.__init__(self, label, rect, callback, model)
-#         self.image = pygame.transform.scale(pygame.image.load(im), (WINDOWWIDTH/10,WINDOWHEIGHT/10))
-       
-#     def clicked(self, button_name):
-#         self.model.howManyPlankton +=1 
-     
-#         self.model.actors.append(Plankton("planktonA"+str(self.model.howManyPlankton), pygame.Rect(460,100+self.model.planktonOffset,10,10), "plankton.jpeg",self.model))
-#         self.model.planktonOffset += 10 
-#         print 'plankton ' + str(self.model.howManyPlankton)
-#         self.model.numplanktonLabel.updateText("Plankton: " + str(self.model.howManyPlankton))
-
-
 
 class Ray(planes.Plane):
     def __init__(self, name, rect, im, model, draggable = False, grab = True):
@@ -694,26 +616,6 @@ class Scallop(planes.Plane):
             self.model.scallopOffset -= 10
             self.model.howManyScallops -=1
             self.model.numscallopLabel.updateText("Scallops: " + str(self.model.howManyScallops))
-
-
-
-
-# class Plankton(planes.Plane):
-#     def __init__(self, name, rect, im, model, draggable = False, grab = True):
-#         planes.Plane.__init__(self, name, rect, draggable, grab)
-
-#         self.image = pygame.transform.scale(pygame.image.load(im), (10,10))
-#         self.Xpos = rect.x
-#         self.Ypos = rect.y
-#         self.model = model
-
-#     def clicked(self, button_name):
-#         names = [actor.name for actor in self.model.actors]
-#         if self.name in names:
-#             index = names.index(self.name)
-#             del(self.model.actors[index])
-#             self.model.planktonOffset -= 10
-#             self.model.howManyPlankton -=1  
 
 
  

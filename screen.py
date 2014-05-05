@@ -59,7 +59,7 @@ class ScreenText(planes.gui.Label):
 	def __init__(self,name,text,rect,font):
 		planes.Plane.__init__(self,name,rect,draggable=False, grab=False)
 		self.background_color = (0,0,0,0)
-		planes.gui.Label.__init__(self,name,text,rect,GREEN, WHITE, font)
+		planes.gui.Label.__init__(self,name,text,rect,self.background_color, WHITE, font)
 
 		#planes.gui.Label.__init__(self,name,text,rect,self.background_color, WHITE, font)
 
