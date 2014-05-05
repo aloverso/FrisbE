@@ -42,26 +42,26 @@ class TargetZone(DropZone):
 
         self.thingsDropped.append(plane)
         planes.Plane.dropped_upon(self, plane, (coordinates[0]+self.Xpos, coordinates[1]+self.Ypos))
-
-        requiredTool = "Wrench"
-        requiredPart = "Gear"
+        if self.screen.game.level == 0:
+            requiredTool = "Wrench"
+            requiredPart = "Gear"
+        if self.screen.game.level == 1:
+            requiredTool = "Hammer"
+            requiredPart = "Nail"
+        if self.screen.game.level == 2:
+            requiredTool = "Wrench"
+            requiredPart = "Nut"
 
        
 
-        if len(self.thingsDropped) >= 2:
-            for things in self.thingsDropped:
-                if plane.name == requiredPart and plane.name ==requiredTool:
-                    things += 1
-            font1 = pygame.font.SysFont("Arial", 20)
-            repaired = ScreenText("text1", "object repaired", pygame.Rect(100, 3*WINDOWHEIGHT/4, 200, 50), font1)
-            
-            names = [label.name for label in self.screen.Notificationlabels]
-            if repaired.name in names:
-                index = names.index(repaired.name)
-                del(self.screen.Notificationlabels[index])
-            else:
-                self.screen.Notificationlabels.append(repaired)
-
+        if len(self.thingsDropped) == 2:
+            if self.thingsDropped[0].name == requiredPart or self.thingsDropped[0].name == requiredTool:
+                if self.thingsDropped[1].name == requiredPart or self.thingsDropped[1].name == requiredTool:
+                    font1 = pygame.font.SysFont("Arial", 20)
+                    repaired = ScreenText("text1", "object repaired", pygame.Rect(100, 3*WINDOWHEIGHT/4, 200, 50), font1)
+                    self.screen.Notificationlabels.append(repaired)
+                    self.screen.creationTime = pygame.time.get_ticks()
+                    self.screen.game.level+=1
 
 class infoScreenButton(Button):
     def __init__(self, label, im, rect, callback, model):
@@ -76,7 +76,7 @@ class infoScreenButton(Button):
 class BackButton(Button):
     def __init__(self, label, im, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image.fill((0,0,255))
+        self.image = pygame.image.load(im)
     def clicked(self, button_name):
         self.model.game.currentscreen = self.model.game.homescreen 
 
@@ -102,13 +102,20 @@ class playScreen(Screen):
         self.tools = tools
         self.parts = parts
         self.game = game
-        self.TargetArea = TargetZone("TargetZone",pygame.Rect(410,70,360,590),self)
+        self.TargetArea = TargetZone("TargetZone",pygame.Rect(400,175,400,400),self)
+        if self.game.level == 0:
+            self.TargetArea.image = pygame.image.load()
+        if self.game.level == 1:
+            self.TargetArea.image = pygame.image.load()
+        if self.game.level == 2:
+            self.TargetArea.image = pygame.image.load()
         self.Notificationlabels = []
+        self.creationTime = 0
 
 
 
-        info = infoScreenButton("infobutton", WHITE, pygame.Rect(WINDOWWIDTH-100, 0, 75, 50), infoScreenButton.clicked, self)
-        back = BackButton("BackButton", BLUE, pygame.Rect(0, WINDOWHEIGHT-100, 200, 100), BackButton.clicked, self)
+        info = infoScreenButton("infobutton", "i_small.png", pygame.Rect(WINDOWWIDTH-100, 0, 100, 100), infoScreenButton.clicked, self)
+        back = BackButton("BackButton", "back_button_med.png", pygame.Rect(0, WINDOWHEIGHT-100, 200, 100), BackButton.clicked, self)
         buttons = [info,back]
 
         
@@ -118,3 +125,13 @@ class playScreen(Screen):
 
     def update(self):
         self.actors = [self.TargetArea] + self.parts + self.tools + self.Notificationlabels
+        if len(self.Notificationlabels) > 0:
+            time = pygame.time.get_ticks()
+            if (self.creationTime > 0) and (time - self.creationTime < 2000):
+                pass
+            else:
+                self.creationTime = 0
+                self.Notificationlabels = []
+                self.actors = [self.TargetArea] + self.parts + self.tools + self.Notificationlabels
+        else:
+            self.actors = [self.TargetArea] + self.parts + self.tools + self.Notificationlabels
