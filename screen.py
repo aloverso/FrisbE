@@ -58,6 +58,7 @@ class DropDisplay(planes.Display):
 class ScreenText(planes.gui.Label):
 	def __init__(self,name,text,rect,font):
 		planes.Plane.__init__(self,name,rect,draggable=False, grab=False)
+
 		if self.name.startswith("infoText") or self.name.startswith("text"):
 			self.background_color = BLACK
 			self.text_color = WHITE
@@ -66,6 +67,7 @@ class ScreenText(planes.gui.Label):
 			self.text_color = WHITE
 
 		planes.gui.Label.__init__(self,name,text,rect,self.background_color, self.text_color, font)
+
 
 		#planes.gui.Label.__init__(self,name,text,rect,self.background_color, WHITE, font)
 

@@ -15,6 +15,7 @@ import moveScreen3
 from roboGame1 import RoboGame
 from ModSimGame1 import ModSimGame
 from MatSciGame import MatSciGame
+from GameReal import MechEEgame
 
 
 
@@ -60,7 +61,7 @@ class MechEEButton(Button):
 		#self.image.fill(im)
 		self.image = pygame.image.load(im)
 	def clicked(self, button_name):
-		self.model.currentGame = self.model.matscigame
+		self.model.currentGame = self.model.MechEEgame
 		self.model.inGame = True
 
 class titleRect(planes.Plane):

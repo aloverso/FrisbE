@@ -147,6 +147,6 @@ class SettingsScreen:
 
     pygame.quit()
         
-#if __name__ == '__main__': 
-#    SettingsScreen()
+if __name__ == '__main__': 
+    SettingsScreen()
     
