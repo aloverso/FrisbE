@@ -53,32 +53,15 @@ class TargetZone(DropZone):
                 if plane.name == requiredPart and plane.name ==requiredTool:
                     things += 1
             font1 = pygame.font.SysFont("Arial", 20)
-            self.screen.Notificationlabels.append(ScreenText("text1", "object repaired", pygame.Rect(100, 3*WINDOWHEIGHT/4, 200, 50), font1))
+            repaired = ScreenText("text1", "object repaired", pygame.Rect(100, 3*WINDOWHEIGHT/4, 200, 50), font1)
+            
+            names = [label.name for label in self.screen.Notificationlabels]
+            if repaired.name in names:
+                index = names.index(repaired.name)
+                del(self.screen.Notificationlabels[index])
+            else:
+                self.screen.Notificationlabels.append(repaired)
 
-class Toolbox(DropZone):
-    def __init__(self,name,rect,screen):
-        DropZone.__init__(self, name, rect)
-        self.image.fill((128,0,0))
-        self.screen = screen
-        self.coordinates = rect.center
-        
-        self.Xpos = self.coordinates[0]
-        self.Ypos = self.coordinates[1]
-    def dropped_upon(self, plane, coordinates):
-       planes.Plane.dropped_upon(self, plane, (plane.Xpos, plane.Ypos))
-
-class Garage(DropZone):
-    def __init__(self,name,rect,screen):
-        DropZone.__init__(self, name, rect)
-        self.image.fill((128,0,0))
-        self.screen = screen
-        self.coordinates = rect.center
-        
-        self.Xpos = self.coordinates[0]
-        self.Ypos = self.coordinates[1]
-        
-    def dropped_upon(self, plane, coordinates):
-       planes.Plane.dropped_upon(self, plane, (coordinates[0]+self.Xpos, coordinates[1]+self.Ypos))
 
 class infoScreenButton(Button):
     def __init__(self, label, im, rect, callback, model):
@@ -124,15 +107,11 @@ class playScreen(Screen):
 
 
 
-        info = infoScreenButton("infobutton", WHITE, pygame.Rect(0, WINDOWHEIGHT-50, 75, 50), infoScreenButton.clicked, self)
-        back = BackButton("BackButton", BLUE, pygame.Rect(200, WINDOWHEIGHT-50, 75, 50), BackButton.clicked, self)
+        info = infoScreenButton("infobutton", WHITE, pygame.Rect(WINDOWWIDTH-100, 0, 75, 50), infoScreenButton.clicked, self)
+        back = BackButton("BackButton", BLUE, pygame.Rect(0, WINDOWHEIGHT-100, 200, 100), BackButton.clicked, self)
         buttons = [info,back]
 
-        self.tools.append(GameReal.Tools("Hammer",1,pygame.Rect(500,0,20,20),WHITE))
-        self.tools.append(GameReal.Tools("Wrench",2,pygame.Rect(500,1*WINDOWHEIGHT/5,20,20),BLUE))
-        self.parts.append(GameReal.Parts("Gear",5,pygame.Rect(50,0,20,20),GREEN))
-        self.parts.append(GameReal.Parts("Nut",6,pygame.Rect(50,WINDOWHEIGHT/5,20,20),WHITE))
-        self.parts.append(GameReal.Parts("Nail",7,pygame.Rect(50,2*WINDOWHEIGHT/5,20,20),BLUE))
+        
         self.actors = [self.TargetArea] + self.parts + self.tools + self.Notificationlabels
 
         Screen.__init__(self,buttons,self.actors,BLACK)
