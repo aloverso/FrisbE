@@ -7,6 +7,7 @@ from abc import ABCMeta, abstractmethod
 import planes
 from planes import Plane
 import planes.gui
+from planes import *
 
 
 BLACK = (0, 0, 0)
@@ -25,9 +26,9 @@ class Screen:
 		for actor in self.actors:
 			actor.update()
 
-class Button(planes.gui.Button):
+class Button(gui.Button):
 	def __init__(self, label, rect, callback, model):
-		planes.gui.Button.__init__(self, label, rect, callback)
+		gui.Button.__init__(self, label, rect, callback)
 		planes.Plane.__init__(self,label,rect,draggable=False, grab=False)
 		self.image.fill(WHITE)
 		self.rect = rect
@@ -55,7 +56,7 @@ class DropDisplay(planes.Display):
          if isinstance(plane, planes.Plane):
              planes.Display.dropped_upon(self, plane, (plane.Xpos, plane.Ypos))
 
-class ScreenText(planes.gui.Label):
+class ScreenText(gui.Label):
 	def __init__(self,name,text,rect,font):
 		planes.Plane.__init__(self,name,rect,draggable=False, grab=False)
 
@@ -66,7 +67,7 @@ class ScreenText(planes.gui.Label):
 			self.background_color = (0,0,0,0)
 			self.text_color = WHITE
 
-		planes.gui.Label.__init__(self,name,text,rect,self.background_color, self.text_color, font)
+		gui.Label.__init__(self,name,text,rect,self.background_color, self.text_color, font)
 
 
 		#planes.gui.Label.__init__(self,name,text,rect,self.background_color, WHITE, font)

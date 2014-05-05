@@ -114,7 +114,7 @@ class RoboGame:
 		home = HomeButton("home","title_button.png",pygame.Rect(650,50,500,300),HomeButton.clicked, self)
 		tr = pygame.Rect(50, 50, 500, 575)
 		self.homescreen = Screen([start,tutorial, back],[titleRect("robowrangler_logo.png",tr,WHITE)],BLACK)
-		self.tutorialscreen = Screen([home, tutorial],[titleRect("robo_tutorial.png",tr,WHITE)],BLACK)
+		self.tutorialscreen = Screen([home],[titleRect("robo_tutorial.png",tr,WHITE)],BLACK)
 
 		self.currentscreen = self.homescreen
 		self.toDash = False
