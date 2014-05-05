@@ -37,6 +37,15 @@ class TargetZone(DropZone):
         self.secondDropped = None
         self.secondDroppedCoordinates = None
         self.thingsDropped = []
+
+    def checklevel(self):
+
+        if self.screen.game.level == 0:
+            self.image = pygame.image.load("bike.JPG")
+        if self.screen.game.level == 1:
+            self.image = pygame.image.load("chair.jpg")
+        if self.screen.game.level == 2:
+            self.image = pygame.image.load("tire.jpg")
         
     def dropped_upon(self, plane, coordinates):
 
@@ -62,6 +71,12 @@ class TargetZone(DropZone):
                     self.screen.Notificationlabels.append(repaired)
                     self.screen.creationTime = pygame.time.get_ticks()
                     self.screen.game.level+=1
+    def checkDroppedUpon(self):
+        newThingsInMe = []
+        for thing in self.thingsDropped:
+            if self.rect.colliderect(thing.rect):
+                newThingsInMe.append(thing)
+        self.thingsDropped = newThingsInMe
 
 class infoScreenButton(Button):
     def __init__(self, label, im, rect, callback, model):
@@ -103,12 +118,7 @@ class playScreen(Screen):
         self.parts = parts
         self.game = game
         self.TargetArea = TargetZone("TargetZone",pygame.Rect(400,175,400,400),self)
-        if self.game.level == 0:
-            self.TargetArea.image = pygame.image.load()
-        if self.game.level == 1:
-            self.TargetArea.image = pygame.image.load()
-        if self.game.level == 2:
-            self.TargetArea.image = pygame.image.load()
+   
         self.Notificationlabels = []
         self.creationTime = 0
 
@@ -121,10 +131,12 @@ class playScreen(Screen):
         
         self.actors = [self.TargetArea] + self.parts + self.tools + self.Notificationlabels
 
-        Screen.__init__(self,buttons,self.actors,BLACK)
+        Screen.__init__(self,buttons,self.actors,"metal_background_sheet.png")
 
     def update(self):
         self.actors = [self.TargetArea] + self.parts + self.tools + self.Notificationlabels
+        self.TargetArea.checkDroppedUpon()
+        self.TargetArea.checklevel()
         if len(self.Notificationlabels) > 0:
             time = pygame.time.get_ticks()
             if (self.creationTime > 0) and (time - self.creationTime < 2000):

@@ -37,7 +37,7 @@ class WrenchButton(Button):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
         self.note = planes.Plane("Note1",pygame.Rect(rect.right,rect.bottom,200,200),False,False)
-        self.note.image.fill(WHITE)
+        self.note.image = pygame.image.load("wrench_button.png")
     def clicked(self, button_name):
         print "clicked wrench"
         names = [label.name for label in self.model.Notificationlabels]
@@ -52,7 +52,7 @@ class NutButton(Button):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
         self.note = planes.Plane("Note1",pygame.Rect(rect.right,rect.bottom-300,200,200),False,False)
-        self.note.image.fill(WHITE)
+        self.note.image = pygame.image.load("nut_button_info.png")
     def clicked(self, button_name):
         print "clicked nut"
         names = [label.name for label in self.model.Notificationlabels]
@@ -67,7 +67,7 @@ class HammerButton(Button):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
         self.note = planes.Plane("Note1",pygame.Rect(rect.left,rect.bottom-350,200,200),False,False)
-        self.note.image.fill(WHITE)
+        self.note.image = pygame.image.load("hammer_button_info.png")
     def clicked(self, button_name):
         print "clicked hammer"
         names = [label.name for label in self.model.Notificationlabels]
@@ -82,7 +82,7 @@ class GearButton(Button):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
         self.note = planes.Plane("Note1",pygame.Rect(rect.left-100,rect.bottom-300,200,200),False,False)
-        self.note.image.fill(WHITE)
+        self.note.image = pygame.image.load("gear_button_info.png")
     def clicked(self, button_name):
         print "clicked gear"
         names = [label.name for label in self.model.Notificationlabels]
@@ -97,7 +97,7 @@ class NailButton(Button):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
         self.note = planes.Plane("Note1",pygame.Rect(rect.left-100,rect.bottom,200,200),False,False)
-        self.note.image.fill(WHITE)
+        self.note.image = pygame.image.load("nail_button_info.png")
     def clicked(self, button_name):
         print "clicked nail"
         names = [label.name for label in self.model.Notificationlabels]
