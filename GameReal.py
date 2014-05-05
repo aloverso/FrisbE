@@ -12,6 +12,8 @@ from screen import Button
 from screen import DropZone
 
 from playScreen import playScreen
+from infoScreen import infoScreen
+
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 WHITE = (255, 255, 255)
@@ -103,10 +105,14 @@ class MechEEgame():
         self.actors = self.tools + self.parts
 
         self.toDash = False
-        
+        self.tools.append(Tools("Hammer",1,pygame.Rect(500,0,20,20),WHITE))
+        self.tools.append(Tools("Wrench",2,pygame.Rect(500,1*WINDOWHEIGHT/5,20,20),BLUE))
+        self.parts.append(Parts("Gear",5,pygame.Rect(50,0,20,20),GREEN))
+        self.parts.append(Parts("Nut",6,pygame.Rect(50,WINDOWHEIGHT/5,20,20),WHITE))
+        self.parts.append(Parts("Nail",7,pygame.Rect(50,2*WINDOWHEIGHT/5,20,20),BLUE))
 
         self.playScreen = playScreen(self.tools, self.parts, self)
-        #self.infoScreen = infoScreen(self.tools, self.parts, self)
+        self.infoScreen = infoScreen(self.tools,self.parts, self)
         
         start = StartButton("start","startbut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),StartButton.clicked, self)
         info = infoScreenButton("info","i.jpg",pygame.Rect(WINDOWWIDTH/8,6*WINDOWHEIGHT/8 + 30,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),infoScreenButton.clicked, self)
