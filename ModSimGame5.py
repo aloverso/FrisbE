@@ -194,7 +194,7 @@ class ModSimScreen(Screen):
         self.rayX = 0
         self.sharkX = 0
         self.scallopX = 0
-
+        self.win = 0
 
         self.howManyRays = 0
         self.howManySharks = 0
