@@ -42,22 +42,18 @@ class MixZone(DropZone):
         self.creationTime = 0
         
     def dropped_upon(self, plane, coordinates):
-       print "got dropped on me"
        self.thingsDropped +=1
 
        planes.Plane.dropped_upon(self, plane, (coordinates[0]+self.Xpos, coordinates[1]+self.Ypos))
-       print "got dropped on me3"
 
        if self.thingsDropped == 1:
            
            self.firstDropped = plane
            self.firstDroppedCoordinates = coordinates
            
-       print "got dropped on me4"
        print self.thingsDropped
 
        if self.thingsDropped == 2:
-           print "gah"
            if self.screen.game.money - 1000 < 0:
                self.screen.Notificationlabels.append(ScreenText("textBad", "Too Little Money!!" , pygame.Rect(WINDOWWIDTH/2, WINDOWHEIGHT/2, 250, 50), pygame.font.SysFont("Arial", 40)))
                
@@ -72,7 +68,6 @@ class MixZone(DropZone):
                self.screen.actors =  self.screen.dropZones + self.screen.materials + self.screen.newMaterials + self.screen.constantLabels + self.screen.Notificationlabels
            
            else:  
-               print "here"          
                self.screen.game.money = self.screen.game.money - 1000
     
                
@@ -80,7 +75,6 @@ class MixZone(DropZone):
                self.secondDroppedCoordinates = coordinates
                
                self.screen.Notificationlabels.append(ScreenText("text1", "Made a New Material", pygame.Rect(WINDOWWIDTH/2, WINDOWHEIGHT/2, 200, 50), pygame.font.SysFont("Arial", 40)))
-               print "here2"
                newStrength = int(2*(self.firstDropped.strength + self.secondDropped.strength)/3)
                newMeltingPoint = int(2*(self.firstDropped.meltingPoint + self.secondDropped.meltingPoint)/3)
                newAppearence = int(2*(self.firstDropped.appearence + self.secondDropped.appearence)/3)
@@ -93,16 +87,11 @@ class MixZone(DropZone):
                    self.screen.newMaterials.append((MatSciGame.Material("Newmat"+`len(self.screen.newMaterials)`, newStrength, False, newMeltingPoint, False, newAppearence, newTier, pygame.Rect((150/2 + 110, 150+50*(len(self.screen.newMaterials)-9), 50, 50)), self.screen.game)))           
                else:
                     self.screen.Notificationlabels.append(ScreenText("text3", "Too Many Materials!!", pygame.Rect(WINDOWWIDTH/2, WINDOWHEIGHT/2), pygame.font.SysFont("Arial", 40)))
-               print "here3"
                planes.Plane.dropped_upon(self.screen.dropMats, self.firstDropped, (self.firstDropped.Xpos, self.firstDropped.Ypos))
                planes.Plane.dropped_upon(self.screen.dropMats, self.secondDropped, (self.secondDropped.Xpos, self.secondDropped.Ypos))
-               print "here4"   
                self.screen.actors =  self.screen.dropZones + self.screen.materials + self.screen.newMaterials + self.screen.constantLabels + self.screen.Notificationlabels
-               print "here5"
                self.thingsDropped = 0
-               print "here6"
                self.creationTime = pygame.time.get_ticks()
-               print "here7"
                              
     def getFirstTick(self):
         self.firstTick = self.model.clock.tick()

@@ -103,8 +103,7 @@ class BuildButton(Button):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load("back_button_med.png")
     def clicked(self, button_name):
-        if not self.model.won:
-            self.model.robot.money -= self.model.moneyCollected
+        self.model.robot.money -= self.model.moneyCollected
         self.model.game.currentscreen = self.model.game.buildscreen
         self.model.robot.setPosition(self.model.game.buildscreen.startPosition[0], self.model.game.buildscreen.startPosition[1])
 
@@ -150,8 +149,8 @@ class MoveScreen(Screen):
             level = levels.Level2()
         elif self.robot.level ==3:
             level = levels.Level3()
-        #elif self.robot.level ==4:
-        #    level = levels.Level4()
+        elif self.robot.level ==4:
+            level = levels.Level4()
         else:
             level = levels.Level3()
 
@@ -159,10 +158,11 @@ class MoveScreen(Screen):
         self.notificationCreationTime = 0
         self.notification = None
 
+        self.specialwall = level.specialwall
         self.walls = level.walls
         self.goal = level.goal
         self.money = level.money
-        self.won = False
+
         self.runningThisScreen = False
         self.moneyCollected = 0
 
@@ -227,9 +227,28 @@ class MoveScreen(Screen):
             toBuildScreen = BuildButton("tobuildscreen", pygame.Rect(WINDOWWIDTH/2-100, 3*WINDOWHEIGHT/4, 200,50), BuildButton.clicked, self)
             self.buttons.append(toBuildScreen)
             self.robot.level += 1
-            self.won = True
 
         #did you hit a wall?
+
+        elif not canMove and self.specialwall != None and newRobotRect.colliderect(self.specialwall.rect):
+                if self.specialwall.bump <= 1:
+                    self.specialwall.bump += 1
+                    print self.specialwall.bump
+                    self.clearCommands()
+                    font3 = pygame.font.SysFont("Arial", 14)
+                    self.notificationCreationTime = pygame.time.get_ticks()
+                    self.notification = ScreenText("bump", "You bumped into a special wall", pygame.Rect(WINDOWWIDTH-225,165,200,50), font3)
+                    self.notification.updateColor((255,0,0))
+                    self.actors.append(self.notification)
+                    self.robot.move(command.xMove*-1, command.yMove*-1)
+                else:
+                    print "yes"
+                    names = [actor.name for actor in self.actors]
+                    if self.specialwall.name in names:
+                        index = names.index(self.specialwall.name)
+                        del(self.model.actors[index])
+                    
+
 
         elif not canMove:
             self.clearCommands()
