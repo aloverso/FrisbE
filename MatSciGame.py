@@ -45,8 +45,12 @@ import planes
 from collections import deque
 from screen import Screen
 from screen import Button
+from screen import ScreenText
 from MatSciScreen import MixingScreen
 from MatSciScreen import ForceTestScreen
+from MatSciScreen import MeltingTestScreen
+from MatSciScreen import ItemMakeScreen
+from MatSciScreen import ItemViewScreen
 
 
 WINDOWWIDTH = 1200
@@ -99,6 +103,27 @@ class MixScreenButton(Button):
         self.image = pygame.image.load(im)
     def clicked(self, button_name):
         self.model.currentscreen = self.model.startScreen
+
+class HeatScreenButton(Button):
+    def __init__(self, label, im, rect, callback, model):
+        Button.__init__(self, label, rect, callback, model)
+        self.image = pygame.image.load(im)
+    def clicked(self, button_name):
+        self.model.currentscreen = self.model.heatScreen
+        
+class ItemScreenButton(Button):
+    def __init__(self, label, im, rect, callback, model):
+        Button.__init__(self, label, rect, callback, model)
+        self.image = pygame.image.load(im)
+    def clicked(self, button_name):
+        self.model.currentscreen = self.model.itemScreen
+
+class ItemViewScreenButton(Button):
+    def __init__(self, label, im, rect, callback, model):
+        Button.__init__(self, label, rect, callback, model)
+        self.image = pygame.image.load(im)
+    def clicked(self, button_name):
+        self.model.currentscreen = self.model.itemViewScreen
         
 class titleRect(planes.Plane):
 	def __init__(self, im, rect, color):
@@ -108,40 +133,178 @@ class titleRect(planes.Plane):
 		self.color = color
 		self.image = pygame.image.load(im)
 
+class BackButton(Button):
+    def __init__(self, label, im, rect, callback, model):
+        Button.__init__(self, label, rect, callback, model)
+        self.image = pygame.image.load(im)
+    def clicked(self, button_name):
+        self.model.toDash = True
+
+
 #Stuff I need for my game: materials
 
 class Material(planes.Plane):
-    def __init__(self, name, strength, meltingPoint, rect, draggable = True, grab = True):
+    def __init__(self, name, strength, strengthTested, meltingPoint, meltingPointTested, appearence, tier, rect, screen, draggable = True, grab = True):
         planes.Plane.__init__(self, name, rect, draggable, grab)
-        self.image.fill((255, 0, 0))
+        
+
+        self.position = rect.center
+        self.Xpos = self.position[0]
+        self.Ypos = self.position[1]
+        
+        self.name = name
+        self.strength = strength
+        self.meltingPoint = meltingPoint
+        self.appearence = appearence
+        self.tier = tier
+        
+        if self.tier == 1:
+            self.image = pygame.image.load("materialT0.png")
+        
+        if self.tier == 2:
+            self.image = pygame.image.load("materialT1.png")
+        
+        if self.tier == 3:
+            self.image = pygame.image.load("materialT2.png")
+        
+        if self.tier >= 4:
+            self.image = pygame.image.load("materialT3.png")
+        
+#        self.red = color[0]
+#        self.green = color[1]
+#        self.blue = color[2]
+        
+        self.strengthTested = strengthTested
+        self.meltingPointTested = meltingPointTested 
+        
+        self.screen = screen
+
+    def clicked(self, button_name):
+        pass
+    
+    def mouseover_callback(self):
+        if self.meltingPointTested == True:
+            printMelting = str(self.meltingPoint)
+        else:
+            printMelting = "?"
+        
+        if self.strengthTested == True:
+            printStrength = str(self.strength)
+        else:
+            printStrength = "?"
+        
+        self.screen.currentscreen.infoLabels.append(ScreenText("infoText" + str(self.strength), "Strength = " + str(printStrength) + " Melting Point = " + str(printMelting) + " Appearence = " + str(self.appearence), pygame.Rect(self.Xpos + 20, self.Ypos, 350, 50), pygame.font.SysFont("Arial", 14)))        
+        self.screen.currentscreen.actors =  self.screen.currentscreen.actors + self.screen.currentscreen.infoLabels
+     
+    def mouseout_callback(self):
+        self.screen.currentscreen.infoLabels = []
+        self.screen.currentscreen.actors =  self.screen.currentscreen.dropZones + self.screen.currentscreen.materials + self.screen.currentscreen.newMaterials + self.screen.currentscreen.constantLabels 
+        
+class Item(planes.Plane):
+    def __init__(self, name, rect, bestStrength, bestMeltingPoint, appearenceNeed, strengthImport, meltImport, appearImport,color, material = None, draggable = True, grab = True):
+        planes.Plane.__init__(self, name, rect, draggable, grab)
+        
+        self.image.fill(color)
 
         self.position = rect.center
         self.Xpos = self.position[0]
         self.Ypos = self.position[1]
         self.name = name
-        self.strength = strength
-        self.meltingPoint = meltingPoint
+        self.material = material
+        self.bestStrength = bestStrength
+        self.bestMeltingPoint = bestMeltingPoint
+        self.appearenceNeed = appearenceNeed
+        self.strengthImport = strengthImport
+        self.meltImport = meltImport
+        self.appearImport = appearImport
+        
+        if self.name == "cup":
+            self.image = pygame.image.load("CupItem.png")
+        if self.name == "poker":
+            self.image = pygame.image.load("PokerItem.png")
+        if self.name == "hammer":
+            self.image = pygame.image.load("HammerItem.png")
+        if self.name == "table":
+            self.image = pygame.image.load("TableItem.png")
+        if self.name == "decor":
+            self.image = pygame.image.load("DecorItem.png")
 
-    def clicked(self, button_name):
-        self.image.fill((255,0,0))
+class CreatedItem(planes.Plane):
+    def __init__(self, name, color, strength, meltingPoint, appearence, material, money, screen):
+        
+        
+        self.meltingPoint = meltingPoint
+        self.strength = strength
+        self.appearence = appearence
+        self.money = money
+        self.name = name 
+        
+        self.rect = pygame.Rect(0,0,100,100)
+        self.position = self.rect.center
+        self.Xpos = self.position[0]
+        self.Ypos = self.position[1]
+        self.screen = screen
+        
+        planes.Plane.__init__(self, self.name, self.rect, draggable = False, grab = True)
+                
+        if self.name == "cup":
+            self.image = pygame.image.load("CupItem.png")
+        if self.name == "poker":
+            self.image = pygame.image.load("PokerItem.png")
+        if self.name == "hammer":
+            self.image = pygame.image.load("HammerItem.png")
+        if self.name == "table":
+            self.image = pygame.image.load("TableItem.png")
+        if self.name == "decor":
+            self.image = pygame.image.load("DecorItem.png")  
+
+        
+    def setRect(self, rect):
+        self.rect = rect
+    def setName(self, name):
+        self.name = name
+    
+    def mouseover_callback(self):
+        self.screen.currentscreen.infoLabels.append(ScreenText("infoText2" + str(self.strength), "Strength = " + str(self.strength) + " Melting Point = " + str(self.meltingPoint) + " Appearence = " + str(self.appearence) + " Money = " + str(self.money), pygame.Rect(self.Xpos + 20, self.Ypos, 500, 50), pygame.font.SysFont("Arial", 40)))        
+        self.screen.currentscreen.actors =  self.screen.currentscreen.actors + self.screen.currentscreen.infoLabels
+
+    
+    def mouseout_callback(self):
+        self.screen.currentscreen.infoLabels = []
+        self.screen.currentscreen.actors = self.screen.currentscreen.constantLabels + self.screen.currentscreen.shownItems
+            
         
 class MatSciGame():
     def __init__(self):
         self.materials = []
         self.newMaterials = []
+        self.createdItems = []
+        self.money = 10000        
+        
         self.actors = self.materials + self.newMaterials
         self.clock = pygame.time.Clock()
+        self.toDash = False
         
-        self.startScreen = MixingScreen(self, self.materials, self.newMaterials)
-        self.forceScreen = ForceTestScreen(self, self.materials, self.newMaterials)
+        self.startScreen = MixingScreen(self, self.materials, self.newMaterials, self.money)
+        self.forceScreen = ForceTestScreen(self, self.materials, self.newMaterials, self.money)
+        self.heatScreen = MeltingTestScreen(self, self.materials, self.newMaterials, self.money)
+        self.itemScreen = ItemMakeScreen(self, self.materials, self.newMaterials, self.money)
+        self.itemViewScreen = ItemViewScreen(self, self.materials, self.newMaterials, self.money)
         
-        start = StartButton("start","startbut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),StartButton.clicked, self)
-        settings = SettingsButton("settings","setbut.png",pygame.Rect(WINDOWWIDTH/8,6*WINDOWHEIGHT/8 + 30,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),SettingsButton.clicked, self)
-        tutorial = TutorialButton("tutorial","tutbut.png",pygame.Rect(WINDOWWIDTH/8,5*WINDOWHEIGHT/8 + 20,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),TutorialButton.clicked, self)
-        home = HomeButton("home","homebut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),HomeButton.clicked, self)
-        tr = pygame.Rect(WINDOWWIDTH/8, WINDOWHEIGHT/8, 3*WINDOWWIDTH/4, 3*WINDOWHEIGHT/8)
-        self.homescreen = Screen([start,settings,tutorial],[titleRect("home.png",tr,WHITE)],BLACK)
-        self.settingsscreen = Screen([home,settings,tutorial],[titleRect("settings.png",tr,WHITE)],BLACK)
-        self.tutorialscreen = Screen([home,settings, tutorial],[titleRect("tut.png",tr,WHITE)],BLACK)
-    
+        self.topCups = []
+        self.topTables = []
+        self.topPokers = []
+        self.topDecors = []
+        self.topHammers = []
+
+        back = BackButton("back", "back_button_long.png", pygame.Rect(50,650,500,50), BackButton.clicked, self)
+
+        start = StartButton("start","start_button.png",pygame.Rect(650,50,500,300),StartButton.clicked, self)
+        tutorial = TutorialButton("tutorial","tutorial_button.png",pygame.Rect(650, 400, 500, 300),TutorialButton.clicked, self)
+        home = HomeButton("home","title_button.png",pygame.Rect(650,50,500,300),HomeButton.clicked, self)
+        tr = pygame.Rect(50, 50, 500, 575)
+        self.homescreen = Screen([start,tutorial, back],[titleRect("matsci_logo.png",tr,WHITE)],BLACK)
+
+        self.tutorialscreen = Screen([home, tutorial],[titleRect("robo_tutorial.png",tr,WHITE)],BLACK)
+
         self.currentscreen = self.homescreen

@@ -74,7 +74,7 @@ class Robot(planes.Plane):
 		self.Ypos = rect.y
 		self.width = rect.width
 		self.height = rect.height
-		self.level = 4
+		self.level = 1
 		self.money = 100
 		self.image = pygame.image.load(im)
 		#self.image.fill(im)

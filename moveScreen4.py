@@ -149,8 +149,8 @@ class MoveScreen(Screen):
             level = levels.Level2()
         elif self.robot.level ==3:
             level = levels.Level3()
-        elif self.robot.level ==4:
-            level = levels.Level4()
+        #elif self.robot.level ==4:
+        #    level = levels.Level4()
         else:
             level = levels.Level3()
 

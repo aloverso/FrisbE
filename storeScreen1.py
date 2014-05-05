@@ -54,7 +54,7 @@ class Upgrade(planes.Plane):
         self.model = model
         self.origRect = pygame.Rect(rect.x, rect.y, rect.width, rect.height)
         font1 = pygame.font.SysFont("Arial", 20)
-        self.description = ScreenText("desc", "Cost: "+str(self.cost), pygame.Rect(self.Xpos+self.width/2, self.Ypos+self.height/2, 80, 20), font1)
+        self.description = ScreenText("desc", "Cost: "+str(self.cost), pygame.Rect(self.Xpos+self.width/2, self.Ypos+self.height/2, 100, 20), font1)
 
     def mouseover_callback(self):
         if isinstance(self.model, StoreScreen):
@@ -143,17 +143,17 @@ class StoreScreen(Screen):
         self.moneyLabel = ScreenText("moneytext", "Money: "+str(self.robot.money), pygame.Rect(WINDOWWIDTH-225, 0, 200, 50), font1)
         motorLabel = planes.Plane("motorLabel", pygame.Rect(scrleft,scrtop,170,50), draggable=False, grab=False)
         motorLabel.image = pygame.image.load("motorupgrade_label.png")
-        mu1 = MotorUpgrade("mu1", pygame.Rect(scrleft,scrtop+60,50,50), "motorupgrade_1.png", 20, 0.3, 1, self)
-        mu2 = MotorUpgrade("mu2", pygame.Rect(scrleft+60,scrtop+60,50,50), "motorupgrade_2.png", 40, 0.2, 2, self)
-        mu3 = MotorUpgrade("mu3", pygame.Rect(scrleft+120,scrtop+60,50,50), "motorupgrade_3.png", 60, 0.1, 3, self)
+        mu1 = MotorUpgrade("mu1", pygame.Rect(scrleft,scrtop+60,50,50), "motorupgrade_1.png", 100, 0.3, 1, self)
+        mu2 = MotorUpgrade("mu2", pygame.Rect(scrleft+60,scrtop+60,50,50), "motorupgrade_2.png", 200, 0.2, 2, self)
+        mu3 = MotorUpgrade("mu3", pygame.Rect(scrleft+120,scrtop+60,50,50), "motorupgrade_3.png", 300, 0.1, 3, self)
         self.shoppingcart = ShoppingCart("shoppingcart", pygame.Rect(350,50,800,600), self)
         self.shoppingcart.image = pygame.image.load("shoppingcart.png")
 
         bumperLabel = planes.Plane("bumperLabel", pygame.Rect(scrleft, mu3.rect.bottom + 30, 170, 50), draggable=False, grab=False)
         bumperLabel.image = pygame.image.load("bumperupgrade_label.png")
-        bu1 = BumperUpgrade("bu1", pygame.Rect(scrleft, bumperLabel.rect.bottom + 10, 50, 50), "bumperupgrade_1.png", 20, 7, 1, self)
-        bu2 = BumperUpgrade("bu2", pygame.Rect(scrleft+60, bumperLabel.rect.bottom + 10, 50, 50), "bumperupgrade_2.png", 40, 5, 2, self)
-        bu3 = BumperUpgrade("bu3", pygame.Rect(scrleft+120, bumperLabel.rect.bottom + 10, 50, 50), "bumperupgrade_3.png", 60, 3, 3, self)
+        bu1 = BumperUpgrade("bu1", pygame.Rect(scrleft, bumperLabel.rect.bottom + 10, 50, 50), "bumperupgrade_1.png", 100, 7, 1, self)
+        bu2 = BumperUpgrade("bu2", pygame.Rect(scrleft+60, bumperLabel.rect.bottom + 10, 50, 50), "bumperupgrade_2.png", 200, 5, 2, self)
+        bu3 = BumperUpgrade("bu3", pygame.Rect(scrleft+120, bumperLabel.rect.bottom + 10, 50, 50), "bumperupgrade_3.png", 300, 3, 3, self)
         self.costInCartlabel = ScreenText("costincart", "Cost in Cart: 0", pygame.Rect(500, 50, 400, 50), font1)
 
         buttons = [start, buy]
@@ -163,7 +163,6 @@ class StoreScreen(Screen):
         Screen.__init__(self,buttons,self.actors,BLACK)
 
     def update(self):
-        print self.moneyLabel.background_color
         self.moneyLabel.updateText("Money: "+str(self.robot.money))
         self.shoppingcart.checkDroppedUpon()
         self.shoppingcart.calculateCostInCart()
