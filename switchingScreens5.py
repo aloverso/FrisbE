@@ -22,7 +22,7 @@ from roboGame1 import RoboGame
 from ModSimGame5 import ModSimGame
 
 from MatSciGame import MatSciGame
-#from GameReal import MechEEgame
+from GameReal import MechEEgame
 
 
 
@@ -91,7 +91,7 @@ class Model:
 		self.robogame = RoboGame()
 		self.modsimgame = ModSimGame()
 		self.matscigame = MatSciGame()
-		self.MechEEgame = MatSciGame()
+		self.MechEEgame = MechEEgame()
 		self.currentScreen = self.dashboardScreen
 		self.currentGame = None
 		self.inGame = False

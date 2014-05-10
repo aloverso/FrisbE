@@ -51,7 +51,6 @@ class MixZone(DropZone):
            self.firstDropped = plane
            self.firstDroppedCoordinates = coordinates
            
-       print self.thingsDropped
 
        if self.thingsDropped == 2:
            if self.screen.game.money - 1000 < 0:
@@ -206,7 +205,6 @@ class ItemMakeZone(DropZone):
                    self.screen.game.money = self.screen.game.money + totalMoney
                    
                    newItem = (MatSciGame.CreatedItem(theItem.name, BLUE, theMaterial.strength, theMaterial.meltingPoint, theMaterial.appearence, theMaterial, totalMoney, self.screen.game))
-                   print newItem.name
                    name += 1
                    
                    if theItem.name == "cup":
@@ -367,7 +365,6 @@ class MixingScreen(Screen):
     def update(self):
         self.constantLabels[0].updateText("Money = " + str(self.game.money))
         if len(self.Notificationlabels) > 0:
-            print "Reached here!"
             time = pygame.time.get_ticks()
             if (self.dropBig.creationTime > 0) and (time - self.dropBig.creationTime < 2000):
                 pass

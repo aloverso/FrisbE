@@ -211,7 +211,6 @@ class ModSimScreen(Screen):
 
         self.timesteps = 0
         self.timeLabel.updateText("Timestep: " + str(self.timesteps))
-        print 'reset '
 
     def updateEnv(self):
         self.actors = []
@@ -337,7 +336,6 @@ class ModSimScreen(Screen):
                 self.rayOffset = 0
 
             if i >200:
-                print "no"
                 break
             elif i >150:
                 self.rayX = 30
@@ -355,10 +353,6 @@ class ModSimScreen(Screen):
 
             self.rayOffset += 10
 
-        print 'rays ' + str(self.howManyRays)
-        print 'Ray x ' + str(self.rayX)
-
-
 
         for i in range(1,self.howManySharks+1):
 
@@ -366,7 +360,6 @@ class ModSimScreen(Screen):
                 self.sharkOffset = 0
 
             if i >200:
-                print "no"
                 break
             elif i >150:
                 self.sharkX = 30
@@ -384,16 +377,12 @@ class ModSimScreen(Screen):
 
             self.sharkOffset += 10
 
-        print 'sharks ' + str(self.howManySharks)
-
-
-
         for i in range(1,self.howManyScallops+1):
             if (i-1) %50 == 0:
                 self.scallopOffset = 0
 
             if i >200:
-                print "no"
+
                 break
             elif i >150:
                 self.scallopX = 30
@@ -411,7 +400,6 @@ class ModSimScreen(Screen):
 
             self.scallopOffset += 10
             
-        print 'scallops ' + str(self.howManyScallops)
 
 
         if abs(self.changeInRays) <=2:
@@ -420,7 +408,6 @@ class ModSimScreen(Screen):
                     self.win += 1
         if self.win >= 5:
             self.actors.append(self.winLabel)
-            print "you win"
 
 
 class ResetButton(Button):
@@ -442,7 +429,6 @@ class TimeStepButton(Button):
 
     def clicked(self, button_name):
         self.model.timesteps +=1
-        print 'timestep ' + str(self.model.timesteps)
         self.model.updateEnv()
 
 
@@ -469,8 +455,8 @@ class RayButton(Button):
         i = self.model.howManyRays
         if (i-1) %50 == 0:
             self.model.rayOffset = 0
-        if i >200:                
-            print "no"
+        if i >200:   
+            pass             
         elif i >150:
             self.model.rayX = 30
             self.model.actors.append(Ray("rayA"+str(i), pygame.Rect(130,100+self.model.rayOffset,10,10), "ray.png", self.model))
@@ -488,7 +474,6 @@ class RayButton(Button):
         self.model.rayOffset += 10
 
 
-        print 'rays ' + str(self.model.howManyRays)
         self.model.numrayLabel.updateText("Rays: " + str(self.model.howManyRays))
       
 
@@ -505,7 +490,6 @@ class SharkButton(Button):
         if (i-1) %50 == 0:
             self.model.sharkOffset = 0
         if i >200:                
-            print "no"
         elif i >150:
             self.model.sharkX = 30
             self.model.actors.append(Shark("sharkA"+str(i), pygame.Rect(360,100+self.model.sharkOffset,10,10), "shark.png", self.model))
@@ -521,7 +505,6 @@ class SharkButton(Button):
             self.model.actors.append(Shark("sharkA"+str(i), pygame.Rect(330,100+self.model.sharkOffset,10,10), "shark.png", self.model))
             
         self.model.sharkOffset += 10
-        print 'sharks ' + str(self.model.howManySharks)
         self.model.numsharkLabel.updateText("Sharks: " + str(self.model.howManySharks))
 
 
@@ -537,7 +520,7 @@ class ScallopButton(Button):
         if (i-1) %50 == 0:
             self.model.scallopOffset = 0
         if i >200:                
-            print "no"
+            pass
         elif i >150:
             self.model.scallopX = 30
             self.model.actors.append(Scallop("scallopA"+str(i), pygame.Rect(590,100+self.model.scallopOffset,10,10), "scallop.png", self.model))
@@ -553,7 +536,6 @@ class ScallopButton(Button):
             self.model.actors.append(Scallop("scallopA"+str(i), pygame.Rect(560,100+self.model.scallopOffset,10,10), "scallop.png", self.model))
             
         self.model.scallopOffset += 10
-        print 'scallops ' + str(self.model.howManyScallops)
         self.model.numscallopLabel.updateText("Scallops: " + str(self.model.howManyScallops))
 
 

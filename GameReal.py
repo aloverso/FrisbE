@@ -37,6 +37,13 @@ class HomeButton(Button):
 		self.model.currentscreen = self.model.homescreen
 
 
+class BackButton(Button):
+    def __init__(self, label, im, rect, callback, model):
+        Button.__init__(self, label, rect, callback, model)
+        self.image = pygame.image.load(im)
+    def clicked(self, button_name):
+        self.model.toDash = True
+
 class PlayScreenButton(Button):
     def __init__(self, label, im, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
@@ -105,21 +112,24 @@ class MechEEgame():
         self.actors = self.tools + self.parts
 
         self.toDash = False
-        self.tools.append(Tools("Hammer",1,pygame.Rect(500,0,20,20),WHITE))
-        self.tools.append(Tools("Wrench",2,pygame.Rect(500,1*WINDOWHEIGHT/5,20,20),BLUE))
-        self.parts.append(Parts("Gear",5,pygame.Rect(50,0,20,20),GREEN))
-        self.parts.append(Parts("Nut",6,pygame.Rect(50,WINDOWHEIGHT/5,20,20),WHITE))
-        self.parts.append(Parts("Nail",7,pygame.Rect(50,2*WINDOWHEIGHT/5,20,20),BLUE))
+        self.tools.append(Tools("Hammer",1,pygame.Rect(50,0,100,100),"hammer.png"))
+        self.tools.append(Tools("Wrench",2,pygame.Rect(50,200,100,100),"wrench.png"))
+        self.parts.append(Parts("Gear",5,pygame.Rect(900,200,100,100),"gears.png"))
+        self.parts.append(Parts("Nut",6,pygame.Rect(900,400,100,100),"nut.png"))
+        self.parts.append(Parts("Nail",7,pygame.Rect(900,600,100,100),"nails.png"))
 
         self.playScreen = playScreen(self.tools, self.parts, self)
         self.infoScreen = infoScreen(self.tools,self.parts, self)
         
-        start = StartButton("start","startbut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),StartButton.clicked, self)
-        info = infoScreenButton("info","i.jpg",pygame.Rect(WINDOWWIDTH/8,6*WINDOWHEIGHT/8 + 30,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),infoScreenButton.clicked, self)
-        tutorial = TutorialButton("tutorial","tutbut.png",pygame.Rect(WINDOWWIDTH/8,5*WINDOWHEIGHT/8 + 20,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),TutorialButton.clicked, self)
-        home = HomeButton("home","homebut.png",pygame.Rect(WINDOWWIDTH/8,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),HomeButton.clicked, self)
-        tr = pygame.Rect(WINDOWWIDTH/8, WINDOWHEIGHT/8, 3*WINDOWWIDTH/4, 3*WINDOWHEIGHT/8)
+        start = StartButton("start","startbut.png",pygame.Rect(WINDOWWIDTH/2+100,4*WINDOWHEIGHT/8 + 10,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),StartButton.clicked, self)
+        info = infoScreenButton("info","i_small.png",pygame.Rect(WINDOWWIDTH/2+100,6*WINDOWHEIGHT/8 + 30,3*WINDOWWIDTH/4,WINDOWHEIGHT/8),infoScreenButton.clicked, self)
+        back = BackButton("back", "back_button_long.png", pygame.Rect(50,650,500,50), BackButton.clicked, self)
 
-        self.homescreen = Screen([start,tutorial],[titleRect("home.png",tr,WHITE)],BLACK)
-    
+        start = StartButton("start","start_button.png",pygame.Rect(650,50,500,300),StartButton.clicked, self)
+        tutorial = TutorialButton("tutorial","tutorial_button.png",pygame.Rect(650, 400, 500, 300),TutorialButton.clicked, self)
+        home = HomeButton("home","title_button.png",pygame.Rect(650,50,500,300),HomeButton.clicked, self)
+        tr = pygame.Rect(50, 50, 500, 575)
+        self.homescreen = Screen([start,tutorial, back],[titleRect("gearup_logo.png",tr,WHITE)],BLACK)
+        self.tutorialscreen = Screen([home, tutorial],[titleRect("tutorial_info.png",tr,WHITE)],BLACK)
+
         self.currentscreen = self.homescreen
