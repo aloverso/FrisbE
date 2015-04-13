@@ -44,39 +44,39 @@ BLUE = (0, 0, 255)
 class UpButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("up_button.png")
+        self.image = pygame.image.load("img/up_button.png")
     def clicked(self, button_name):
         if not self.model.runClicked:
-            self.model.addCommand("up_command.png", 0, -1)
+            self.model.addCommand("img/up_command.png", 0, -1)
 
 class DownButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("down_button.png")
+        self.image = pygame.image.load("img/down_button.png")
     def clicked(self, button_name):
         if not self.model.runClicked:
-            self.model.addCommand("down_command.png", 0, 1)
+            self.model.addCommand("img/down_command.png", 0, 1)
 
 class LeftButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("left_button.png")
+        self.image = pygame.image.load("img/left_button.png")
     def clicked(self, button_name):
         if not self.model.runClicked:
-            self.model.addCommand("left_command.png", -1, 0)
+            self.model.addCommand("img/left_command.png", -1, 0)
 
 class RightButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("right_button.png")
+        self.image = pygame.image.load("img/right_button.png")
     def clicked(self, button_name):
         if not self.model.runClicked:
-            self.model.addCommand("right_command.png", 1, 0)
+            self.model.addCommand("img/right_command.png", 1, 0)
 
 class ClearButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("clear_button.png")
+        self.image = pygame.image.load("img/clear_button.png")
     def clicked(self, button_name):
         if not self.model.runClicked:
             self.model.clearCommands()
@@ -84,7 +84,7 @@ class ClearButton(Button):
 class BackButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("delete_button.png")
+        self.image = pygame.image.load("img/delete_button.png")
     def clicked(self, button_name):
         if len(self.model.commands) > 0 and not self.model.runClicked:
             commandToRemove = self.model.commands[len(self.model.commands)-1]
@@ -94,14 +94,14 @@ class BackButton(Button):
 class RunButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.im = pygame.image.load("run_button.png")
+        self.im = pygame.image.load("img/run_button.png")
     def clicked(self, button_name):
         self.model.runClicked = True
 
 class BuildButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("back_button_med.png")
+        self.image = pygame.image.load("img/back_button_med.png")
     def clicked(self, button_name):
         if not self.model.won:
             self.model.robot.money -= self.model.moneyCollected
@@ -221,7 +221,7 @@ class MoveScreen(Screen):
             wn4 = ScreenText("wn4", "Money Collected: "+ str(self.moneyCollected),pygame.Rect(WINDOWWIDTH/2 - 150, WINDOWHEIGHT/8 + 250, 300, 50), font2)
             wn5 = ScreenText("wn5", "Your Total Money: "+str(self.robot.money),pygame.Rect(WINDOWWIDTH/2 - 150, WINDOWHEIGHT/8 + 300, 300, 50), font2)
             winbox = planes.Plane("winbox", pygame.Rect(WINDOWWIDTH/8, WINDOWHEIGHT/8,3*WINDOWWIDTH/4,3*WINDOWHEIGHT/4))
-            winbox.image = pygame.image.load("win_notification_box.png")
+            winbox.image = pygame.image.load("img/win_notification_box.png")
             win_array = [winbox, wn1,wn2,wn3,wn4,wn5]
             self.actors += win_array
             toBuildScreen = BuildButton("tobuildscreen", pygame.Rect(WINDOWWIDTH/2-100, 3*WINDOWHEIGHT/4, 200,50), BuildButton.clicked, self)
@@ -250,7 +250,7 @@ class MoveScreen(Screen):
 
     def update(self):
         if len(self.commands) >= 10:
-            self.run.image = pygame.image.load("run_button.png")
+            self.run.image = pygame.image.load("img/run_button.png")
             self.buttons.append(self.run)
         else:
             self.run.image.fill(BLACK)

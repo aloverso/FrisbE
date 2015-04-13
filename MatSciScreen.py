@@ -28,7 +28,7 @@ BLUE = (0, 0, 255)
 class MixZone(DropZone):
     def __init__(self,name,rect,screen, model):
         DropZone.__init__(self, name, rect)
-        self.image = pygame.image.load("Blender2.png")
+        self.image = pygame.image.load("img/Blender2.png")
         self.screen = screen
         self.model = model
         
@@ -101,7 +101,7 @@ class ItemMakeZone(DropZone):
         DropZone.__init__(self, name, rect)
         self.screen = screen
         self.model = model
-        self.image = pygame.image.load("AnvilAndHammer.png")
+        self.image = pygame.image.load("img/AnvilAndHammer.png")
         
         self.firstDropped = None
         self.firstDroppedCoordinates = None
@@ -282,9 +282,9 @@ class HoldZone(DropZone):
     def __init__(self,name,rect,screen):
         DropZone.__init__(self, name, rect)
         if self.name == "holdMats":
-            self.image = pygame.image.load("HoldMats.png")
+            self.image = pygame.image.load("img/HoldMats.png")
         else:
-            self.image = pygame.image.load("HoldNewMats.png")
+            self.image = pygame.image.load("img/HoldNewMats.png")
         self.screen = screen
         self.coordinates = rect.center
         
@@ -297,7 +297,7 @@ class StrengthTestZone(DropZone):
     def __init__(self,name,rect,screen):
         DropZone.__init__(self, name, rect)
         self.screen = screen
-        self.image = pygame.image.load("ForceTester.png")
+        self.image = pygame.image.load("img/ForceTester.png")
         
     def dropped_upon(self, plane, coordinates):
        planes.Plane.dropped_upon(self.screen.dropMats, plane, (plane.Xpos, plane.Ypos))
@@ -310,7 +310,7 @@ class StrengthTestZone(DropZone):
 class MeltingTestZone(DropZone):
     def __init__(self,name,rect,screen):
         DropZone.__init__(self, name, rect)
-        self.image = pygame.image.load("Oven.PNG")
+        self.image = pygame.image.load("img/Oven.PNG")
         self.screen = screen
         
     def dropped_upon(self, plane, coordinates):
@@ -337,10 +337,10 @@ class MixingScreen(Screen):
         self.infoLabels = []
         self.infoCreationTime = 0
         
-        self.forceScreenButton = MatSciGame.ForceScreenButton("forceScreen", "StrengthButton.png",pygame.Rect(900, 150, 300, 75),MatSciGame.ForceScreenButton.clicked, self.game)
-        self.heatScreenButton = MatSciGame.HeatScreenButton("heatScreen", "FireButton2.png", pygame.Rect(900, 300, 300, 75),MatSciGame.HeatScreenButton.clicked, self.game)
-        self.itemScreenButton = MatSciGame.ItemScreenButton("itemScreen", "MakeNewItemsButton.png", pygame.Rect(900, 450, 300, 75),MatSciGame.ItemScreenButton.clicked, self.game)
-        self.itemViewScreenButton = MatSciGame.ItemViewScreenButton("itemviewScreen", "ViewItemsButton.png", pygame.Rect(900, 600, 300, 75),MatSciGame.ItemScreenButton.clicked, self.game)
+        self.forceScreenButton = MatSciGame.ForceScreenButton("forceScreen", "img/StrengthButton.png",pygame.Rect(900, 150, 300, 75),MatSciGame.ForceScreenButton.clicked, self.game)
+        self.heatScreenButton = MatSciGame.HeatScreenButton("heatScreen", "img/FireButton2.png", pygame.Rect(900, 300, 300, 75),MatSciGame.HeatScreenButton.clicked, self.game)
+        self.itemScreenButton = MatSciGame.ItemScreenButton("itemScreen", "img/MakeNewItemsButton.png", pygame.Rect(900, 450, 300, 75),MatSciGame.ItemScreenButton.clicked, self.game)
+        self.itemViewScreenButton = MatSciGame.ItemViewScreenButton("itemviewScreen", "img/ViewItemsButton.png", pygame.Rect(900, 600, 300, 75),MatSciGame.ItemScreenButton.clicked, self.game)
         
         self.constantLabels.append(ScreenText("moneyText", "Money = " + str(self.money), pygame.Rect(900, 0, 300, 75), pygame.font.SysFont("Arial", 40)))               
         
@@ -360,7 +360,7 @@ class MixingScreen(Screen):
         
         
 
-        Screen.__init__(self, [], self.actors, "labBackground.png")
+        Screen.__init__(self, [], self.actors, "img/labBackground.png")
     
     def update(self):
         self.constantLabels[0].updateText("Money = " + str(self.game.money))
@@ -390,7 +390,7 @@ class ForceTestScreen(Screen):
         self.newMaterials = newMaterials
         self.constantLabels = []
         self.dropZones = [self.dropTest, self.dropMats, self.dropNewMats]
-        self.mixScreenButton = MatSciGame.MixScreenButton("mixScreen","MixingButton.png", pygame.Rect(900, 300, 300, 75),MatSciGame.ForceScreenButton.clicked, self.game)
+        self.mixScreenButton = MatSciGame.MixScreenButton("mixScreen","img/MixingButton.png", pygame.Rect(900, 300, 300, 75),MatSciGame.ForceScreenButton.clicked, self.game)
         
         
         self.constantLabels.append(ScreenText("moneyText", "Money = " + str(self.money), pygame.Rect(900, 0, 300, 75), pygame.font.SysFont("Arial", 40)))               
@@ -401,7 +401,7 @@ class ForceTestScreen(Screen):
         self.actors = self.constantLabels + self.dropZones+ self.materials+self.newMaterials
         self.buttons = [self.mixScreenButton]
         
-        Screen.__init__(self, self.buttons, self.actors, "woodBackground.png")
+        Screen.__init__(self, self.buttons, self.actors, "img/woodBackground.png")
     
     def update(self):
         self.constantLabels[0].updateText("Money = " + str(self.game.money))
@@ -435,7 +435,7 @@ class MeltingTestScreen(Screen):
         
         self.constantLabels = []
         self.dropZones = [self.dropTest, self.dropMats, self.dropNewMats]
-        self.mixScreenButton = MatSciGame.MixScreenButton("mixScreen","MixingButton.png", pygame.Rect(900, 300, 300, 75),MatSciGame.ForceScreenButton.clicked, self.game)
+        self.mixScreenButton = MatSciGame.MixScreenButton("mixScreen","img/MixingButton.png", pygame.Rect(900, 300, 300, 75),MatSciGame.ForceScreenButton.clicked, self.game)
         
         self.constantLabels.append(ScreenText("moneyText", "Money = " + str(self.money), pygame.Rect(900, 0, 300, 75), pygame.font.SysFont("Arial", 40)))               
         
@@ -447,7 +447,7 @@ class MeltingTestScreen(Screen):
         self.actors = self.constantLabels + self.dropZones+ self.materials+self.newMaterials
         self.buttons = [self.mixScreenButton]
         
-        Screen.__init__(self, self.buttons, self.actors, "kitchenBackground.png")
+        Screen.__init__(self, self.buttons, self.actors, "img/kitchenBackground.png")
     
     def update(self):
         self.constantLabels[0].updateText("Money = " + str(self.game.money))
@@ -488,7 +488,7 @@ class ItemMakeScreen(Screen):
         
         self.constantLabels = []
         self.dropZones = [self.dropTest, self.dropMats, self.dropNewMats]
-        self.mixScreenButton = MatSciGame.MixScreenButton("mixScreen","MixingButton.png", pygame.Rect(900, 300, 300, 75),MatSciGame.ForceScreenButton.clicked, self.game)
+        self.mixScreenButton = MatSciGame.MixScreenButton("mixScreen","img/MixingButton.png", pygame.Rect(900, 300, 300, 75),MatSciGame.ForceScreenButton.clicked, self.game)
         
         self.constantLabels.append(ScreenText("moneyText", "Money = " + str(self.money), pygame.Rect(900, 0, 300, 75), pygame.font.SysFont("Arial", 40)))               
         
@@ -498,7 +498,7 @@ class ItemMakeScreen(Screen):
         self.actors = self.constantLabels + self.dropZones+ self.materials+self.newMaterials + self.items
         self.buttons = [self.mixScreenButton]
         
-        Screen.__init__(self, self.buttons, self.actors, "smithBackground.png")
+        Screen.__init__(self, self.buttons, self.actors, "img/kitchenBackground.png")
     
     def update(self):
         self.constantLabels[0].updateText("Money = " + str(self.game.money))
@@ -528,7 +528,7 @@ class ItemViewScreen(Screen):
         self.constantLabels = []
         self.shownItems = []
 
-        self.mixScreenButton = MatSciGame.MixScreenButton("mixScreen","MixingButton.png", pygame.Rect(900, 300, 300, 75),MatSciGame.ForceScreenButton.clicked, self.game)
+        self.mixScreenButton = MatSciGame.MixScreenButton("mixScreen","img/MixingButton.png", pygame.Rect(900, 300, 300, 75),MatSciGame.ForceScreenButton.clicked, self.game)
         
         self.constantLabels.append(ScreenText("moneyText", "Money = " + str(self.money), pygame.Rect(900, 0, 300, 75), pygame.font.SysFont("Arial", 40)))               
         
@@ -539,7 +539,7 @@ class ItemViewScreen(Screen):
         
         self.buttons = [self.mixScreenButton]
         
-        Screen.__init__(self, self.buttons, self.actors, "bookOpen.png")
+        Screen.__init__(self, self.buttons, self.actors, "img/bookOpen.png")
     
     def update(self):
 #        self.shownItems = []

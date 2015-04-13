@@ -52,30 +52,30 @@ class Robot(planes.Plane):
 class UpButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("up.png")
+        self.image = pygame.image.load("img/up.png")
     def clicked(self, button_name):
-        self.model.addCommand("up.png", 0, -1)
+        self.model.addCommand("img/up.png", 0, -1)
 
 class DownButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("down.png")
+        self.image = pygame.image.load("img/down.png")
     def clicked(self, button_name):
-        self.model.addCommand("down.png", 0, 1)
+        self.model.addCommand("img/down.png", 0, 1)
 
 class LeftButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("left.png")
+        self.image = pygame.image.load("img/left.png")
     def clicked(self, button_name):
-        self.model.addCommand("left.png", -1, 0)
+        self.model.addCommand("img/left.png", -1, 0)
 
 class RightButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("right.png")
+        self.image = pygame.image.load("img/right.png")
     def clicked(self, button_name):
-        self.model.addCommand("right.png", 1, 0)
+        self.model.addCommand("img/right.png", 1, 0)
 
 class ClearButton(Button):
     def __init__(self, label, rect, callback, model):

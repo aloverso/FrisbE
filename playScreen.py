@@ -41,11 +41,11 @@ class TargetZone(DropZone):
     def checklevel(self):
 
         if self.screen.game.level == 0:
-            self.image = pygame.image.load("bike.JPG")
+            self.image = pygame.image.load("img/bike.JPG")
         if self.screen.game.level == 1:
-            self.image = pygame.image.load("chair.jpg")
+            self.image = pygame.image.load("img/chair.jpg")
         if self.screen.game.level == 2:
-            self.image = pygame.image.load("tire.jpg")
+            self.image = pygame.image.load("img/tire.jpg")
         
     def dropped_upon(self, plane, coordinates):
 
@@ -124,14 +124,14 @@ class playScreen(Screen):
 
 
 
-        info = infoScreenButton("infobutton", "i_small.png", pygame.Rect(WINDOWWIDTH-100, 0, 100, 100), infoScreenButton.clicked, self)
-        back = BackButton("BackButton", "back_button_med.png", pygame.Rect(0, WINDOWHEIGHT-100, 200, 100), BackButton.clicked, self)
+        info = infoScreenButton("infobutton", "img/i_small.png", pygame.Rect(WINDOWWIDTH-100, 0, 100, 100), infoScreenButton.clicked, self)
+        back = BackButton("BackButton", "img/back_button_med.png", pygame.Rect(0, WINDOWHEIGHT-100, 200, 100), BackButton.clicked, self)
         buttons = [info,back]
 
         
         self.actors = [self.TargetArea] + self.parts + self.tools + self.Notificationlabels
 
-        Screen.__init__(self,buttons,self.actors,"metal_background_sheet.png")
+        Screen.__init__(self,buttons,self.actors,"img/metal_background_sheet.png")
 
     def update(self):
         self.actors = [self.TargetArea] + self.parts + self.tools + self.Notificationlabels

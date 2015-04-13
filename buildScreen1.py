@@ -61,14 +61,14 @@ class StoreButton(Button):
 class BackButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("back_button_med.png")
+        self.image = pygame.image.load("img/back_button_med.png")
     def clicked(self, button_name):
         self.model.game.currentscreen = self.model.game.homescreen
 
 class DefaultButton(Button):
     def __init__(self, label, rect, callback, model):
         Button.__init__(self, label, rect, callback, model)
-        self.image = pygame.image.load("default_button.png")
+        self.image = pygame.image.load("img/default_button.png")
     def clicked(self, button_name):
         self.model.robot.motorspeed = self.model.robot.defaultMotorspeed
         self.model.robot.bumper = self.model.robot.defaultBumper
@@ -88,7 +88,7 @@ class UpgradeZone(DropZone):
         DropZone.__init__(self,name,rect)
         self.robot = robot
         self.model = model
-        self.image = pygame.image.load("robot.png")
+        self.image = pygame.image.load("img/robot.png")
     def dropped_upon(self, plane, coordinates):
         planes.Plane.dropped_upon(self, plane, (plane.Xpos, plane.Ypos))
         plane.moving = False
@@ -128,8 +128,8 @@ class BuildScreen(Screen):
         self.startPosition = (400,400)
         self.game = game
         self.upgradezone = UpgradeZone("upgradezone", pygame.Rect(410,70,360,590), self.robot, self)
-        store = StoreButton("storebutton", pygame.Rect(scrleft, scrbottom-100, 200, 100), "store_button.png", StoreButton.clicked, self)
-        start = StartButton("movescreen", pygame.Rect(scrright-200, scrbottom-100, 200, 100), "start_game_button.png", StartButton.clicked, self)
+        store = StoreButton("storebutton", pygame.Rect(scrleft, scrbottom-100, 200, 100), "img/store_button.png", StoreButton.clicked, self)
+        start = StartButton("movescreen", pygame.Rect(scrright-200, scrbottom-100, 200, 100), "img/start_game_button.png", StartButton.clicked, self)
         back = BackButton("backbutton", pygame.Rect(WINDOWWIDTH-225, 60, 200, 50), BackButton.clicked, self)
         defaultbutt = DefaultButton("defaultbutton", pygame.Rect(WINDOWWIDTH-225, 500, 200, 50), DefaultButton.clicked, self)
         buttons = [start, store, back, defaultbutt]
@@ -154,9 +154,9 @@ class BuildScreen(Screen):
         font1 = pygame.font.SysFont("Arial", 40)
         self.moneyLabel = ScreenText("moneytext", "Money: "+str(self.robot.money), pygame.Rect(WINDOWWIDTH-225, 0, 200, 50), font1)
         self.motorLabel = planes.Plane("motorLabel", pygame.Rect(scrleft,scrtop,170,50), draggable=False, grab=False)
-        self.motorLabel.image = pygame.image.load("motorupgrade_label.png")
+        self.motorLabel.image = pygame.image.load("img/motorupgrade_label.png")
         self.bumperLabel = planes.Plane("bumperLabel", pygame.Rect(scrleft, scrtop+60+50 + 30, 170, 50), draggable=False, grab=False)
-        self.bumperLabel.image = pygame.image.load("bumperupgrade_label.png")
+        self.bumperLabel.image = pygame.image.load("img/bumperupgrade_label.png")
         self.labels = [self.motorLabel, self.bumperLabel, self.moneyLabel, self.motorLevelLabel, self.bumperLevelLabel]
         self.actors = [self.upgradezone] + self.labels + self.game.purchases + self.motorUpgradeIndicators + self.bumperUpgradeIndicators
         self.startPosition = (200,200)

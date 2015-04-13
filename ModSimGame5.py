@@ -42,17 +42,17 @@ class ModSimGame:
     def __init__(self):
         self.modsimscreen = ModSimScreen(self)
 
-        back = BackButton("back", "back_button_long.png", pygame.Rect(50,600,550,50), BackButton.clicked, self)
-        start = StartButton("start","start_button.png",pygame.Rect(650,50,500,300),StartButton.clicked, self)
-        tutorial = TutorialButton("tutorial","tutorial_button.png",pygame.Rect(650, 400, 500, 300),TutorialButton.clicked, self)
-        home = HomeButton("home","title_button.png",pygame.Rect(650,50,500,300),HomeButton.clicked, self)
-        home2 = HomeButton("home","title_button.png",pygame.Rect(650,250,500,300),HomeButton.clicked, self)
+        back = BackButton("back", "img/back_button_long.png", pygame.Rect(50,600,550,50), BackButton.clicked, self)
+        start = StartButton("start","img/start_button.png",pygame.Rect(650,50,500,300),StartButton.clicked, self)
+        tutorial = TutorialButton("tutorial","img/tutorial_button.png",pygame.Rect(650, 400, 500, 300),TutorialButton.clicked, self)
+        home = HomeButton("home","img/title_button.png",pygame.Rect(650,50,500,300),HomeButton.clicked, self)
+        home2 = HomeButton("home","img/title_button.png",pygame.Rect(650,250,500,300),HomeButton.clicked, self)
 
         tr = pygame.Rect(50, 50, 500, 500)
         tr2 = pygame.Rect(50, 10, 500, 730)
         # MAKE LOGO 500 by 575
-        self.homescreen = Screen([start,tutorial, back],[titleRect("modsim_logo.png",tr,WHITE)],BLACK)
-        self.tutorialscreen = Screen([home2],[titleRect2("tutorial_modsim.png",tr2,WHITE)],BLACK)
+        self.homescreen = Screen([start,tutorial, back],[titleRect("img/modsim_logo.png",tr,WHITE)],BLACK)
+        self.tutorialscreen = Screen([home2],[titleRect2("img/tutorial_modsim.png",tr2,WHITE)],BLACK)
 
         self.currentscreen = self.homescreen
         self.toDash = False
@@ -143,14 +143,14 @@ class ModSimScreen(Screen):
         self.changescallopLabel = ScreenText("changescalloptext", "Change: "+str(self.howManyScallops), pygame.Rect(530,40,150,30), font1)
 
         self.winLabel = ScreenText("wintext", "YOU WIN!", pygame.Rect(0,0,1200,750), font2)
-        buttonReset = ResetButton("reset", "reset_button.png", pygame.Rect(8*WINDOWWIDTH/10-40,8*WINDOWHEIGHT/10-30, 2*WINDOWWIDTH/10, WINDOWHEIGHT/10), ResetButton.clicked, self)
-        button0 = TimeStepButton("time", "timestep_button.png", pygame.Rect(8*WINDOWWIDTH/10-40,7*WINDOWHEIGHT/10-40, 2*WINDOWWIDTH/10, WINDOWHEIGHT/10), TimeStepButton.clicked, self)
-        button1 = RayButton("ray","ray.png",pygame.Rect(8.5*WINDOWWIDTH/10-30,WINDOWHEIGHT/10,WINDOWWIDTH/10,WINDOWHEIGHT/10),RayButton.clicked, self)
-        button2 = SharkButton("shark","shark.png",pygame.Rect(8.5*WINDOWWIDTH/10-30,2*WINDOWHEIGHT/10 + 10,WINDOWWIDTH/10,WINDOWHEIGHT/10),SharkButton.clicked, self)
-        button3 = ScallopButton("scallop", "scallop.png", pygame.Rect(8.5*WINDOWWIDTH/10-30,3*WINDOWHEIGHT/10 + 20, WINDOWWIDTH/10, WINDOWHEIGHT/10), ScallopButton.clicked, self)
+        buttonReset = ResetButton("reset", "img/reset_button.png", pygame.Rect(8*WINDOWWIDTH/10-40,8*WINDOWHEIGHT/10-30, 2*WINDOWWIDTH/10, WINDOWHEIGHT/10), ResetButton.clicked, self)
+        button0 = TimeStepButton("time", "img/timestep_button.png", pygame.Rect(8*WINDOWWIDTH/10-40,7*WINDOWHEIGHT/10-40, 2*WINDOWWIDTH/10, WINDOWHEIGHT/10), TimeStepButton.clicked, self)
+        button1 = RayButton("ray","img/ray.png",pygame.Rect(8.5*WINDOWWIDTH/10-30,WINDOWHEIGHT/10,WINDOWWIDTH/10,WINDOWHEIGHT/10),RayButton.clicked, self)
+        button2 = SharkButton("shark","img/shark.png",pygame.Rect(8.5*WINDOWWIDTH/10-30,2*WINDOWHEIGHT/10 + 10,WINDOWWIDTH/10,WINDOWHEIGHT/10),SharkButton.clicked, self)
+        button3 = ScallopButton("scallop", "img/scallop.png", pygame.Rect(8.5*WINDOWWIDTH/10-30,3*WINDOWHEIGHT/10 + 20, WINDOWWIDTH/10, WINDOWHEIGHT/10), ScallopButton.clicked, self)
         
         ###########
-        buttonback = GBackButton("back", "back_button_ingame.png", pygame.Rect(8*WINDOWWIDTH/10-40, 9*WINDOWHEIGHT/10-20, 2*WINDOWWIDTH/10, WINDOWHEIGHT/10), BackButton.clicked, self)
+        buttonback = GBackButton("back", "img/back_button_ingame.png", pygame.Rect(8*WINDOWWIDTH/10-40, 9*WINDOWHEIGHT/10-20, 2*WINDOWWIDTH/10, WINDOWHEIGHT/10), BackButton.clicked, self)
         self.buttons.append(buttonback)
         ##########
         self.buttons.append(buttonReset)
@@ -168,7 +168,7 @@ class ModSimScreen(Screen):
         self.actors.append(self.numscallopLabel)
         self.actors.append(self.changescallopLabel)
 
-        Screen.__init__(self, self.buttons, self.actors, "Background_modsim.png")
+        Screen.__init__(self, self.buttons, self.actors, "img/Background_modsim.png")
 
 
     def update(self):
@@ -339,17 +339,17 @@ class ModSimScreen(Screen):
                 break
             elif i >150:
                 self.rayX = 30
-                self.actors.append(Ray("rayA"+str(i), pygame.Rect(130,100+self.rayOffset,10,10), "ray.png", self))
+                self.actors.append(Ray("rayA"+str(i), pygame.Rect(130,100+self.rayOffset,10,10), "img/ray.png", self))
             elif i>100:
                 self.rayX = 20
-                self.actors.append(Ray("rayA"+str(i), pygame.Rect(120,100+self.rayOffset,10,10), "ray.png", self))
+                self.actors.append(Ray("rayA"+str(i), pygame.Rect(120,100+self.rayOffset,10,10), "img/ray.png", self))
             elif i > 50:
                 self.rayX = 10
-                self.actors.append(Ray("rayA"+str(i), pygame.Rect(110,100+self.rayOffset,10,10), "ray.png", self))
+                self.actors.append(Ray("rayA"+str(i), pygame.Rect(110,100+self.rayOffset,10,10), "img/ray.png", self))
 
             elif i <=50:
                 self.rayX = 0
-                self.actors.append(Ray("rayA"+str(i), pygame.Rect(100,100+self.rayOffset,10,10), "ray.png", self))
+                self.actors.append(Ray("rayA"+str(i), pygame.Rect(100,100+self.rayOffset,10,10), "img/ray.png", self))
 
             self.rayOffset += 10
 
@@ -363,17 +363,17 @@ class ModSimScreen(Screen):
                 break
             elif i >150:
                 self.sharkX = 30
-                self.actors.append(Shark("sharkA"+str(i), pygame.Rect(360,100+self.sharkOffset,10,10), "shark.png", self))
+                self.actors.append(Shark("sharkA"+str(i), pygame.Rect(360,100+self.sharkOffset,10,10), "img/shark.png", self))
             elif i>100:
                 self.sharkX = 20
-                self.actors.append(Shark("sharkA"+str(i), pygame.Rect(350,100+self.sharkOffset,10,10), "shark.png", self))
+                self.actors.append(Shark("sharkA"+str(i), pygame.Rect(350,100+self.sharkOffset,10,10), "img/shark.png", self))
             elif i > 50:
                 self.sharkX = 10
-                self.actors.append(Shark("sharkA"+str(i), pygame.Rect(340,100+self.sharkOffset,10,10), "shark.png", self))
+                self.actors.append(Shark("sharkA"+str(i), pygame.Rect(340,100+self.sharkOffset,10,10), "img/shark.png", self))
 
             elif i <=50:
                 self.sharkX = 0
-                self.actors.append(Shark("sharkA"+str(i), pygame.Rect(330,100+self.sharkOffset,10,10), "shark.png", self))
+                self.actors.append(Shark("sharkA"+str(i), pygame.Rect(330,100+self.sharkOffset,10,10), "img/shark.png", self))
 
             self.sharkOffset += 10
 
@@ -386,17 +386,17 @@ class ModSimScreen(Screen):
                 break
             elif i >150:
                 self.scallopX = 30
-                self.actors.append(Scallop("scallopA"+str(i), pygame.Rect(590,100+self.scallopOffset,10,10), "scallop.png", self))
+                self.actors.append(Scallop("scallopA"+str(i), pygame.Rect(590,100+self.scallopOffset,10,10), "img/scallop.png", self))
             elif i>100:
                 self.scallopX = 20
-                self.actors.append(Scallop("scallopA"+str(i), pygame.Rect(580,100+self.scallopOffset,10,10), "scallop.png", self))
+                self.actors.append(Scallop("scallopA"+str(i), pygame.Rect(580,100+self.scallopOffset,10,10), "img/scallop.png", self))
             elif i > 50:
                 self.scallopX = 10
-                self.actors.append(Scallop("scallopA"+str(i), pygame.Rect(570,100+self.scallopOffset,10,10), "scallop.png", self))
+                self.actors.append(Scallop("scallopA"+str(i), pygame.Rect(570,100+self.scallopOffset,10,10), "img/scallop.png", self))
 
             elif i <=50:
                 self.scallopX = 0
-                self.actors.append(Scallop("scallopA"+str(i), pygame.Rect(560,100+self.scallopOffset,10,10), "scallop.png", self))
+                self.actors.append(Scallop("scallopA"+str(i), pygame.Rect(560,100+self.scallopOffset,10,10), "img/scallop.png", self))
 
             self.scallopOffset += 10
             
@@ -459,17 +459,17 @@ class RayButton(Button):
             pass             
         elif i >150:
             self.model.rayX = 30
-            self.model.actors.append(Ray("rayA"+str(i), pygame.Rect(130,100+self.model.rayOffset,10,10), "ray.png", self.model))
+            self.model.actors.append(Ray("rayA"+str(i), pygame.Rect(130,100+self.model.rayOffset,10,10), "img/ray.png", self.model))
         elif i>100:
             self.model.rayX = 20
-            self.model.actors.append(Ray("rayA"+str(i), pygame.Rect(120,100+self.model.rayOffset,10,10), "ray.png", self.model))
+            self.model.actors.append(Ray("rayA"+str(i), pygame.Rect(120,100+self.model.rayOffset,10,10), "img/ray.png", self.model))
         elif i > 50:
             self.model.rayX = 10
-            self.model.actors.append(Ray("rayA"+str(i), pygame.Rect(110,100+self.model.rayOffset,10,10), "ray.png", self.model))
+            self.model.actors.append(Ray("rayA"+str(i), pygame.Rect(110,100+self.model.rayOffset,10,10), "img/ray.png", self.model))
 
         elif i <=50:
             self.model.rayX = 0
-            self.model.actors.append(Ray("rayA"+str(i), pygame.Rect(100,100+self.model.rayOffset,10,10), "ray.png", self.model))
+            self.model.actors.append(Ray("rayA"+str(i), pygame.Rect(100,100+self.model.rayOffset,10,10), "img/ray.png", self.model))
             
         self.model.rayOffset += 10
 
@@ -489,20 +489,21 @@ class SharkButton(Button):
         i = self.model.howManySharks
         if (i-1) %50 == 0:
             self.model.sharkOffset = 0
-        if i >200:                
+        if i >200:
+        	pass                
         elif i >150:
             self.model.sharkX = 30
-            self.model.actors.append(Shark("sharkA"+str(i), pygame.Rect(360,100+self.model.sharkOffset,10,10), "shark.png", self.model))
+            self.model.actors.append(Shark("sharkA"+str(i), pygame.Rect(360,100+self.model.sharkOffset,10,10), "img/shark.png", self.model))
         elif i>100:
             self.model.sharkX = 20
-            self.model.actors.append(Shark("sharkA"+str(i), pygame.Rect(350,100+self.model.sharkOffset,10,10), "shark.png", self.model))
+            self.model.actors.append(Shark("sharkA"+str(i), pygame.Rect(350,100+self.model.sharkOffset,10,10), "img/shark.png", self.model))
         elif i > 50:
             self.model.sharkX = 10
-            self.model.actors.append(Shark("sharkA"+str(i), pygame.Rect(340,100+self.model.sharkOffset,10,10), "shark.png", self.model))
+            self.model.actors.append(Shark("sharkA"+str(i), pygame.Rect(340,100+self.model.sharkOffset,10,10), "img/shark.png", self.model))
 
         elif i <=50:
             self.model.sharkX = 0
-            self.model.actors.append(Shark("sharkA"+str(i), pygame.Rect(330,100+self.model.sharkOffset,10,10), "shark.png", self.model))
+            self.model.actors.append(Shark("sharkA"+str(i), pygame.Rect(330,100+self.model.sharkOffset,10,10), "img/shark.png", self.model))
             
         self.model.sharkOffset += 10
         self.model.numsharkLabel.updateText("Sharks: " + str(self.model.howManySharks))
@@ -523,17 +524,17 @@ class ScallopButton(Button):
             pass
         elif i >150:
             self.model.scallopX = 30
-            self.model.actors.append(Scallop("scallopA"+str(i), pygame.Rect(590,100+self.model.scallopOffset,10,10), "scallop.png", self.model))
+            self.model.actors.append(Scallop("scallopA"+str(i), pygame.Rect(590,100+self.model.scallopOffset,10,10), "img/scallop.png", self.model))
         elif i>100:
             self.model.scallopX = 20
-            self.model.actors.append(Scallop("scallopA"+str(i), pygame.Rect(580,100+self.model.scallopOffset,10,10), "scallop.png", self.model))
+            self.model.actors.append(Scallop("scallopA"+str(i), pygame.Rect(580,100+self.model.scallopOffset,10,10), "img/scallop.png", self.model))
         elif i > 50:
             self.model.scallopX = 10
-            self.model.actors.append(Scallop("scallopA"+str(i), pygame.Rect(570,100+self.model.scallopOffset,10,10), "scallop.png", self.model))
+            self.model.actors.append(Scallop("scallopA"+str(i), pygame.Rect(570,100+self.model.scallopOffset,10,10), "img/scallop.png", self.model))
 
         elif i <=50:
             self.model.scallopX = 0
-            self.model.actors.append(Scallop("scallopA"+str(i), pygame.Rect(560,100+self.model.scallopOffset,10,10), "scallop.png", self.model))
+            self.model.actors.append(Scallop("scallopA"+str(i), pygame.Rect(560,100+self.model.scallopOffset,10,10), "img/scallop.png", self.model))
             
         self.model.scallopOffset += 10
         self.model.numscallopLabel.updateText("Scallops: " + str(self.model.howManyScallops))

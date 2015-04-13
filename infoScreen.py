@@ -37,7 +37,7 @@ class WrenchButton(Button):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
         self.note = planes.Plane("Note1",pygame.Rect(rect.right,rect.bottom,200,200),False,False)
-        self.note.image = pygame.image.load("wrench_button.png")
+        self.note.image = pygame.image.load("img/wrench_button.png")
     def clicked(self, button_name):
         print "clicked wrench"
         names = [label.name for label in self.model.Notificationlabels]
@@ -52,7 +52,7 @@ class NutButton(Button):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
         self.note = planes.Plane("Note1",pygame.Rect(rect.right,rect.bottom-300,200,200),False,False)
-        self.note.image = pygame.image.load("nut_button_info.png")
+        self.note.image = pygame.image.load("img/nut_button_info.png")
     def clicked(self, button_name):
         print "clicked nut"
         names = [label.name for label in self.model.Notificationlabels]
@@ -67,7 +67,7 @@ class HammerButton(Button):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
         self.note = planes.Plane("Note1",pygame.Rect(rect.left,rect.bottom-350,200,200),False,False)
-        self.note.image = pygame.image.load("hammer_button_info.png")
+        self.note.image = pygame.image.load("img/hammer_button_info.png")
     def clicked(self, button_name):
         print "clicked hammer"
         names = [label.name for label in self.model.Notificationlabels]
@@ -82,7 +82,7 @@ class GearButton(Button):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
         self.note = planes.Plane("Note1",pygame.Rect(rect.left-100,rect.bottom-300,200,200),False,False)
-        self.note.image = pygame.image.load("gear_button_info.png")
+        self.note.image = pygame.image.load("img/gear_button_info.png")
     def clicked(self, button_name):
         print "clicked gear"
         names = [label.name for label in self.model.Notificationlabels]
@@ -97,7 +97,7 @@ class NailButton(Button):
         Button.__init__(self, label, rect, callback, model)
         self.image = pygame.image.load(im)
         self.note = planes.Plane("Note1",pygame.Rect(rect.left-100,rect.bottom,200,200),False,False)
-        self.note.image = pygame.image.load("nail_button_info.png")
+        self.note.image = pygame.image.load("img/nail_button_info.png")
     def clicked(self, button_name):
         print "clicked nail"
         names = [label.name for label in self.model.Notificationlabels]
@@ -119,15 +119,15 @@ class infoScreen(Screen):
 
         self.Notificationlabels = []
 
-        back = BackButton("BackButton", "back_button_med.png", pygame.Rect(0, WINDOWHEIGHT-100, 200, 100), BackButton.clicked, self)
-        wrench = WrenchButton("WrenchButton","wrench.png",pygame.Rect(100,100,100,100), WrenchButton.clicked,self)
-        nut = NutButton("NutButton","nut.png",pygame.Rect(100,WINDOWHEIGHT-300,100,100), NutButton.clicked,self)
-        hammer = HammerButton("HammerButton","hammer.png",pygame.Rect(500,WINDOWHEIGHT-300,100,100), HammerButton.clicked,self)
-        gear = GearButton("GearButton","gears.png",pygame.Rect(1000,WINDOWHEIGHT-300,100,100), GearButton.clicked,self)
-        nail = NailButton("NailButton","nails.png",pygame.Rect(1000,100,100,100), NailButton.clicked,self)
+        back = BackButton("BackButton", "img/back_button_med.png", pygame.Rect(0, WINDOWHEIGHT-100, 200, 100), BackButton.clicked, self)
+        wrench = WrenchButton("WrenchButton","img/wrench.png",pygame.Rect(100,100,100,100), WrenchButton.clicked,self)
+        nut = NutButton("img/NutButton","img/nut.png",pygame.Rect(100,WINDOWHEIGHT-300,100,100), NutButton.clicked,self)
+        hammer = HammerButton("HammerButton","img/hammer.png",pygame.Rect(500,WINDOWHEIGHT-300,100,100), HammerButton.clicked,self)
+        gear = GearButton("GearButton","img/gears.png",pygame.Rect(1000,WINDOWHEIGHT-300,100,100), GearButton.clicked,self)
+        nail = NailButton("NailButton","img/nails.png",pygame.Rect(1000,100,100,100), NailButton.clicked,self)
         self.actors =  self.Notificationlabels
         buttons = [back,wrench,nut,hammer,gear,nail]
         
-        Screen.__init__(self,buttons,self.actors,"woodBackground.png")
+        Screen.__init__(self,buttons,self.actors,"img/woodBackground.png")
     def update(self):
         self.actors = self.Notificationlabels

@@ -67,7 +67,7 @@ class ScreenText(gui.Label):
 			self.background_color = (0,0,0,0)
 			self.text_color = WHITE
 
-		gui.Label.__init__(self,name,text,rect,self.background_color, self.text_color, font)
+		gui.Label.__init__(self,name,text,rect,self.background_color, self.text_color)
 
 
 		#planes.gui.Label.__init__(self,name,text,rect,self.background_color, WHITE, font)

@@ -159,16 +159,16 @@ class Material(planes.Plane):
         self.tier = tier
         
         if self.tier == 1:
-            self.image = pygame.image.load("materialT0.png")
+            self.image = pygame.image.load("img/materialT0.png")
         
         if self.tier == 2:
-            self.image = pygame.image.load("materialT1.png")
+            self.image = pygame.image.load("img/materialT1.png")
         
         if self.tier == 3:
-            self.image = pygame.image.load("materialT2.png")
+            self.image = pygame.image.load("img/materialT2.png")
         
         if self.tier >= 4:
-            self.image = pygame.image.load("materialT3.png")
+            self.image = pygame.image.load("img/materialT3.png")
         
 #        self.red = color[0]
 #        self.green = color[1]
@@ -219,15 +219,15 @@ class Item(planes.Plane):
         self.appearImport = appearImport
         
         if self.name == "cup":
-            self.image = pygame.image.load("CupItem.png")
+            self.image = pygame.image.load("img/CupItem.png")
         if self.name == "poker":
-            self.image = pygame.image.load("PokerItem.png")
+            self.image = pygame.image.load("img/PokerItem.png")
         if self.name == "hammer":
-            self.image = pygame.image.load("HammerItem.png")
+            self.image = pygame.image.load("img/HammerItem.png")
         if self.name == "table":
-            self.image = pygame.image.load("TableItem.png")
+            self.image = pygame.image.load("img/TableItem.png")
         if self.name == "decor":
-            self.image = pygame.image.load("DecorItem.png")
+            self.image = pygame.image.load("img/DecorItem.png")
 
 class CreatedItem(planes.Plane):
     def __init__(self, name, color, strength, meltingPoint, appearence, material, money, screen):
@@ -248,15 +248,15 @@ class CreatedItem(planes.Plane):
         planes.Plane.__init__(self, self.name, self.rect, draggable = False, grab = True)
                 
         if self.name == "cup":
-            self.image = pygame.image.load("CupItem.png")
+            self.image = pygame.image.load("img/CupItem.png")
         if self.name == "poker":
-            self.image = pygame.image.load("PokerItem.png")
+            self.image = pygame.image.load("img/PokerItem.png")
         if self.name == "hammer":
-            self.image = pygame.image.load("HammerItem.png")
+            self.image = pygame.image.load("img/HammerItem.png")
         if self.name == "table":
-            self.image = pygame.image.load("TableItem.png")
+            self.image = pygame.image.load("img/TableItem.png")
         if self.name == "decor":
-            self.image = pygame.image.load("DecorItem.png")  
+            self.image = pygame.image.load("img/DecorItem.png")  
 
         
     def setRect(self, rect):
@@ -297,14 +297,14 @@ class MatSciGame():
         self.topDecors = []
         self.topHammers = []
 
-        back = BackButton("back", "back_button_long.png", pygame.Rect(50,650,500,50), BackButton.clicked, self)
+        back = BackButton("back", "img/back_button_long.png", pygame.Rect(50,650,500,50), BackButton.clicked, self)
 
-        start = StartButton("start","start_button.png",pygame.Rect(650,50,500,300),StartButton.clicked, self)
-        tutorial = TutorialButton("tutorial","tutorial_button.png",pygame.Rect(650, 400, 500, 300),TutorialButton.clicked, self)
-        home = HomeButton("home","title_button.png",pygame.Rect(650,50,500,300),HomeButton.clicked, self)
+        start = StartButton("start","img/start_button.png",pygame.Rect(650,50,500,300),StartButton.clicked, self)
+        tutorial = TutorialButton("tutorial","img/tutorial_button.png",pygame.Rect(650, 400, 500, 300),TutorialButton.clicked, self)
+        home = HomeButton("home","img/title_button.png",pygame.Rect(650,50,500,300),HomeButton.clicked, self)
         tr = pygame.Rect(50, 50, 500, 575)
-        self.homescreen = Screen([start,tutorial, back],[titleRect("matsci_logo.png",tr,WHITE)],BLACK)
+        self.homescreen = Screen([start,tutorial, back],[titleRect("img/matsci_logo.png",tr,WHITE)],BLACK)
 
-        self.tutorialscreen = Screen([home, tutorial],[titleRect("robo_tutorial.png",tr,WHITE)],BLACK)
+        self.tutorialscreen = Screen([home, tutorial],[titleRect("img/robo_tutorial.png",tr,WHITE)],BLACK)
 
         self.currentscreen = self.homescreen

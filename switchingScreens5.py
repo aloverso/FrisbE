@@ -15,7 +15,6 @@ from screen import Button
 from screen import DropDisplay
 
 
-import moveScreen3
 from roboGame1 import RoboGame
 
 
@@ -82,12 +81,12 @@ class titleRect(planes.Plane):
 
 class Model:
 	def __init__(self):
-		robo = RoboButton("robogame", "robowrangler_button.png", pygame.Rect(25,50,250,300), RoboButton.clicked, self)
-		modsim = ModSimButton("modsimbutton", "modsim_logo_button.png", pygame.Rect(25,400,250,300), ModSimButton.clicked, self)
-		matsci = MatSciButton("matscibutton", "matsci_logo_button.png", pygame.Rect(925,50,250,300), MatSciButton.clicked, self)
-		mechee = MechEEButton("mecheebutton", "gearup_logo_button.png", pygame.Rect(925,400,250,300), ModSimButton.clicked, self)
+		robo = RoboButton("robogame", "img/robowrangler_button.png", pygame.Rect(25,50,250,300), RoboButton.clicked, self)
+		modsim = ModSimButton("modsimbutton", "img/modsim_logo_button.png", pygame.Rect(25,400,250,300), ModSimButton.clicked, self)
+		matsci = MatSciButton("matscibutton", "img/matsci_logo_button.png", pygame.Rect(925,50,250,300), MatSciButton.clicked, self)
+		mechee = MechEEButton("mecheebutton", "img/gearup_logo_button.png", pygame.Rect(925,400,250,300), ModSimButton.clicked, self)
 		tr = pygame.Rect(WINDOWWIDTH/2-300,WINDOWHEIGHT/2 - 650/2,600,650)
-		self.dashboardScreen = Screen([robo, modsim, matsci, mechee], [titleRect("frisbe_logo3.png", tr, WHITE)], (15,70,170))
+		self.dashboardScreen = Screen([robo, modsim, matsci, mechee], [titleRect("img/frisbe_logo3.png", tr, WHITE)], (15,70,170))
 		self.robogame = RoboGame()
 		self.modsimgame = ModSimGame()
 		self.matscigame = MatSciGame()
